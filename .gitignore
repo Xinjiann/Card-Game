@@ -1,0 +1,19 @@
+.DS_Store
+
+.classpath
+.idea/
+.project
+.settings/
+ITSD Card Game 2022.iml
+LICENSE
+NOTICE
+build.sbt
+conf/
+logs/
+project/
+sbt
+sbt-dist/
+sbt.bat
+scripts/
+target/
+test/
