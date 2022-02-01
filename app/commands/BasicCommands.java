@@ -17,7 +17,7 @@ import structures.basic.UnitAnimationType;
  * This is a utility class that simply provides short-cut methods for
  * running the basic command set for the game.
  * 
- * @author Dr. Richard McCreadie
+ * @author Dr. Richard McCreadie 
  *
  */
 public class BasicCommands {
