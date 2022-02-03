@@ -25,16 +25,25 @@ nothing to commit, working tree clean
 4. git checkout + 分支名，切换到刚刚创建的分支，例如：git checkout unit_attack
 5. git add . 将内容从工作目录添加到暂存(. 代表所有变更文件)
 6. git commit -m "aaa" (将aaa替换成此次改动的说明，例如 git commit -m "add attack method")
-7. git pull origin main, 此步骤将检查是否和远程仓库冲突，若无冲突，可以继续下一步，否则需要解决冲突。
+7. git pull origin main, 此步骤将检查是否和远程仓库冲突，大部分情况无冲突，可以继续下一步。若报错则代表有冲突，需要解决冲突后回到第5步。
 8. git push origin + 当前分支名 （例如 git push origin unit_attack）
 9. 浏览器访问[远程仓库地址](https://github.com/Xinjiann/game)，将会看到黄色提示，点击Compare & pull request
-10. 下拉再次检查代码
+10. 下拉页面再次检查代码
 11. 点击create pull request
-12. 页面跳转后将当前地址发给我，没问题的话我来合并代码
+12. 页面跳转后将地址发给我，我进行大致的代码审查，没问题的话我来合并代码
 13. 一切结束后，git checkout main 回到主分支，准备进行接下来的开发
 
 #### tips:
 
-每次开发新功能前，确保本地代码没有未提交的改动的情况下，可以使用git pull来确保本地代码和远程最新代码保持一致（非强制）。
+1. 每次开发新功能前，确保本地代码没有未提交的改动的情况下，可以使用git pull来确保本地代码和远程最新代码保持一致（非必要）。
+2. git branch指令可以检查当前在哪个分支上
 
-git branch指令可以检查当前在哪个分支上
+### 项目集成到idea
+
+1. idea安装sbt插件，打开idea的Preference（mac下快捷键是command+，），选择Plugins，搜索sbt，安装scala，重启idea
+2. 点击下图选项
+
+<div align=center><img width="390" height="190" src="https://github.com/Xinjiann/Leetcode-notes/blob/main/images/%E6%88%AA%E5%B1%8F2022-02-03%2000.04.58.png"/></div>
+
+3. 左上角加号选择sbt Task，取消勾选Use sbt shell, task框里输入run
+4. 点击绿色运行按钮即可运行项目
