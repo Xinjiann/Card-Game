@@ -5,9 +5,13 @@
 ```diff
 - 确保按照moodle上的视频配置本地环境，成功运行项目，并看到游戏界面后再进行以下配置:
 ```
-1. 克隆此项目到本地任意位置：git clone https://github.com/Xinjiann/game.git
-2. 将克隆的项目中所有文件（共四个）复制到之前配置的项目工程文件夹下，重复文件选择替换。复制后将克隆的文件夹删除
-3. 在项目工程文件夹下使用git status指令，检查是否显示如下：
+1. git config --global user.name 加你的github名字
+
+   git config --global user.email 加你的github密码
+2. git config --global credential.helper store (保存用户吗和密码)
+3. 克隆此项目到本地任意位置：git clone https://github.com/Xinjiann/game.git
+4. 将克隆的项目中所有文件（共四个）复制到之前配置的项目工程文件夹下，重复文件选择替换。复制后将克隆的文件夹删除
+5. 在项目工程文件夹下使用git status指令，检查是否显示如下：
 
 ```
 On branch main
