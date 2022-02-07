@@ -38,6 +38,10 @@ nothing to commit, working tree clean
 1. 每次开发新功能前，确保本地代码没有未提交的改动的情况下，可以使用git pull来确保本地代码和远程最新代码保持一致（非必要）。
 2. git branch指令可以检查当前在哪个分支上
 
+### 测试
+
+完成 “团队开发git配置说明” 后，在本地将app/testing.txt文件里加入自己的名字，按照 “后期开发阶段代码提交流程” 提交到远程仓库。
+
 ### 项目集成到idea
 
 1. idea安装sbt插件，打开idea的Preference（mac下快捷键是command+，），选择Plugins，搜索sbt，安装scala，重启idea
