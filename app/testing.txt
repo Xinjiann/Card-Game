@@ -1,4 +1,2 @@
 git test:
 xinjian Li
-Peiran Lyu
-Guoqiang Zheng
