@@ -59,8 +59,28 @@ public class Initalize implements EventProcessor {
     initializePlayers(out);
     // initialize 5*9 tiles
     initializeTiles(out);
+    // initialize avatars
+    initializeAvatars(out);
     // players draw cards
     initializeHandCards(out, deck1Cards);
+  }
+
+  private void initializeAvatars(ActorRef out) {
+    Unit unit1 = BasicObjectBuilders.loadUnit(StaticConfFiles.humanAvatar, 0, Unit.class);
+    Tile tile1 = BasicObjectBuilders.loadTile(1, 2);
+    unit1.setPositionByTile(tile1);
+    BasicCommands.drawUnit(out, unit1, tile1);
+    try {Thread.sleep(20);} catch (InterruptedException e) {e.printStackTrace();} // time for front end to process
+    BasicCommands.setUnitAttack(out, unit1, 2);
+    BasicCommands.setUnitHealth(out, unit1, 20);
+
+    Unit unit2 = BasicObjectBuilders.loadUnit(StaticConfFiles.aiAvatar, 0, Unit.class);
+    Tile tile2 = BasicObjectBuilders.loadTile(7, 2);
+    unit2.setPositionByTile(tile2);
+    BasicCommands.drawUnit(out, unit2, tile2);
+    try {Thread.sleep(20);} catch (InterruptedException e) {e.printStackTrace();} // time for front end to process
+    BasicCommands.setUnitAttack(out, unit2, 2);
+    BasicCommands.setUnitHealth(out, unit2, 20);
   }
 
   private void initializeHandCards(ActorRef out, String[] deck1Cards) {
