@@ -16,6 +16,7 @@ import structures.basic.Player;
 import structures.basic.Tile;
 import structures.basic.Unit;
 import utils.BasicObjectBuilders;
+import utils.CommonUtils;
 import utils.StaticConfFiles;
 
 /**
@@ -33,7 +34,6 @@ public class Initalize implements EventProcessor {
 
     gameState.gameInitalised = true;
     gameState.something = true;
-//    CheckMoveLogic.executeDemo(out);
 
     // initialize 2 players
     initializePlayers(out, gameState);
@@ -49,7 +49,7 @@ public class Initalize implements EventProcessor {
     Tile tile1 = gameState.getGameBoard().getTile(1, 2);
     tile1.addUnit(humanAvatar);
     BasicCommands.drawUnit(out, humanAvatar, tile1);
-    try {Thread.sleep(30);} catch (InterruptedException e) {e.printStackTrace();} // time for front end to process
+    CommonUtils.sleep();// time for front end to process
     BasicCommands.setUnitAttack(out, humanAvatar, humanAvatar.getAttack());
     BasicCommands.setUnitHealth(out, humanAvatar, humanAvatar.getHealth());
 
@@ -58,7 +58,7 @@ public class Initalize implements EventProcessor {
     Tile tile2 = gameState.getGameBoard().getTile(7, 2);
     tile2.addUnit(aiAvatar);
     BasicCommands.drawUnit(out, aiAvatar, tile2);
-    try {Thread.sleep(30);} catch (InterruptedException e) {e.printStackTrace();} // time for front end to process
+    CommonUtils.sleep(); // time for front end to process
     BasicCommands.setUnitAttack(out, aiAvatar, aiAvatar.getAttack());
     BasicCommands.setUnitHealth(out, aiAvatar, aiAvatar.getHealth());
   }
@@ -66,12 +66,12 @@ public class Initalize implements EventProcessor {
   private void initializePlayers(ActorRef out, GameState gameState) {
 
     Player humanPlayer = gameState.getHumanPlayer();
-    try {Thread.sleep(30);} catch (InterruptedException e) {e.printStackTrace();} // time for front end to process
+    CommonUtils.sleep(); // time for front end to process
     BasicCommands.setPlayer1Health(out, humanPlayer);
     BasicCommands.setPlayer1Mana(out, humanPlayer);
 
     Player aiPlayer = gameState.getAiPlayer();
-    try {Thread.sleep(30);} catch (InterruptedException e) {e.printStackTrace();} // time for front end to process
+    CommonUtils.sleep(); // time for front end to process
     BasicCommands.setPlayer2Health(out, aiPlayer);
     BasicCommands.setPlayer2Mana(out, aiPlayer);
     //draw hand cards
@@ -86,7 +86,9 @@ public class Initalize implements EventProcessor {
       for (int k = 0; k<board.getGameBoard()[0].length; k++) {
         BasicCommands.drawTile(out, board.getGameBoard()[i][k], 0);
       }
+      CommonUtils.sleep();// time for front end to process
     }
+    CommonUtils.sleep();
   }
 
 }
