@@ -1,6 +1,9 @@
 package structures.basic;
 
 
+import java.util.ArrayList;
+import structures.basic.abilities.Ability;
+
 /**
  * This is the base representation of a Card which is rendered in the player's hand.
  * A card has an id, a name (cardname) and a manacost. A card then has a large and mini
@@ -19,6 +22,8 @@ public class Card {
 	
 	MiniCard miniCard;
 	BigCard bigCard;
+
+	private ArrayList<Ability> abilityList;
 	
 	public Card() {};
 	
@@ -29,6 +34,7 @@ public class Card {
 		this.manacost = manacost;
 		this.miniCard = miniCard;
 		this.bigCard = bigCard;
+		this.abilityList=new ArrayList<Ability>();
 	}
 	
 	public int getId() {
@@ -62,5 +68,11 @@ public class Card {
 		this.bigCard = bigCard;
 	}
 
-	
+	public ArrayList<Ability> getAbilityList() {
+		return abilityList;
+	}
+
+	public void setAbilityList(ArrayList<Ability> abilityList) {
+		this.abilityList = abilityList;
+	}
 }

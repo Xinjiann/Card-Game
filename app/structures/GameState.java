@@ -1,5 +1,7 @@
 package structures;
 
+import org.checkerframework.checker.units.qual.A;
+import structures.basic.Avatar;
 import structures.basic.Board;
 import structures.basic.Card;
 import structures.basic.Deck;
@@ -26,8 +28,8 @@ public class GameState {
 	public Board gameBoard;
 	private Player humanPlayer;
 	private Player aiPlayer;
-	private Unit humanAvatar;
-	private Unit aiAvatar;
+	private Avatar humanAvatar;
+	private Avatar aiAvatar;
 	private Unit unitSelected;
 	private Card cardSelected;
 	private Player turnOwner;
@@ -55,10 +57,10 @@ public class GameState {
 		aiPlayer.setHand(aiHand);
 		aiHand.initialHand(aiDeck);
 
-		humanAvatar =  BasicObjectBuilders.loadUnit(StaticConfFiles.humanAvatar, 0, Unit.class);
+		humanAvatar =  BasicObjectBuilders.loadAvatar(StaticConfFiles.humanAvatar, 0, humanPlayer, Avatar.class);
 		humanAvatar.setAttack(2);
 		humanAvatar.setHealth(20);
-		aiAvatar = BasicObjectBuilders.loadUnit(StaticConfFiles.aiAvatar, 1, Unit.class);
+		aiAvatar = BasicObjectBuilders.loadAvatar(StaticConfFiles.aiAvatar, 1, aiPlayer, Avatar.class);
 		aiAvatar.setAttack(2);
 		aiAvatar.setHealth(20);
 
@@ -89,19 +91,19 @@ public class GameState {
 		this.aiPlayer = aiPlayer;
 	}
 
-	public Unit getHumanAvatar() {
+	public Avatar getHumanAvatar() {
 		return humanAvatar;
 	}
 
-	public void setHumanAvatar(Unit humanAvatar) {
+	public void setHumanAvatar(Avatar humanAvatar) {
 		this.humanAvatar = humanAvatar;
 	}
 
-	public Unit getAiAvatar() {
+	public Avatar getAiAvatar() {
 		return aiAvatar;
 	}
 
-	public void setAiAvatar(Unit aiAvatar) {
+	public void setAiAvatar(Avatar aiAvatar) {
 		this.aiAvatar = aiAvatar;
 	}
 

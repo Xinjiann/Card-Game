@@ -5,10 +5,15 @@ import java.io.File;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.ArrayList;
+import structures.basic.Avatar;
 import structures.basic.Card;
 import structures.basic.EffectAnimation;
+import structures.basic.Monster;
+import structures.basic.Player;
 import structures.basic.Tile;
 import structures.basic.Unit;
+import structures.basic.abilities.Ability;
 
 /**
  * This class contains methods for producing basic objects from configuration files
@@ -83,6 +88,50 @@ public class BasicObjectBuilders {
 		}
 		return null;
 		
+	}
+
+	public static Monster loadMonsterUnit(String configFile, Card statsRef, Player p, Class<? extends Monster> classType) {
+
+		try {
+			Monster monster = mapper.readValue(new File(configFile), classType);
+
+			// Set monster attributes from reference Card info
+			monster.setId(statsRef.getId());
+			monster.setHealth(statsRef.getBigCard().getHealth());
+			monster.setAttack(statsRef.getBigCard().getAttack());
+			// Set Player owner
+			monster.setOwner(p);
+			// Ability setting
+			if(monster.getAbilities() == null) {	monster.setAbilities(new ArrayList<Ability>());	}
+			monster.setAbilities(statsRef.getAbilityList());
+
+//			// Check for abilities requiring EffectAnimation to be stored
+//			if(monster.getAbilities().size() != 0) {
+//				for(Ability a : monster.getAbilities()) {
+//					if(a.getClass() == A_U_RangedAttacker.class) {
+//						monster.setAbAnimation(BasicObjectBuilders.loadEffect(StaticConfFiles.f1_projectiles));
+//					}
+//				}
+//			}
+			return monster;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static Avatar loadAvatar(String configFile, int id, Player p, Class<? extends Avatar> classType) {
+
+		try {
+			Avatar unit = mapper.readValue(new File(configFile), classType);
+			unit.setId(id);
+			unit.setOwner(p);
+			return unit;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+
 	}
 	
 	/**

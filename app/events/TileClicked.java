@@ -7,6 +7,7 @@ import akka.actor.ActorRef;
 import commands.BasicCommands;
 import structures.GameState;
 import structures.basic.Board;
+import structures.basic.Monster;
 import structures.basic.Tile;
 import structures.basic.Unit;
 
@@ -33,7 +34,7 @@ public class TileClicked implements EventProcessor{
 		int tiley = message.get("tiley").asInt();
 
 		Tile clickedTile = gameState.getGameBoard().getTile(tilex,tiley);
-		Unit unit = clickedTile.getUnitOnTile();
+		Monster unit = clickedTile.getUnitOnTile();
 
 		if (gameState.getUnitSelected() != null) {
 			// TODO
@@ -79,7 +80,7 @@ public class TileClicked implements EventProcessor{
 			for (int j = y - 2; j < y + 2; j++) {
 				// make sure the tile is on the board
 				if (i >= 0 && j >= 0) {
-					Unit otherUnit = board.getGameBoard()[j][i].getUnitOnTile();
+					Monster otherUnit = board.getGameBoard()[j][i].getUnitOnTile();
 					if (otherUnit!=null && otherUnit.getOwner()!=gameState.getTurnOwner()) {
 						BasicCommands.drawTile(out, board.getGameBoard()[j][i], 2);
 					}
@@ -96,7 +97,7 @@ public class TileClicked implements EventProcessor{
 			for (int j=y-3; j<y+3; j++) {
 				// make sure the tile is on the board
 				if (i>=0 && j>=0) {
-					Unit otherUnit = board.getGameBoard()[j][i].getUnitOnTile();
+					Monster otherUnit = board.getGameBoard()[j][i].getUnitOnTile();
 					if (otherUnit!=null && otherUnit.getOwner()!=gameState.getTurnOwner()) {
 						BasicCommands.drawTile(out, board.getGameBoard()[j][i], 2);
 					} else if (otherUnit!=null && otherUnit.getOwner()==gameState.getTurnOwner()) {

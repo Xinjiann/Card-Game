@@ -28,7 +28,7 @@ public class Tile {
 	int tilex;
 	int tiley;
 	boolean isAvalible;
-	Unit unitOnTile;
+	Monster unitOnTile;
 
 	public Tile() {}
 	
@@ -115,11 +115,11 @@ public class Tile {
 		return null;
 	}
 
-	public Unit getUnitOnTile() {
+	public Monster getUnitOnTile() {
 		return unitOnTile;
 	}
 
-	public void setUnitOnTile(Unit unit) {
+	public void setUnitOnTile(Monster unit) {
 		this.isAvalible = false;
 		this.unitOnTile = unit;
 		unit.setPositionByTile(this);

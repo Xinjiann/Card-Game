@@ -8,10 +8,12 @@ import demo.CheckMoveLogic;
 import demo.CommandDemo;
 import play.api.Play;
 import structures.GameState;
+import structures.basic.Avatar;
 import structures.basic.Board;
 import structures.basic.Card;
 import structures.basic.Deck;
 import structures.basic.Hand;
+import structures.basic.Monster;
 import structures.basic.Player;
 import structures.basic.Tile;
 import structures.basic.Unit;
@@ -45,8 +47,7 @@ public class Initalize implements EventProcessor {
 
   private void initializeAvatars(ActorRef out, GameState gameState) {
     //humanAvatar
-    Unit humanAvatar = gameState.getHumanAvatar();
-    humanAvatar.setOwner(gameState.getTurnOwner());
+    Avatar humanAvatar = gameState.getHumanAvatar();
     Tile tile1 = gameState.getGameBoard().getTile(1, 2);
     tile1.setUnitOnTile(humanAvatar);
     BasicCommands.drawUnit(out, humanAvatar, tile1);
@@ -55,10 +56,10 @@ public class Initalize implements EventProcessor {
     BasicCommands.setUnitHealth(out, humanAvatar, humanAvatar.getHealth());
 
     // test
-    Unit unit1 = BasicObjectBuilders.loadUnit(StaticConfFiles.humanAvatar, 2, Unit.class);
-    Unit unit2 = BasicObjectBuilders.loadUnit(StaticConfFiles.aiAvatar, 3, Unit.class);
-    unit1.setOwner(gameState.getHumanPlayer());
-    unit2.setOwner(gameState.getAiPlayer());
+    Card cFireSpitter = BasicObjectBuilders.loadCard(StaticConfFiles.c_fire_spitter, 3, Card.class);
+    Card cBlazeHound = BasicObjectBuilders.loadCard(StaticConfFiles.c_blaze_hound, 4, Card.class);
+    Monster unit1 = BasicObjectBuilders.loadMonsterUnit(StaticConfFiles.u_comodo_charger, cFireSpitter, gameState.getHumanPlayer(), Monster.class);
+    Monster unit2 = BasicObjectBuilders.loadMonsterUnit(StaticConfFiles.u_azure_herald, cBlazeHound, gameState.getAiPlayer(), Monster.class);
     Tile tile3 = gameState.getGameBoard().getTile(3, 0);
     Tile tile4 = gameState.getGameBoard().getTile(2, 1);
     unit1.setPositionByTile(tile3);
@@ -70,8 +71,7 @@ public class Initalize implements EventProcessor {
 
 
     //aiAvatar
-    Unit aiAvatar = gameState.getAiAvatar();
-    aiAvatar.setOwner(gameState.getAiPlayer());
+    Avatar aiAvatar = gameState.getAiAvatar();
     Tile tile2 = gameState.getGameBoard().getTile(7, 2);
     tile2.setUnitOnTile(aiAvatar);
     BasicCommands.drawUnit(out, aiAvatar, tile2);

@@ -25,11 +25,6 @@ public class Unit {
 	Position position;
 	UnitAnimationSet animations;
 	ImageCorrection correction;
-	int attack;
-	int health;
-	Player owner;
-	boolean moved;
-	boolean attacked;
 	
 	public Unit() {}
 	
@@ -100,46 +95,6 @@ public class Unit {
 
 	public void setAnimations(UnitAnimationSet animations) {
 		this.animations = animations;
-	}
-
-	public int getAttack() {
-		return attack;
-	}
-
-	public void setAttack(int attack) {
-		this.attack = attack;
-	}
-
-	public int getHealth() {
-		return health;
-	}
-
-	public void setHealth(int health) {
-		this.health = health;
-	}
-
-	public Player getOwner() {
-		return owner;
-	}
-
-	public void setOwner(Player owner) {
-		this.owner = owner;
-	}
-
-	public boolean isMoved() {
-		return moved;
-	}
-
-	public void setMoved(boolean moved) {
-		this.moved = moved;
-	}
-
-	public boolean isAttacked() {
-		return attacked;
-	}
-
-	public void setAttacked(boolean attacked) {
-		this.attacked = attacked;
 	}
 
 	/**
