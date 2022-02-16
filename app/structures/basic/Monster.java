@@ -16,9 +16,14 @@ public class Monster  extends Unit{
   boolean moved;
   boolean attacked;
   ArrayList<Ability> abilities;
+  int movesLeft;
+  int	movesMax;
 
   public Monster() {
     super();
+    this.movesLeft = 0;
+    this.movesMax = 2;
+    this.abilities = null;
   }
 
   public Monster(int id, UnitAnimationSet animations, ImageCorrection correction) {
@@ -52,7 +57,7 @@ public class Monster  extends Unit{
     this.owner = owner;
   }
 
-  public boolean isMoved() {
+  public boolean hasMoved() {
     return moved;
   }
 
@@ -60,7 +65,7 @@ public class Monster  extends Unit{
     this.moved = moved;
   }
 
-  public boolean isAttacked() {
+  public boolean hasAttacked() {
     return attacked;
   }
 
@@ -74,5 +79,21 @@ public class Monster  extends Unit{
 
   public void setAbilities(ArrayList<Ability> abilities) {
     this.abilities = abilities;
+  }
+
+  public boolean isMoved() {
+    return moved;
+  }
+
+  public boolean isAttacked() {
+    return attacked;
+  }
+
+  public int getMovesLeft() {
+    return movesLeft;
+  }
+
+  public void setMovesLeft(int movesLeft) {
+    this.movesLeft = movesLeft;
   }
 }
