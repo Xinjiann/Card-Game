@@ -11,6 +11,8 @@ import structures.basic.Unit;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
 
+import java.util.ArrayList;
+
 /**
  * This class can be used to hold information about the on-going game.
  * Its created with the GameActor.
@@ -33,6 +35,7 @@ public class GameState {
 	private Unit unitSelected;
 	private Card cardSelected;
 	private Player turnOwner;
+	private ArrayList<Card> handList;
 
 	public GameState() {
 		gameBoard = new Board();
@@ -65,6 +68,14 @@ public class GameState {
 		aiAvatar.setHealth(20);
 
 		turnOwner = humanPlayer;
+	}
+
+	public ArrayList<Card> getHandList() {
+		return handList;
+	}
+
+	public void setHandList(ArrayList<Card> handList) {
+		this.handList = handList;
 	}
 
 	public Board getGameBoard() {
