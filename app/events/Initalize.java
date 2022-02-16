@@ -66,10 +66,12 @@ public class Initalize implements EventProcessor {
   private void initializePlayers(ActorRef out, GameState gameState) {
 
     Player humanPlayer = gameState.getHumanPlayer();
+    try {Thread.sleep(30);} catch (InterruptedException e) {e.printStackTrace();} // time for front end to process
     BasicCommands.setPlayer1Health(out, humanPlayer);
     BasicCommands.setPlayer1Mana(out, humanPlayer);
 
     Player aiPlayer = gameState.getAiPlayer();
+    try {Thread.sleep(30);} catch (InterruptedException e) {e.printStackTrace();} // time for front end to process
     BasicCommands.setPlayer2Health(out, aiPlayer);
     BasicCommands.setPlayer2Mana(out, aiPlayer);
     //draw hand cards
