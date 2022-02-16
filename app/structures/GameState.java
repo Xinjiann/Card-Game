@@ -1,6 +1,7 @@
 package structures;
 
 import structures.basic.Board;
+import structures.basic.Card;
 import structures.basic.Deck;
 import structures.basic.Hand;
 import structures.basic.Player;
@@ -27,6 +28,9 @@ public class GameState {
 	private Player aiPlayer;
 	private Unit humanAvatar;
 	private Unit aiAvatar;
+	private Unit unitSelected;
+	private Card cardSelected;
+	private Player turnOwner;
 
 	public GameState() {
 		gameBoard = new Board();
@@ -57,6 +61,8 @@ public class GameState {
 		aiAvatar = BasicObjectBuilders.loadUnit(StaticConfFiles.aiAvatar, 1, Unit.class);
 		aiAvatar.setAttack(2);
 		aiAvatar.setHealth(20);
+
+		turnOwner = humanPlayer;
 	}
 
 	public Board getGameBoard() {
@@ -97,5 +103,29 @@ public class GameState {
 
 	public void setAiAvatar(Unit aiAvatar) {
 		this.aiAvatar = aiAvatar;
+	}
+
+	public Unit getUnitSelected() {
+		return unitSelected;
+	}
+
+	public void setUnitSelected(Unit unitSelected) {
+		this.unitSelected = unitSelected;
+	}
+
+	public Card getCardSelected() {
+		return cardSelected;
+	}
+
+	public void setCardSelected(Card cardSelected) {
+		this.cardSelected = cardSelected;
+	}
+
+	public Player getTurnOwner() {
+		return turnOwner;
+	}
+
+	public void setTurnOwner(Player turnOwner) {
+		this.turnOwner = turnOwner;
 	}
 }

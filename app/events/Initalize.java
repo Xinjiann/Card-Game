@@ -46,17 +46,34 @@ public class Initalize implements EventProcessor {
   private void initializeAvatars(ActorRef out, GameState gameState) {
     //humanAvatar
     Unit humanAvatar = gameState.getHumanAvatar();
+    humanAvatar.setOwner(gameState.getTurnOwner());
     Tile tile1 = gameState.getGameBoard().getTile(1, 2);
-    tile1.addUnit(humanAvatar);
+    tile1.setUnitOnTile(humanAvatar);
     BasicCommands.drawUnit(out, humanAvatar, tile1);
     CommonUtils.sleep();// time for front end to process
     BasicCommands.setUnitAttack(out, humanAvatar, humanAvatar.getAttack());
     BasicCommands.setUnitHealth(out, humanAvatar, humanAvatar.getHealth());
 
+    // test
+    Unit unit1 = BasicObjectBuilders.loadUnit(StaticConfFiles.humanAvatar, 2, Unit.class);
+    Unit unit2 = BasicObjectBuilders.loadUnit(StaticConfFiles.aiAvatar, 3, Unit.class);
+    unit1.setOwner(gameState.getHumanPlayer());
+    unit2.setOwner(gameState.getAiPlayer());
+    Tile tile3 = gameState.getGameBoard().getTile(3, 0);
+    Tile tile4 = gameState.getGameBoard().getTile(2, 1);
+    unit1.setPositionByTile(tile3);
+    unit1.setPositionByTile(tile4);
+    tile3.setUnitOnTile(unit1);
+    tile4.setUnitOnTile(unit2);
+    BasicCommands.drawUnit(out, unit1, tile3);
+    BasicCommands.drawUnit(out, unit2, tile4);
+
+
     //aiAvatar
     Unit aiAvatar = gameState.getAiAvatar();
+    aiAvatar.setOwner(gameState.getAiPlayer());
     Tile tile2 = gameState.getGameBoard().getTile(7, 2);
-    tile2.addUnit(aiAvatar);
+    tile2.setUnitOnTile(aiAvatar);
     BasicCommands.drawUnit(out, aiAvatar, tile2);
     CommonUtils.sleep(); // time for front end to process
     BasicCommands.setUnitAttack(out, aiAvatar, aiAvatar.getAttack());

@@ -115,7 +115,11 @@ public class Tile {
 		return null;
 	}
 
-	public void addUnit(Unit unit) {
+	public Unit getUnitOnTile() {
+		return unitOnTile;
+	}
+
+	public void setUnitOnTile(Unit unit) {
 		this.isAvalible = false;
 		this.unitOnTile = unit;
 		unit.setPositionByTile(this);
