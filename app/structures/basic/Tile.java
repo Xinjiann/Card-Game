@@ -27,7 +27,9 @@ public class Tile {
 	int height;
 	int tilex;
 	int tiley;
-	
+	boolean isAvalible;
+	Unit unitOnTile;
+
 	public Tile() {}
 	
 	public Tile(String tileTexture, int xpos, int ypos, int width, int height, int tilex, int tiley) {
@@ -111,9 +113,11 @@ public class Tile {
 			
 		}
 		return null;
-		
 	}
-	
-	
-	
+
+	public void addUnit(Unit unit) {
+		this.isAvalible = false;
+		this.unitOnTile = unit;
+		unit.setPositionByTile(this);
+	}
 }

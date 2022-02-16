@@ -11,6 +11,8 @@ public class Player {
 
 	int health;
 	int mana;
+	protected Hand hand;
+	protected Deck deck;
 	
 	public Player() {
 		super();
@@ -22,6 +24,23 @@ public class Player {
 		this.health = health;
 		this.mana = mana;
 	}
+
+	public Hand getHand() {
+		return hand;
+	}
+
+	public void setHand(Hand hand) {
+		this.hand = hand;
+	}
+
+	public Deck getDeck() {
+		return deck;
+	}
+
+	public void setDeck(Deck deck) {
+		this.deck = deck;
+	}
+
 	public int getHealth() {
 		return health;
 	}

@@ -6,8 +6,12 @@ import akka.actor.ActorRef;
 import commands.BasicCommands;
 import demo.CheckMoveLogic;
 import demo.CommandDemo;
+import play.api.Play;
 import structures.GameState;
+import structures.basic.Board;
 import structures.basic.Card;
+import structures.basic.Deck;
+import structures.basic.Hand;
 import structures.basic.Player;
 import structures.basic.Tile;
 import structures.basic.Unit;
@@ -29,84 +33,56 @@ public class Initalize implements EventProcessor {
 
     gameState.gameInitalised = true;
     gameState.something = true;
+//    CheckMoveLogic.executeDemo(out);
 
-    // initialize players' deck
-    String[] deck1Cards = {
-        StaticConfFiles.c_azure_herald,
-        StaticConfFiles.c_azurite_lion,
-        StaticConfFiles.c_comodo_charger,
-        StaticConfFiles.c_fire_spitter,
-        StaticConfFiles.c_hailstone_golem,
-        StaticConfFiles.c_ironcliff_guardian,
-        StaticConfFiles.c_pureblade_enforcer,
-        StaticConfFiles.c_silverguard_knight,
-        StaticConfFiles.c_sundrop_elixir,
-        StaticConfFiles.c_truestrike
-    };
-    String[] deck2Cards = {
-        StaticConfFiles.c_azure_herald,
-        StaticConfFiles.c_azurite_lion,
-        StaticConfFiles.c_comodo_charger,
-        StaticConfFiles.c_fire_spitter,
-        StaticConfFiles.c_hailstone_golem,
-        StaticConfFiles.c_ironcliff_guardian,
-        StaticConfFiles.c_pureblade_enforcer,
-        StaticConfFiles.c_silverguard_knight,
-        StaticConfFiles.c_sundrop_elixir,
-        StaticConfFiles.c_truestrike
-    };
     // initialize 2 players
-    initializePlayers(out);
+    initializePlayers(out, gameState);
     // initialize 5*9 tiles
-    initializeTiles(out);
+    initializeTiles(out, gameState);
     // initialize avatars
-    initializeAvatars(out);
-    // players draw cards
-    initializeHandCards(out, deck1Cards);
+    initializeAvatars(out, gameState);
   }
 
-  private void initializeAvatars(ActorRef out) {
-    Unit unit1 = BasicObjectBuilders.loadUnit(StaticConfFiles.humanAvatar, 0, Unit.class);
-    Tile tile1 = BasicObjectBuilders.loadTile(1, 2);
-    unit1.setPositionByTile(tile1);
-    BasicCommands.drawUnit(out, unit1, tile1);
-    try {Thread.sleep(20);} catch (InterruptedException e) {e.printStackTrace();} // time for front end to process
-    BasicCommands.setUnitAttack(out, unit1, 2);
-    BasicCommands.setUnitHealth(out, unit1, 20);
+  private void initializeAvatars(ActorRef out, GameState gameState) {
+    //humanAvatar
+    Unit humanAvatar = gameState.getHumanAvatar();
+    Tile tile1 = gameState.getGameBoard().getTile(1, 2);
+    tile1.addUnit(humanAvatar);
+    BasicCommands.drawUnit(out, humanAvatar, tile1);
+    try {Thread.sleep(30);} catch (InterruptedException e) {e.printStackTrace();} // time for front end to process
+    BasicCommands.setUnitAttack(out, humanAvatar, humanAvatar.getAttack());
+    BasicCommands.setUnitHealth(out, humanAvatar, humanAvatar.getHealth());
 
-    Unit unit2 = BasicObjectBuilders.loadUnit(StaticConfFiles.aiAvatar, 0, Unit.class);
-    Tile tile2 = BasicObjectBuilders.loadTile(7, 2);
-    unit2.setPositionByTile(tile2);
-    BasicCommands.drawUnit(out, unit2, tile2);
-    try {Thread.sleep(20);} catch (InterruptedException e) {e.printStackTrace();} // time for front end to process
-    BasicCommands.setUnitAttack(out, unit2, 2);
-    BasicCommands.setUnitHealth(out, unit2, 20);
+    //aiAvatar
+    Unit aiAvatar = gameState.getAiAvatar();
+    Tile tile2 = gameState.getGameBoard().getTile(7, 2);
+    tile2.addUnit(aiAvatar);
+    BasicCommands.drawUnit(out, aiAvatar, tile2);
+    try {Thread.sleep(30);} catch (InterruptedException e) {e.printStackTrace();} // time for front end to process
+    BasicCommands.setUnitAttack(out, aiAvatar, aiAvatar.getAttack());
+    BasicCommands.setUnitHealth(out, aiAvatar, aiAvatar.getHealth());
   }
 
-  private void initializeHandCards(ActorRef out, String[] deck1Cards) {
-    for (int i = 0; i < 3; i++) {
-      Card card1 = BasicObjectBuilders.loadCard(deck1Cards[i], i, Card.class);
-      BasicCommands.drawCard(out, card1, i + 1, 0);
+  private void initializePlayers(ActorRef out, GameState gameState) {
+
+    Player humanPlayer = gameState.getHumanPlayer();
+    BasicCommands.setPlayer1Health(out, humanPlayer);
+    BasicCommands.setPlayer1Mana(out, humanPlayer);
+
+    Player aiPlayer = gameState.getAiPlayer();
+    BasicCommands.setPlayer2Health(out, aiPlayer);
+    BasicCommands.setPlayer2Mana(out, aiPlayer);
+    //draw hand cards
+    for (int i=0; i<humanPlayer.getHand().getHandList().size(); i++) {
+      BasicCommands.drawCard(out, humanPlayer.getHand().getHandList().get(i), i, 0);
     }
   }
 
-  private void initializePlayers(ActorRef out) {
-    // human
-    Player humanPlayer = new Player(20, 2);
-    BasicCommands.setPlayer1Health(out, humanPlayer);
-    BasicCommands.setPlayer1Mana(out, humanPlayer);
-    // ai
-    Player aiPlayer = new Player(20, 2);
-    BasicCommands.setPlayer2Health(out, aiPlayer);
-    BasicCommands.setPlayer2Mana(out, aiPlayer);
-  }
-
-  private void initializeTiles(ActorRef out) {
-    Tile tile;
-    for (int i = 0; i < 5; i++) {
-      for (int j = 0; j < 9; j++) {
-        tile = BasicObjectBuilders.loadTile(j, i);
-        BasicCommands.drawTile(out, tile, 0);
+  private void initializeTiles(ActorRef out, GameState gameState) {
+    Board board = gameState.gameBoard;
+    for (int i = 0; i<board.getGameBoard().length; i++) {
+      for (int k = 0; k<board.getGameBoard()[0].length; k++) {
+        BasicCommands.drawTile(out, board.getGameBoard()[i][k], 0);
       }
     }
   }
