@@ -34,7 +34,7 @@ public class GameState {
 		// human deck
 		Deck humanDeck = new Deck();
 		humanDeck.humanDeck();
-		Player humanPlayer = new Player(20, 2);
+		humanPlayer = new Player(20, 2);
 		// human hand
 		humanPlayer.setDeck(humanDeck);
 		Hand humanHand = new Hand();
@@ -44,7 +44,7 @@ public class GameState {
 		// ai deck
 		Deck aiDeck = new Deck();
 		aiDeck.aiDeck();
-		Player aiPlayer = new Player(20, 2);
+		aiPlayer = new Player(20, 2);
 		// ai hand
 		aiPlayer.setDeck(aiDeck);
 		Hand aiHand = new Hand();
