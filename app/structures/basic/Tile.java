@@ -124,4 +124,9 @@ public class Tile {
 		this.unitOnTile = unit;
 		unit.setPositionByTile(this);
 	}
+
+	public void rmUnitOnTile() {
+		this.isAvalible = false;
+		this.unitOnTile = null;
+	}
 }

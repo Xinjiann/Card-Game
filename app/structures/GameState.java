@@ -6,6 +6,7 @@ import structures.basic.Board;
 import structures.basic.Card;
 import structures.basic.Deck;
 import structures.basic.Hand;
+import structures.basic.Monster;
 import structures.basic.Player;
 import structures.basic.Unit;
 import utils.BasicObjectBuilders;
@@ -32,7 +33,7 @@ public class GameState {
 	private Player aiPlayer;
 	private Avatar humanAvatar;
 	private Avatar aiAvatar;
-	private Unit unitSelected;
+	private Monster unitSelected;
 	private Card cardSelected;
 	private Player turnOwner;
 
@@ -109,11 +110,11 @@ public class GameState {
 		this.aiAvatar = aiAvatar;
 	}
 
-	public Unit getUnitSelected() {
+	public Monster getUnitSelected() {
 		return unitSelected;
 	}
 
-	public void setUnitSelected(Unit unitSelected) {
+	public void setUnitSelected(Monster unitSelected) {
 		this.unitSelected = unitSelected;
 	}
 

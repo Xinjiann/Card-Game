@@ -5,11 +5,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import akka.actor.ActorRef;
 import commands.BasicCommands;
+import java.util.ArrayList;
 import structures.GameState;
-import structures.basic.Board;
 import structures.basic.Monster;
 import structures.basic.Tile;
-import structures.basic.Unit;
+import structures.basic.UnitAnimationType;
+import utils.CommonUtils;
 
 /**
  * Indicates that the user has clicked an object on the game canvas, in this case a tile.
@@ -34,83 +35,139 @@ public class TileClicked implements EventProcessor{
 		int tiley = message.get("tiley").asInt();
 
 		Tile clickedTile = gameState.getGameBoard().getTile(tilex,tiley);
-		Monster unit = clickedTile.getUnitOnTile();
+		Monster monster = clickedTile.getUnitOnTile();
 
 		if (gameState.getUnitSelected() != null) {
-			// TODO
-			// attack logic
-			removeHighlight(out, gameState);
-			gameState.setUnitSelected(null);
-
+			afterUnitSelectedClick(monster, gameState, out, clickedTile);
 		} else if (gameState.getCardSelected() != null) {
-			System.out.println("highlight available placement and attack tile");
+			afterCardSelectedClick(monster, gameState, out);
 		} else {
 			// nothing selected before
-			if (unit != null && unit.getOwner() == gameState.getTurnOwner() && !unit.isAttacked()) {
-				if (unit.isMoved()) {
-					movedHighlight(out, gameState, tilex, tiley);
+			afterNothingClick(monster, gameState, out);
+		}
+	}
+
+	private void afterNothingClick(Monster monster, GameState gameState, ActorRef out) {
+
+		if (monster != null) {
+			if (monster.getOwner() == gameState.getTurnOwner()) {
+				if (!monster.isFrozen()) {
+					displayAvailableTiles(gameState, out, monster);
+					gameState.setUnitSelected(monster);
 				} else {
-					notMovedHighlight(out, gameState, tilex, tiley);
+					BasicCommands.addPlayer1Notification(out, "This unit will be capable of actions in next turn", 2);
 				}
-				gameState.setUnitSelected(unit);
+			} else {
+				BasicCommands.addPlayer1Notification(out, "This unit does not belong to you", 2);
 			}
+		} else {
+			// no unit on the tile
+			BasicCommands.addPlayer1Notification(out, "Empty click", 1);
 		}
 
 
 	}
 
-	private void removeHighlight(ActorRef out, GameState gameState) {
-
-		Board board = gameState.gameBoard;
-		int x = board.getGameBoard().length;
-		int y = board.getGameBoard()[0].length;
-		for (int i=0; i<x; i++) {
-			for (int j=0; j<y; j++) {
-				Tile tile = board.getGameBoard()[i][j];
-				BasicCommands.drawTile(out, tile, 0);
-			}
+	private void displayAvailableTiles(GameState gameState, ActorRef out, Monster monster) {
+		int x = monster.getPosition().getTilex();
+		int y = monster.getPosition().getTiley();
+		ArrayList<Tile> movableTiles = gameState.getGameBoard().movableTiles(x,y,monster.getMovesLeft());
+		ArrayList <Tile> attachableTiles = gameState.getGameBoard().attachableTiles(x, y, monster.getMovesLeft());
+		movableTiles.addAll(attachableTiles);
+		if (movableTiles.isEmpty()) {
+			BasicCommands.addPlayer1Notification(out, "No more actions allowed for this unit in this turn", 2);
 		}
-
-	}
-
-	private void movedHighlight(ActorRef out, GameState gameState, int x, int y) {
-		Board board = gameState.gameBoard;
-
-		for (int i=x-2; i<x+2; i++) {
-			for (int j = y - 2; j < y + 2; j++) {
-				// make sure the tile is on the board
-				if (i >= 0 && j >= 0) {
-					Monster otherUnit = board.getGameBoard()[j][i].getUnitOnTile();
-					if (otherUnit!=null && otherUnit.getOwner()!=gameState.getTurnOwner()) {
-						BasicCommands.drawTile(out, board.getGameBoard()[j][i], 2);
-					}
-				}
+		for(Tile t : movableTiles) {
+			if(attachableTiles.contains(t)) {
+				BasicCommands.drawTile(out, t, 2);
+			}
+			else {
+				BasicCommands.drawTile(out, t, 1);
 			}
 		}
 	}
 
-	private void notMovedHighlight(ActorRef out, GameState gameState, int x, int y) {
+	private void afterCardSelectedClick(Monster clickedTile, GameState gameState, ActorRef out) {
+	}
 
-		Board board = gameState.gameBoard;
+	private void afterUnitSelectedClick(Monster monster, GameState gameState, ActorRef out, Tile clickedTile) {
+		Monster previousMonster = gameState.getUnitSelected();
+		if (clickedTile.getUnitOnTile() != null && clickedTile.getUnitOnTile().getOwner() == gameState.getTurnOwner()) {
+			// untarget or retarget
+			friendClick(previousMonster, monster, gameState, out, clickedTile);
+		} else if (clickedTile.getUnitOnTile() != null && clickedTile.getUnitOnTile().getOwner() != gameState.getTurnOwner()) {
+			// attack
+			enemyClick(monster, gameState, out, clickedTile);
+		} else {
+			// move
+			moveClick(previousMonster, gameState, out, clickedTile);
+		}
+	}
 
-		for (int i=x-3; i<x+3; i++) {
-			for (int j=y-3; j<y+3; j++) {
-				// make sure the tile is on the board
-				if (i>=0 && j>=0) {
-					Monster otherUnit = board.getGameBoard()[j][i].getUnitOnTile();
-					if (otherUnit!=null && otherUnit.getOwner()!=gameState.getTurnOwner()) {
-						BasicCommands.drawTile(out, board.getGameBoard()[j][i], 2);
-					} else if (otherUnit!=null && otherUnit.getOwner()==gameState.getTurnOwner()) {
-					} else {
-						// 2 steps available move
-						if ((Math.abs(i-x)+Math.abs(j-y))<3 && (Math.abs(i-x)+Math.abs(j-y))!=0) {
-							BasicCommands.drawTile(out, board.getGameBoard()[j][i], 1);
-						}
-					}
+	private void moveClick(Monster previousMonster, GameState gameState, ActorRef out, Tile clickedTile) {
+
+		int previous_x = previousMonster.getPosition().getTilex();
+		int previous_y = previousMonster.getPosition().getTiley();
+		Tile previousTile = gameState.gameBoard.getTile(previous_x, previous_y);
+
+		ArrayList <Tile> attachableTiles;
+		ArrayList <Tile> movableTiles = new ArrayList<Tile>();
+		// get all movable tiles
+		movableTiles = gameState.getGameBoard().movableTiles(previous_x, previous_y, previousMonster.getMovesLeft());
+		attachableTiles = gameState.getGameBoard().attachableTiles(previous_x, previous_y, previousMonster.getMovesLeft());
+		movableTiles.addAll(attachableTiles);
+
+		if((!movableTiles.isEmpty())) {
+			int deltaX = Math.abs(previous_x - clickedTile.getTilex());
+			int deltaY = Math.abs(previous_y - clickedTile.getTiley());
+			if ((deltaX+deltaY)>previousMonster.getMovesLeft()) {
+				// outweigh the move limit of 2
+				BasicCommands.addPlayer1Notification(out, "You can not move that far", 2);
+			} else {
+				previousMonster.setMovesLeft(previousMonster.getMovesLeft()-(deltaX+deltaY));
+				previousMonster.setPositionByTile(clickedTile);
+				for (Tile t : movableTiles) {
+					BasicCommands.drawTile(out, t, 0);
 				}
+				previousTile.rmUnitOnTile();
+				clickedTile.setUnitOnTile(previousMonster);
+				gameState.setUnitSelected(null);
+				// front end work
+				BasicCommands.moveUnitToTile(out, previousMonster, clickedTile);
+				// animation
+				BasicCommands.playUnitAnimation(out, previousMonster, UnitAnimationType.move);
 			}
 		}
+	}
 
+	private void enemyClick(Monster monster, GameState gameState, ActorRef out, Tile clickedTile) {
+	}
+
+	private void friendClick(Monster previousMonster, Monster clickedMonster, GameState gameState, ActorRef out, Tile clickedTile) {
+		Tile previousTile = gameState.gameBoard.getTile(previousMonster.getPosition().getTilex(), previousMonster.getPosition().getTiley());
+		// first remove all the highlight tiles
+		rmAllActionTiles(previousMonster, gameState, out);
+		if (previousTile == clickedTile) {
+			// remove selected unit
+			gameState.setUnitSelected(null);
+		} else {
+			// retarget the unit
+			gameState.setUnitSelected(clickedMonster);
+			CommonUtils.sleep();
+			// draw highlight for new target
+			displayAvailableTiles(gameState, out, clickedMonster);
+		}
+	}
+
+	private void rmAllActionTiles(Monster monster, GameState gameState,ActorRef out) {
+		int previous_x = monster.getPosition().getTilex();
+		int previous_y = monster.getPosition().getTiley();
+		ArrayList<Tile> movableTiles = gameState.getGameBoard().movableTiles(previous_x, previous_y, monster.getMovesLeft());
+		ArrayList<Tile> attachableTiles = gameState.getGameBoard().attachableTiles(previous_x, previous_y, monster.getMovesLeft());
+		movableTiles.addAll(attachableTiles);
+		for (Tile t : movableTiles) {
+			BasicCommands.drawTile(out, t, 0);
+		}
 	}
 
 }
