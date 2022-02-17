@@ -37,11 +37,11 @@ public class Board {
 
   public ArrayList<Tile> movableTiles(int x, int y, int movesLeft) {
     ArrayList<Tile> movableTiles = new ArrayList<Tile>();
-    for (int i = x - 3; i <= (x + 3); i++) {
-      for (int j = y - 3; j <= (y + 3); j++) {
-        // Check if indices are within limits of the board
+    for (int i = x - movesLeft; i <= (x + movesLeft); i++) {
+      for (int j = y - movesLeft; j <= (y + movesLeft); j++) {
+        // Check limits
         if ( (i <= (this.X - 1) && i >= 0) && (j <= (this.Y - 1) && j >= 0)) {
-          if ( (Math.abs(i - x) + Math.abs(j - y)) <3) {
+          if ( (Math.abs(i - x) + Math.abs(j - y)) <= movesLeft) {
             movableTiles.add(this.getTile(i, j));
           }
         }

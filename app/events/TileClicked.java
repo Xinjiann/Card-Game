@@ -10,6 +10,7 @@ import structures.GameState;
 import structures.basic.Board;
 import structures.basic.Monster;
 import structures.basic.Tile;
+import structures.basic.UnitAnimationType;
 
 /**
  * Indicates that the user has clicked an object on the game canvas, in this case a tile.
@@ -34,20 +35,20 @@ public class TileClicked implements EventProcessor{
 		int tiley = message.get("tiley").asInt();
 
 		Tile clickedTile = gameState.getGameBoard().getTile(tilex,tiley);
-		Monster unit = clickedTile.getUnitOnTile();
+		Monster monster = clickedTile.getUnitOnTile();
 
 		if (gameState.getUnitSelected() != null) {
 			// TODO
 			// attack logic
-			afterUnitSelectedClick(unit, gameState, out);
+			afterUnitSelectedClick(monster, gameState, out, clickedTile);
 			removeHighlight(out, gameState);
 			gameState.setUnitSelected(null);
 		} else if (gameState.getCardSelected() != null) {
-			afterCardSelectedClick(unit, gameState, out);
+			afterCardSelectedClick(monster, gameState, out);
 			System.out.println("highlight available placement and attack tile");
 		} else {
 			// nothing selected before
-			afterNothingClick(unit, gameState, out);
+			afterNothingClick(monster, gameState, out);
 		}
 
 
@@ -98,7 +99,54 @@ public class TileClicked implements EventProcessor{
 	private void afterCardSelectedClick(Monster clickedTile, GameState gameState, ActorRef out) {
 	}
 
-	private void afterUnitSelectedClick(Monster clickedTile, GameState gameState, ActorRef out) {
+	private void afterUnitSelectedClick(Monster monster, GameState gameState, ActorRef out, Tile clickedTile) {
+		if (clickedTile.getUnitOnTile() != null && clickedTile.getUnitOnTile().getOwner() == gameState.getTurnOwner()) {
+			friendClick(monster, gameState, out, clickedTile);
+		} else if (clickedTile.getUnitOnTile() != null && clickedTile.getUnitOnTile().getOwner() != gameState.getTurnOwner()) {
+			enemyClick(monster, gameState, out, clickedTile);
+		} else {
+			moveClick(gameState, out, clickedTile);
+		}
+	}
+
+	private void moveClick(GameState gameState, ActorRef out, Tile clickedTile) {
+
+		Monster previousMonster = gameState.getUnitSelected();
+		int previous_x = previousMonster.getPosition().getTilex();
+		int previous_y = previousMonster.getPosition().getTiley();
+		Tile previousTile = gameState.gameBoard.getTile(previous_x, previous_y);
+
+		ArrayList <Tile> attachableTiles;
+		ArrayList <Tile> movableTiles = new ArrayList<Tile>();
+		movableTiles = gameState.getGameBoard().movableTiles(previous_x, previous_y, previousMonster.getMovesLeft());
+		attachableTiles = gameState.getGameBoard().attachableTiles(previous_x, previous_y, previousMonster.getMovesLeft());
+		movableTiles.addAll(attachableTiles);
+
+		if((!movableTiles.isEmpty()) && movableTiles.contains(clickedTile)) {
+			int deltaX = Math.abs(previous_x - clickedTile.getTilex());
+			int deltaY = Math.abs(previous_y - clickedTile.getTiley());
+			if ((deltaX+deltaY)>previousMonster.getMovesLeft()) {
+				BasicCommands.addPlayer1Notification(out, "You can not move that far", 1);
+			} else {
+				previousMonster.setMovesLeft(previousMonster.getMovesLeft()-(deltaX+deltaY));
+				previousMonster.setPositionByTile(clickedTile);
+				for (Tile t : movableTiles) {
+					BasicCommands.drawTile(out, t, 0);
+				}
+				previousTile.rmUnitOnTile();
+				clickedTile.setUnitOnTile(previousMonster);
+
+				BasicCommands.moveUnitToTile(out, previousMonster, clickedTile);
+
+				BasicCommands.playUnitAnimation(out, previousMonster, UnitAnimationType.move);
+			}
+		}
+	}
+
+	private void enemyClick(Monster monster, GameState gameState, ActorRef out, Tile clickedTile) {
+	}
+
+	private void friendClick(Monster monster, GameState gameState, ActorRef out, Tile clickedTile) {
 	}
 
 	private void removeHighlight(ActorRef out, GameState gameState) {

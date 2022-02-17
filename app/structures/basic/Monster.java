@@ -21,7 +21,7 @@ public class Monster  extends Unit{
 
   public Monster() {
     super();
-    this.movesLeft = 0;
+    this.movesLeft = 2;
     this.movesMax = 2;
     this.abilities = null;
   }
