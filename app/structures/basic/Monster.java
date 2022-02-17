@@ -13,22 +13,18 @@ public class Monster  extends Unit{
   int attack;
   int health;
   Player owner;
-  boolean moved;
-  boolean attacked;
   ArrayList<Ability> abilities;
   int movesLeft;
-  int	movesMax;
+  boolean frozen;
 
   public Monster() {
     super();
     this.movesLeft = 2;
-    this.movesMax = 2;
     this.abilities = null;
+    this.frozen = false;
   }
 
   public Monster(int id, UnitAnimationSet animations, ImageCorrection correction) {
-
-    // Specify id, UnitAnimationSet, ImageCorrection and/or Tile
     super(id, animations, correction);
 
   }
@@ -57,21 +53,6 @@ public class Monster  extends Unit{
     this.owner = owner;
   }
 
-  public boolean hasMoved() {
-    return moved;
-  }
-
-  public void setMoved(boolean moved) {
-    this.moved = moved;
-  }
-
-  public boolean hasAttacked() {
-    return attacked;
-  }
-
-  public void setAttacked(boolean attacked) {
-    this.attacked = attacked;
-  }
 
   public ArrayList<Ability> getAbilities() {
     return abilities;
@@ -81,13 +62,6 @@ public class Monster  extends Unit{
     this.abilities = abilities;
   }
 
-  public boolean isMoved() {
-    return moved;
-  }
-
-  public boolean isAttacked() {
-    return attacked;
-  }
 
   public int getMovesLeft() {
     return movesLeft;
@@ -95,5 +69,13 @@ public class Monster  extends Unit{
 
   public void setMovesLeft(int movesLeft) {
     this.movesLeft = movesLeft;
+  }
+
+  public boolean isFrozen() {
+    return frozen;
+  }
+
+  public void setFrozen(boolean frozen) {
+    this.frozen = frozen;
   }
 }
