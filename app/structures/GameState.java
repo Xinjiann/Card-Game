@@ -35,7 +35,6 @@ public class GameState {
 	private Unit unitSelected;
 	private Card cardSelected;
 	private Player turnOwner;
-	private ArrayList<Card> handList;
 
 	public GameState() {
 		gameBoard = new Board();
@@ -68,14 +67,6 @@ public class GameState {
 		aiAvatar.setHealth(20);
 
 		turnOwner = humanPlayer;
-	}
-
-	public ArrayList<Card> getHandList() {
-		return handList;
-	}
-
-	public void setHandList(ArrayList<Card> handList) {
-		this.handList = handList;
 	}
 
 	public Board getGameBoard() {
