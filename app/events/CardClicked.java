@@ -6,10 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import akka.actor.ActorRef;
 import commands.BasicCommands;
 import structures.GameState;
-import structures.basic.Board;
-import structures.basic.Card;
-import structures.basic.Tile;
-import structures.basic.Unit;
+import structures.basic.*;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
 
@@ -32,7 +29,7 @@ public class CardClicked implements EventProcessor{
 		
 		int handPosition = message.get("position").asInt();
 
-		Card clickedCard = gameState.getHandList().get(handPosition);
+		Card clickedCard = gameState.getHumanPlayer().getHand().getHandList().get(handPosition);
 
 
 		//firstly remove the highlight on the board
@@ -42,17 +39,20 @@ public class CardClicked implements EventProcessor{
 		}
 		//first justify the card type(attack or assist), then determine the highlight area
 		else {
-			//spell card type, later do
 			if(clickedCard.getId() == 8 || clickedCard.getId() == 9){
+				//spell card type, complete later
 				//TODO
 			}else{
 				//unit type card
-
+				highlight(out, gameState);
+				gameState.setCardSelected(clickedCard);
 			}
 
 		}
 		
 	}
+
+
 
 	private void removeHighlight(ActorRef out, GameState gameState) {
 
@@ -66,6 +66,30 @@ public class CardClicked implements EventProcessor{
 			}
 		}
 
+	}
+
+	private void highlight(ActorRef out, GameState gameState){
+		Avatar humanAvator = gameState.getHumanAvatar();
+		int tilex = humanAvator.getPosition().getTilex();
+		int tiley = humanAvator.getPosition().getTiley();
+		int x_max = gameState.gameBoard.getGameBoard().length;
+		int y_max = gameState.gameBoard.getGameBoard()[0].length;
+		for (int i=tilex-1; i<tilex+2; i++) {
+			for (int j = tiley - 1; j < tiley + 2; j++) {
+				// make sure the tile is on the board
+				if (i >= 0 && i<x_max && j >= 0 && j<y_max) {
+					Monster otherUnit = gameState.gameBoard.getGameBoard()[i][j].getUnitOnTile();
+					if (otherUnit!=null) {
+
+						BasicCommands.drawTile(out, gameState.gameBoard.getGameBoard()[i][j], 2);
+					}else{
+
+						BasicCommands.drawTile(out, gameState.gameBoard.getGameBoard()[i][j], 1);
+					}
+				}
+
+			}
+		}
 	}
 
 }
