@@ -78,13 +78,11 @@ public class CardClicked implements EventProcessor{
 			for (int j = tiley - 1; j < tiley + 2; j++) {
 				// make sure the tile is on the board
 				if (i >= 0 && i<x_max && j >= 0 && j<y_max) {
-					Monster otherUnit = gameState.gameBoard.getGameBoard()[i][j].getUnitOnTile();
+					Monster otherUnit = gameState.gameBoard.getGameBoard()[j][i].getUnitOnTile();
 					if (otherUnit!=null) {
-
-						BasicCommands.drawTile(out, gameState.gameBoard.getGameBoard()[i][j], 2);
+						BasicCommands.drawTile(out, gameState.gameBoard.getGameBoard()[j][i], 2);
 					}else{
-
-						BasicCommands.drawTile(out, gameState.gameBoard.getGameBoard()[i][j], 1);
+						BasicCommands.drawTile(out, gameState.gameBoard.getGameBoard()[j][i], 1);
 					}
 				}
 
