@@ -72,8 +72,8 @@ public class CardClicked implements EventProcessor{
 	}
 
 	private void nonSpellHighlight(ActorRef out, GameState gameState,Position position){
-		int x_max = gameState.gameBoard.getGameBoard().length;
-		int y_max = gameState.gameBoard.getGameBoard()[0].length;
+		int x_max = gameState.gameBoard.getGameBoard()[0].length;
+		int y_max = gameState.gameBoard.getGameBoard().length;
 		for (int i=position.getTilex()-1; i< position.getTilex()+2; i++) {
 			for (int j = position.getTiley() - 1; j < position.getTiley() + 2; j++) {
 				// make sure the tile is on the board
