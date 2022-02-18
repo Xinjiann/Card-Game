@@ -11,7 +11,11 @@ public class CommonUtils {
   }
 
   public static void longSleep() {
-    try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
+
+  }
+
+  public static void longlongSleep(int time) {
+    try {Thread.sleep(time);} catch (InterruptedException e) {e.printStackTrace();}
   }
 
 }
