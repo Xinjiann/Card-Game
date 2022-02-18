@@ -16,17 +16,27 @@ public class Monster  extends Unit{
   ArrayList<Ability> abilities;
   int movesLeft;
   boolean frozen;
+  boolean isAlive;
 
   public Monster() {
     super();
     this.movesLeft = 2;
     this.abilities = null;
     this.frozen = false;
+    this.isAlive = true;
   }
 
   public Monster(int id, UnitAnimationSet animations, ImageCorrection correction) {
     super(id, animations, correction);
+  }
 
+  public void beAttacked(int attack) {
+    if (this.health >= attack) {
+      this.health -= attack;
+    } else {
+      this.health = 0;
+      this.isAlive = false;
+    }
   }
 
   public int getAttack() {
@@ -77,5 +87,13 @@ public class Monster  extends Unit{
 
   public void setFrozen(boolean frozen) {
     this.frozen = frozen;
+  }
+
+  public boolean isAlive() {
+    return isAlive;
+  }
+
+  public void setAlive(boolean alive) {
+    isAlive = alive;
   }
 }
