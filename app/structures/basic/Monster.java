@@ -24,7 +24,7 @@ public class Monster  extends Unit{
   public Monster() {
     super();
     this.attackDistance = 1;
-    this.attackCount = 1;
+    this.attackCount = 10;
     this.movesLeft = 2;
     this.abilities = null;
     this.frozen = false;
@@ -36,7 +36,7 @@ public class Monster  extends Unit{
   }
 
   public boolean beAttacked(int attack) {
-    if (this.health >= attack) {
+    if (this.health > attack) {
       this.health -= attack;
     } else {
       this.health = 0;

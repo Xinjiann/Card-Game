@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import akka.actor.ActorRef;
 import commands.BasicCommands;
 import java.util.ArrayList;
+import java.util.HashSet;
 import structures.GameState;
 import structures.basic.Monster;
 import structures.basic.Position;
@@ -71,7 +72,7 @@ public class TileClicked implements EventProcessor {
     ArrayList<Tile> movableTiles = gameState.getGameBoard()
         .movableTiles(x, y, monster.getMovesLeft());
     ArrayList<Tile> attachableTiles = gameState.getGameBoard()
-        .attachableTiles(x, y, monster.getMovesLeft());
+        .attachableTiles(x, y, monster.getMovesLeft(), monster.getAttackDistance());
     movableTiles.addAll(attachableTiles);
     if (movableTiles.isEmpty() || monster.isFrozen()) {
       BasicCommands.addPlayer1Notification(out,
@@ -119,7 +120,7 @@ public class TileClicked implements EventProcessor {
     movableTiles = gameState.getGameBoard()
         .movableTiles(previous_x, previous_y, previousMonster.getMovesLeft());
     attachableTiles = gameState.getGameBoard()
-        .attachableTiles(previous_x, previous_y, previousMonster.getMovesLeft());
+        .attachableTiles(previous_x, previous_y, previousMonster.getMovesLeft(), previousMonster.getAttackDistance());
     movableTiles.addAll(attachableTiles);
 
     if ((!movableTiles.isEmpty())) {
@@ -168,14 +169,14 @@ public class TileClicked implements EventProcessor {
     if (Math.abs(previousTile.getTilex()-clickedTile.getTilex()) <= previousMonster.getAttackDistance() && Math.abs(previousTile.getTiley()-clickedTile.getTiley()) <= previousMonster.getAttackDistance()) {
       attack(previousMonster, clickedMonster, gameState, out, previousTile, clickedTile);
     } else {
-      moveAndAttack();
+      moveAndAttack(previousMonster, clickedMonster, gameState, out, previousTile, clickedTile);
     }
     gameState.setUnitSelected(null);
   }
 
   private void attack(Monster attacker, Monster defender, GameState gameState, ActorRef out, Tile previousTile, Tile clickedTile) {
     // remove all highlight
-    nonSpellHighlight(out, gameState, previousTile.getUnitOnTile().getPosition());
+    nonSpellHighlight(out, gameState, attacker.getPosition());
     // check coolDown
     if (attacker.isFrozen()) {
       BasicCommands.addPlayer1Notification(out, "you can not attack in this turn", 2);
@@ -186,7 +187,6 @@ public class TileClicked implements EventProcessor {
     boolean survived = defender.beAttacked(attacker.getAttack());
     // play animation
     BasicCommands.playUnitAnimation(out,attacker,UnitAnimationType.attack);
-
     // update front end
     BasicCommands.setUnitHealth(out, defender, defender.getHealth());
 
@@ -197,6 +197,8 @@ public class TileClicked implements EventProcessor {
       BasicCommands.deleteUnit(out, defender);
 
       clickedTile.rmUnitOnTile();
+      // re-idle
+      BasicCommands.playUnitAnimation(out,attacker,UnitAnimationType.idle);
     } else {
       // counter-attack
       if (Math.abs(previousTile.getTilex()-clickedTile.getTilex()) > defender.getAttackDistance() && Math.abs(previousTile.getTiley()-clickedTile.getTiley()) > defender.getAttackDistance()) {
@@ -207,7 +209,8 @@ public class TileClicked implements EventProcessor {
       BasicCommands.playUnitAnimation(out,defender,UnitAnimationType.attack);
       // update front end
       BasicCommands.setUnitHealth(out, attacker, attacker.getHealth());
-      CommonUtils.longlongSleep(2800);
+      CommonUtils.longlongSleep(2700);
+
       //if die from counter-attack
       if (!survived) {
         BasicCommands.playUnitAnimation(out, attacker, UnitAnimationType.death);
@@ -225,7 +228,23 @@ public class TileClicked implements EventProcessor {
     }
   }
 
-  private void moveAndAttack() {
+  private void moveAndAttack(Monster previousMonster, Monster clickedMonster,
+      GameState gameState, ActorRef out, Tile previousTile, Tile clickedTile) {
+
+    ArrayList<Tile> movableTiles = gameState.gameBoard.movableTiles(previousTile.getTilex(), previousTile.getTiley() , previousMonster.getMovesLeft());
+    Tile tileToGo = null;
+    for (Tile tile : movableTiles) {
+      HashSet<Tile> attachableTiles = gameState.gameBoard.hasMovedAttachableTiles(tile.getTilex(), tile.getTiley(), gameState.getTurnOwner(), previousMonster.getAttackDistance());
+      if (attachableTiles.contains(clickedTile)) {
+        tileToGo = tile;
+        break;
+      }
+    }
+    if (tileToGo != null) {
+      moveClick(previousMonster, gameState, out, tileToGo);
+      CommonUtils.longlongSleep(2000);
+      attack(previousMonster, clickedMonster, gameState, out, tileToGo, clickedTile);
+    }
   }
 
   private void friendClick(Monster previousMonster, Monster clickedMonster, GameState gameState,
@@ -252,7 +271,7 @@ public class TileClicked implements EventProcessor {
     ArrayList<Tile> movableTiles = gameState.getGameBoard()
         .movableTiles(previous_x, previous_y, monster.getMovesLeft());
     ArrayList<Tile> attachableTiles = gameState.getGameBoard()
-        .attachableTiles(previous_x, previous_y, monster.getMovesLeft());
+        .attachableTiles(previous_x, previous_y, monster.getMovesLeft(), monster.getAttackDistance());
     movableTiles.addAll(attachableTiles);
     for (Tile t : movableTiles) {
       BasicCommands.drawTile(out, t, 0);

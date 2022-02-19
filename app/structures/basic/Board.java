@@ -51,12 +51,12 @@ public class Board {
     return movableTiles;
   }
 
-  public ArrayList<Tile> attachableTiles(int x, int y, int movesLeft) {
+  public ArrayList<Tile> attachableTiles(int x, int y, int movesLeft, int attackDistance) {
     Player player = this.getTile(x, y).getUnitOnTile().getOwner();
     ArrayList<Tile> reachableList;
     HashSet <Tile> attachableSet = new HashSet<Tile>();
     if (movesLeft == 0) {
-      return new ArrayList<>(this.hasMovedAttachableTiles(x, y, player));
+      return new ArrayList<>(this.hasMovedAttachableTiles(x, y, player, attackDistance));
     }
     reachableList = this.movableTiles(x, y, movesLeft);
     for (Tile t : reachableList) {
@@ -67,16 +67,16 @@ public class Board {
     reachableList.removeIf(t -> (t.getUnitOnTile() != null));
 
     for(Tile t : reachableList) {
-      HashSet <Tile> attRange = hasMovedAttachableTiles(t.getTilex(), t.getTiley(), player);
+      HashSet <Tile> attRange = hasMovedAttachableTiles(t.getTilex(), t.getTiley(), player, attackDistance);
       attachableSet.addAll(attRange);
     }
     return new ArrayList<>(attachableSet);
   }
 
-  public HashSet<Tile> hasMovedAttachableTiles(int x, int y, Player player) {
+  public HashSet<Tile> hasMovedAttachableTiles(int x, int y, Player player, int attackDistance) {
     HashSet<Tile> tileList = new HashSet<Tile>();
-    for (int i = x - 1; i <= (x + 1); i++) {
-      for (int j = y - 1; j <= (y + 1); j++) {
+    for (int i = x - attackDistance; i <= (x + attackDistance); i++) {
+      for (int j = y - attackDistance; j <= (y + attackDistance); j++) {
         // Check limit
         if ( (i <= (this.X - 1) && i >= 0) && (j <= (this.Y - 1) && j >= 0)) {
           if(this.getTile(i, j).getUnitOnTile() != null && this.getTile(i, j).getUnitOnTile().getOwner() != player) {
