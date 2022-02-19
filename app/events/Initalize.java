@@ -58,22 +58,23 @@ public class Initalize implements EventProcessor {
     // test
     Card cFireSpitter = BasicObjectBuilders.loadCard(StaticConfFiles.c_fire_spitter, 3, Card.class);
     Card cBlazeHound = BasicObjectBuilders.loadCard(StaticConfFiles.c_blaze_hound, 4, Card.class);
-    Monster unit1 = BasicObjectBuilders.loadMonsterUnit(StaticConfFiles.u_comodo_charger, cFireSpitter, gameState.getHumanPlayer(), Monster.class);
-    Monster unit2 = BasicObjectBuilders.loadMonsterUnit(StaticConfFiles.u_azure_herald, cBlazeHound, gameState.getAiPlayer(), Monster.class);
+    Monster unit1 = BasicObjectBuilders.loadMonsterUnit(StaticConfFiles.u_comodo_charger, cFireSpitter, gameState.getAiPlayer(), Monster.class);
+    unit1.setHealth(4);
+    Monster unit2 = BasicObjectBuilders.loadMonsterUnit(StaticConfFiles.u_azure_herald, cBlazeHound, gameState.getHumanPlayer(), Monster.class);
     Tile tile3 = gameState.getGameBoard().getTile(3, 0);
     Tile tile4 = gameState.getGameBoard().getTile(2, 1);
     unit1.setPositionByTile(tile3);
     unit1.setPositionByTile(tile4);
     tile3.setUnitOnTile(unit1);
-    tile4.setUnitOnTile(unit2);
+//    tile4.setUnitOnTile(unit2);
     BasicCommands.drawUnit(out, unit1, tile3);
-    BasicCommands.drawUnit(out, unit2, tile4);
+//    BasicCommands.drawUnit(out, unit2, tile4);
     CommonUtils.sleep();
     BasicCommands.setUnitAttack(out, unit1, unit1.getAttack());
-    BasicCommands.setUnitAttack(out, unit2, unit2.getAttack());
+//    BasicCommands.setUnitAttack(out, unit2, unit2.getAttack());
     CommonUtils.sleep();
     BasicCommands.setUnitHealth(out, unit1, unit1.getHealth());
-    BasicCommands.setUnitHealth(out, unit2, unit2.getHealth());
+//    BasicCommands.setUnitHealth(out, unit2, unit2.getHealth());
 
 
     //aiAvatar

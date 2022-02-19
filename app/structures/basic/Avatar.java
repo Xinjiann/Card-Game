@@ -6,8 +6,6 @@ public class Avatar extends Monster{
     super();
     this.health = 20;
     this.attack = 2;
-    this.movesLeft = 2;
-    this.frozen = false;
   }
 
 }
