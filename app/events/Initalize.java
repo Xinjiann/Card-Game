@@ -68,6 +68,12 @@ public class Initalize implements EventProcessor {
     tile4.setUnitOnTile(unit2);
     BasicCommands.drawUnit(out, unit1, tile3);
     BasicCommands.drawUnit(out, unit2, tile4);
+    CommonUtils.sleep();
+    BasicCommands.setUnitAttack(out, unit1, unit1.getAttack());
+    BasicCommands.setUnitAttack(out, unit2, unit2.getAttack());
+    CommonUtils.sleep();
+    BasicCommands.setUnitHealth(out, unit1, unit1.getHealth());
+    BasicCommands.setUnitHealth(out, unit2, unit2.getHealth());
 
 
     //aiAvatar

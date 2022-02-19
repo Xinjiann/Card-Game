@@ -8,6 +8,7 @@ import commands.BasicCommands;
 import java.util.ArrayList;
 import structures.GameState;
 import structures.basic.Monster;
+import structures.basic.Position;
 import structures.basic.Tile;
 import structures.basic.UnitAnimationType;
 import utils.CommonUtils;
@@ -72,7 +73,7 @@ public class TileClicked implements EventProcessor {
     ArrayList<Tile> attachableTiles = gameState.getGameBoard()
         .attachableTiles(x, y, monster.getMovesLeft());
     movableTiles.addAll(attachableTiles);
-    if (movableTiles.isEmpty()) {
+    if (movableTiles.isEmpty() || monster.isFrozen()) {
       BasicCommands.addPlayer1Notification(out,
           "No more actions allowed for this unit in this turn", 2);
     }
@@ -144,7 +145,87 @@ public class TileClicked implements EventProcessor {
     }
   }
 
-  private void enemyClick(Monster monster, GameState gameState, ActorRef out, Tile clickedTile) {
+  private void nonSpellHighlight(ActorRef out, GameState gameState, Position position){
+    int x_max = gameState.gameBoard.getGameBoard()[0].length;
+    int y_max = gameState.gameBoard.getGameBoard().length;
+    for (int i=position.getTilex()-2; i< position.getTilex()+3; i++) {
+      for (int j = position.getTiley() - 2; j < position.getTiley() + 3; j++) {
+        // make sure the tile is on the board
+        if (i >= 0 && i<x_max && j >= 0 && j<y_max) {
+
+          BasicCommands.drawTile(out, gameState.gameBoard.getGameBoard()[j][i], 0);
+
+        }
+
+      }
+    }
+  }
+
+  private void enemyClick(Monster clickedMonster, GameState gameState, ActorRef out, Tile clickedTile) {
+    Monster previousMonster = gameState.getUnitSelected();
+    Tile previousTile = gameState.gameBoard.getTile(previousMonster.getPosition().getTilex(), previousMonster.getPosition().getTiley());
+
+    if (Math.abs(previousTile.getTilex()-clickedTile.getTilex()) <= previousMonster.getAttackDistance() && Math.abs(previousTile.getTiley()-clickedTile.getTiley()) <= previousMonster.getAttackDistance()) {
+      attack(previousMonster, clickedMonster, gameState, out, previousTile, clickedTile);
+    } else {
+      moveAndAttack();
+    }
+    gameState.setUnitSelected(null);
+  }
+
+  private void attack(Monster attacker, Monster defender, GameState gameState, ActorRef out, Tile previousTile, Tile clickedTile) {
+    // remove all highlight
+    nonSpellHighlight(out, gameState, previousTile.getUnitOnTile().getPosition());
+    // check coolDown
+    if (attacker.isFrozen()) {
+      BasicCommands.addPlayer1Notification(out, "you can not attack in this turn", 2);
+      return;
+    }
+    // reduce attacker attack count
+    attacker.attack();
+    boolean survived = defender.beAttacked(attacker.getAttack());
+    // play animation
+    BasicCommands.playUnitAnimation(out,attacker,UnitAnimationType.attack);
+
+    // update front end
+    BasicCommands.setUnitHealth(out, defender, defender.getHealth());
+
+    if(!survived) {
+      // unit dead
+      BasicCommands.playUnitAnimation(out, defender, UnitAnimationType.death);
+      CommonUtils.longlongSleep(1500);// time to play animation
+      BasicCommands.deleteUnit(out, defender);
+
+      clickedTile.rmUnitOnTile();
+    } else {
+      // counter-attack
+      if (Math.abs(previousTile.getTilex()-clickedTile.getTilex()) > defender.getAttackDistance() && Math.abs(previousTile.getTiley()-clickedTile.getTiley()) > defender.getAttackDistance()) {
+        return;
+      }
+      survived = attacker.beAttacked(defender.getAttack());
+      // play animation
+      BasicCommands.playUnitAnimation(out,defender,UnitAnimationType.attack);
+      // update front end
+      BasicCommands.setUnitHealth(out, attacker, attacker.getHealth());
+      CommonUtils.longlongSleep(2800);
+      //if die from counter-attack
+      if (!survived) {
+        BasicCommands.playUnitAnimation(out, attacker, UnitAnimationType.death);
+        CommonUtils.longlongSleep(1500);// time to play animation
+        BasicCommands.deleteUnit(out, attacker);
+
+        previousTile.rmUnitOnTile();
+        gameState.setUnitSelected(null);
+
+      } else {
+        BasicCommands.playUnitAnimation(out,attacker,UnitAnimationType.idle);
+      }
+      BasicCommands.playUnitAnimation(out,defender,UnitAnimationType.idle);
+
+    }
+  }
+
+  private void moveAndAttack() {
   }
 
   private void friendClick(Monster previousMonster, Monster clickedMonster, GameState gameState,

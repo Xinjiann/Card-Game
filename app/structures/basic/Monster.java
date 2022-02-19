@@ -12,14 +12,19 @@ public class Monster  extends Unit{
 
   int attack;
   int health;
+  int maxHealth;
   Player owner;
   ArrayList<Ability> abilities;
   int movesLeft;
+  int attackDistance;
+  int attackCount;
   boolean frozen;
   boolean isAlive;
 
   public Monster() {
     super();
+    this.attackDistance = 1;
+    this.attackCount = 1;
     this.movesLeft = 2;
     this.abilities = null;
     this.frozen = false;
@@ -30,12 +35,21 @@ public class Monster  extends Unit{
     super(id, animations, correction);
   }
 
-  public void beAttacked(int attack) {
+  public boolean beAttacked(int attack) {
     if (this.health >= attack) {
       this.health -= attack;
     } else {
       this.health = 0;
       this.isAlive = false;
+    }
+    return this.isAlive;
+  }
+
+  public void attack() {
+    this.attackCount -= 1;
+    if (this.attackCount == 0) {
+      this.frozen = true;
+      this.movesLeft = 0;
     }
   }
 
@@ -95,5 +109,29 @@ public class Monster  extends Unit{
 
   public void setAlive(boolean alive) {
     isAlive = alive;
+  }
+
+  public int getAttackDistance() {
+    return attackDistance;
+  }
+
+  public void setAttackDistance(int attackDistance) {
+    this.attackDistance = attackDistance;
+  }
+
+  public int getMaxHealth() {
+    return maxHealth;
+  }
+
+  public void setMaxHealth(int maxHealth) {
+    this.maxHealth = maxHealth;
+  }
+
+  public int getAttackCount() {
+    return attackCount;
+  }
+
+  public void setAttackCount(int attackCount) {
+    this.attackCount = attackCount;
   }
 }
