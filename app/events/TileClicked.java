@@ -209,7 +209,7 @@ public class TileClicked implements EventProcessor {
       BasicCommands.playUnitAnimation(out,defender,UnitAnimationType.attack);
       // update front end
       BasicCommands.setUnitHealth(out, attacker, attacker.getHealth());
-      CommonUtils.longlongSleep(2700);
+      CommonUtils.longlongSleep(2500);
 
       //if die from counter-attack
       if (!survived) {
@@ -242,7 +242,7 @@ public class TileClicked implements EventProcessor {
     }
     if (tileToGo != null) {
       moveClick(previousMonster, gameState, out, tileToGo);
-      CommonUtils.longlongSleep(2000);
+      CommonUtils.longlongSleep(2200);
       attack(previousMonster, clickedMonster, gameState, out, tileToGo, clickedTile);
     }
   }
@@ -252,7 +252,7 @@ public class TileClicked implements EventProcessor {
     Tile previousTile = gameState.gameBoard.getTile(previousMonster.getPosition().getTilex(),
         previousMonster.getPosition().getTiley());
     // first remove all the highlight tiles
-    rmAllActionTiles(previousMonster, gameState, out);
+    CommonUtils.rmMonsterHighlightTiles(previousMonster, gameState, out);
     if (previousTile == clickedTile) {
       // remove selected unit
       gameState.setUnitSelected(null);
@@ -265,17 +265,17 @@ public class TileClicked implements EventProcessor {
     }
   }
 
-  private void rmAllActionTiles(Monster monster, GameState gameState, ActorRef out) {
-    int previous_x = monster.getPosition().getTilex();
-    int previous_y = monster.getPosition().getTiley();
-    ArrayList<Tile> movableTiles = gameState.getGameBoard()
-        .movableTiles(previous_x, previous_y, monster.getMovesLeft());
-    ArrayList<Tile> attachableTiles = gameState.getGameBoard()
-        .attachableTiles(previous_x, previous_y, monster.getMovesLeft(), monster.getAttackDistance());
-    movableTiles.addAll(attachableTiles);
-    for (Tile t : movableTiles) {
-      BasicCommands.drawTile(out, t, 0);
-    }
-  }
+//  private void rmAllActionTiles(Monster monster, GameState gameState, ActorRef out) {
+//    int previous_x = monster.getPosition().getTilex();
+//    int previous_y = monster.getPosition().getTiley();
+//    ArrayList<Tile> movableTiles = gameState.getGameBoard()
+//        .movableTiles(previous_x, previous_y, monster.getMovesLeft());
+//    ArrayList<Tile> attachableTiles = gameState.getGameBoard()
+//        .attachableTiles(previous_x, previous_y, monster.getMovesLeft(), monster.getAttackDistance());
+//    movableTiles.addAll(attachableTiles);
+//    for (Tile t : movableTiles) {
+//      BasicCommands.drawTile(out, t, 0);
+//    }
+//  }
 
 }
