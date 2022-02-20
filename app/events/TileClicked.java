@@ -265,17 +265,4 @@ public class TileClicked implements EventProcessor {
     }
   }
 
-//  private void rmAllActionTiles(Monster monster, GameState gameState, ActorRef out) {
-//    int previous_x = monster.getPosition().getTilex();
-//    int previous_y = monster.getPosition().getTiley();
-//    ArrayList<Tile> movableTiles = gameState.getGameBoard()
-//        .movableTiles(previous_x, previous_y, monster.getMovesLeft());
-//    ArrayList<Tile> attachableTiles = gameState.getGameBoard()
-//        .attachableTiles(previous_x, previous_y, monster.getMovesLeft(), monster.getAttackDistance());
-//    movableTiles.addAll(attachableTiles);
-//    for (Tile t : movableTiles) {
-//      BasicCommands.drawTile(out, t, 0);
-//    }
-//  }
-
 }
