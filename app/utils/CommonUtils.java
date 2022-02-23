@@ -4,6 +4,7 @@ import akka.actor.ActorRef;
 import commands.BasicCommands;
 import java.util.ArrayList;
 import structures.GameState;
+import structures.basic.Board;
 import structures.basic.Monster;
 import structures.basic.Tile;
 
@@ -34,6 +35,18 @@ public class CommonUtils {
           BasicCommands.drawTile(out, tile, 0);
           CommonUtils.tinySleep();
         }
+      }
+    }
+  }
+
+  public static void rmAllHighlight(GameState gameState, ActorRef out) {
+    Board board = gameState.gameBoard;
+    int x = board.getGameBoard().length;
+    int y = board.getGameBoard()[0].length;
+    for (int i=0; i<x; i++) {
+      for (int j=0; j<y; j++) {
+        Tile tile = board.getGameBoard()[i][j];
+        BasicCommands.drawTile(out, tile, 0);
       }
     }
   }

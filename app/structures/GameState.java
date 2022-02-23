@@ -36,6 +36,7 @@ public class GameState {
 	private Monster unitSelected;
 	private Card cardSelected;
 	private Player turnOwner;
+	private int cardPos;
 
 	public GameState() {
 		gameBoard = new Board();
@@ -46,6 +47,7 @@ public class GameState {
 		humanPlayer = new Player(20, 2);
 		// human hand
 		humanPlayer.setDeck(humanDeck);
+		humanDeck.shuffleDeck();
 		Hand humanHand = new Hand();
 		humanPlayer.setHand(humanHand);
 		humanHand.initialHand(humanDeck);
@@ -56,6 +58,7 @@ public class GameState {
 		aiPlayer = new Player(20, 2);
 		// ai hand
 		aiPlayer.setDeck(aiDeck);
+		aiDeck.shuffleDeck();
 		Hand aiHand = new Hand();
 		aiPlayer.setHand(aiHand);
 		aiHand.initialHand(aiDeck);
@@ -66,8 +69,11 @@ public class GameState {
 		aiAvatar = BasicObjectBuilders.loadAvatar(StaticConfFiles.aiAvatar, 1, aiPlayer, Avatar.class);
 		aiAvatar.setAttack(2);
 		aiAvatar.setHealth(20);
-
 		turnOwner = humanPlayer;
+	}
+
+	public void setCardPos(int handPosition) {
+		this.cardPos = handPosition;
 	}
 
 	public Board getGameBoard() {
@@ -132,5 +138,9 @@ public class GameState {
 
 	public void setTurnOwner(Player turnOwner) {
 		this.turnOwner = turnOwner;
+	}
+
+	public int getCardPos() {
+		return cardPos;
 	}
 }

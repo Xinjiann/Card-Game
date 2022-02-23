@@ -47,8 +47,14 @@ public class CardClicked implements EventProcessor{
 				//TODO
 			}else{
 				//unit type card
-				nonSpellHighlight(out, gameState, pos);
-				gameState.setCardSelected(clickedCard);
+				if (clickedCard.getManacost() <= gameState.getTurnOwner().getMana()) {
+					nonSpellHighlight(out, gameState, pos);
+					gameState.setCardSelected(clickedCard);
+					gameState.setCardPos(handPosition);
+				} else {
+					BasicCommands.addPlayer1Notification(out, "Mana not sufficient", 2);
+				}
+
 			}
 
 		}

@@ -8,10 +8,12 @@ import commands.BasicCommands;
 import java.util.ArrayList;
 import java.util.HashSet;
 import structures.GameState;
+import structures.basic.Card;
 import structures.basic.Monster;
 import structures.basic.Position;
 import structures.basic.Tile;
 import structures.basic.UnitAnimationType;
+import utils.BasicObjectBuilders;
 import utils.CommonUtils;
 
 /**
@@ -37,7 +39,7 @@ public class TileClicked implements EventProcessor {
     if (gameState.getUnitSelected() != null) {
       afterUnitSelectedClick(monster, gameState, out, clickedTile);
     } else if (gameState.getCardSelected() != null) {
-      afterCardSelectedClick(monster, gameState, out);
+      afterCardSelectedClick(clickedTile, gameState, out);
     } else {
       // nothing selected before
       afterNothingClick(monster, gameState, out);
@@ -87,7 +89,44 @@ public class TileClicked implements EventProcessor {
     }
   }
 
-  private void afterCardSelectedClick(Monster clickedTile, GameState gameState, ActorRef out) {
+  private void afterCardSelectedClick(Tile clickedTile, GameState gameState, ActorRef out) {
+    Card selectedCard = gameState.getCardSelected();
+    int manaCost = selectedCard.getManacost();
+
+    if (selectedCard.getType().equals("spell")) {
+      playSpell(gameState, out, clickedTile, selectedCard, manaCost);
+    }
+
+    if (selectedCard.getType().equals("unit")) {
+      summonUnit(gameState, out, clickedTile, selectedCard, manaCost);
+    }
+
+  }
+
+  private void playSpell(GameState gameState, ActorRef out, Tile clickedTile, Card selectedCard, int manaCost) {
+  }
+
+  private void summonUnit(GameState gameState, ActorRef out, Tile clickedTile, Card selectedCard, int manaCost) {
+    // mana cost
+    gameState.getTurnOwner().setMana(gameState.getTurnOwner().getMana()-manaCost);
+    BasicCommands.setPlayer1Mana(out, gameState.getTurnOwner());
+
+    Monster monster = BasicObjectBuilders.loadMonsterUnit(selectedCard.getUnitConfigFiles(), selectedCard, gameState.getTurnOwner(), Monster.class);
+    monster.setPositionByTile(clickedTile);
+    clickedTile.setUnitOnTile(monster);
+
+    // remove all highlight tiles
+    CommonUtils.rmAllHighlight(gameState, out);
+    // summon unit
+    BasicCommands.drawUnit(out, monster, clickedTile);
+    // remove hand cards
+    gameState.getTurnOwner().getHand().getHandList().remove(selectedCard);
+    BasicCommands.deleteCard(out, gameState.getCardPos());
+    CommonUtils.sleep();
+    BasicCommands.setUnitAttack(out, monster, monster.getAttack());
+    CommonUtils.sleep();
+    BasicCommands.setUnitHealth(out, monster, monster.getHealth());
+    gameState.setCardSelected(null);
   }
 
   private void afterUnitSelectedClick(Monster monster, GameState gameState, ActorRef out,
@@ -185,10 +224,11 @@ public class TileClicked implements EventProcessor {
     // reduce attacker attack count
     attacker.attack();
     boolean survived = defender.beAttacked(attacker.getAttack());
-    // play animation
-    BasicCommands.playUnitAnimation(out,attacker,UnitAnimationType.attack);
     // update front end
     BasicCommands.setUnitHealth(out, defender, defender.getHealth());
+    // play animation
+    BasicCommands.playUnitAnimation(out,attacker,UnitAnimationType.attack);
+
 
     if(!survived) {
       // unit dead

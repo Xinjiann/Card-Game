@@ -43,10 +43,25 @@ public class BasicObjectBuilders {
 		try {
 			Card card = mapper.readValue(new File(configurationFile), classtype);
 			card.setId(id);
+			card.setType("spell");
 			return card;
 		} catch (Exception e) {
 			e.printStackTrace();
 			
+		}
+		return null;
+	}
+
+	public static Card loadCard(String configurationFile, String unitConfigFile, int id, Class<? extends Card> classtype) {
+		try {
+			Card card = mapper.readValue(new File(configurationFile), classtype);
+			card.setId(id);
+			card.setUnitConfigFiles(unitConfigFile);
+			card.setType("unit");
+			return card;
+		} catch (Exception e) {
+			e.printStackTrace();
+
 		}
 		return null;
 	}

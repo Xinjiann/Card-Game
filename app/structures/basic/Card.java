@@ -19,9 +19,10 @@ public class Card {
 	
 	String cardname;
 	int manacost;
-	
 	MiniCard miniCard;
 	BigCard bigCard;
+	String unitConfigFiles;
+	String type;
 
 	private ArrayList<Ability> abilityList;
 	
@@ -74,5 +75,21 @@ public class Card {
 
 	public void setAbilityList(ArrayList<Ability> abilityList) {
 		this.abilityList = abilityList;
+	}
+
+	public String getUnitConfigFiles() {
+		return unitConfigFiles;
+	}
+
+	public void setUnitConfigFiles(String unitConfigFiles) {
+		this.unitConfigFiles = unitConfigFiles;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }
