@@ -7,8 +7,7 @@ import akka.actor.ActorRef;
 import commands.BasicCommands;
 import structures.GameState;
 import structures.basic.*;
-import utils.BasicObjectBuilders;
-import utils.StaticConfFiles;
+import utils.CommonUtils;
 
 /**
  * Indicates that the user has clicked an object on the game canvas, in this case a card.
@@ -35,63 +34,31 @@ public class CardClicked implements EventProcessor{
 
 		//firstly remove the highlight on the board
 		if(preClickedCard == clickedCard){
-			removeHighlight(out, gameState);
+			CommonUtils.rmSummonHighlight(out, gameState.gameBoard.getSummonArea());
 			gameState.setCardSelected(null);
 		}
 		//first justify the card type(attack or assist), then determine the highlight area
 		else {
-			Avatar humanAvator = gameState.getHumanAvatar();
-			Position pos = humanAvator.getPosition();
-			if(clickedCard.getId() == 8 || clickedCard.getId() == 9){
-				//spell card type, complete later
-				//TODO
-			}else{
-				//unit type card
-				if (clickedCard.getManacost() <= gameState.getTurnOwner().getMana()) {
-					nonSpellHighlight(out, gameState, pos);
+			// check mana
+			if (clickedCard.getManacost() <= gameState.getTurnOwner().getMana()) {
+				Avatar humanAvatar = gameState.getHumanAvatar();
+				Position pos = humanAvatar.getPosition();
+				if(clickedCard.getId() == 8 || clickedCard.getId() == 9){
+					//spell card type, complete later
+					//TODO
+				}else{
+					//unit type card
+					gameState.getGameBoard().setSummonArea(out, gameState, pos);
+					CommonUtils.summonHighlight(out, gameState.gameBoard.getSummonArea());
 					gameState.setCardSelected(clickedCard);
 					gameState.setCardPos(handPosition);
-				} else {
-					BasicCommands.addPlayer1Notification(out, "Mana not sufficient", 2);
 				}
-
+			} else {
+				BasicCommands.addPlayer1Notification(out, "Mana not sufficient", 2);
 			}
-
 		}
 		
 	}
 
-
-
-	private void removeHighlight(ActorRef out, GameState gameState) {
-
-		Board board = gameState.gameBoard;
-		int x = board.getGameBoard().length;
-		int y = board.getGameBoard()[0].length;
-		for (int i=0; i<x; i++) {
-			for (int j=0; j<y; j++) {
-				Tile tile = board.getGameBoard()[i][j];
-				BasicCommands.drawTile(out, tile, 0);
-			}
-		}
-
-	}
-
-	private void nonSpellHighlight(ActorRef out, GameState gameState,Position position){
-		int x_max = gameState.gameBoard.getGameBoard()[0].length;
-		int y_max = gameState.gameBoard.getGameBoard().length;
-		for (int i=position.getTilex()-1; i< position.getTilex()+2; i++) {
-			for (int j = position.getTiley() - 1; j < position.getTiley() + 2; j++) {
-				// make sure the tile is on the board
-				if (i >= 0 && i<x_max && j >= 0 && j<y_max) {
-					Monster otherUnit = gameState.gameBoard.getGameBoard()[j][i].getUnitOnTile();
-					if (otherUnit==null) {
-						BasicCommands.drawTile(out, gameState.gameBoard.getGameBoard()[j][i], 1);
-					}
-				}
-
-			}
-		}
-	}
 
 }

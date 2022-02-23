@@ -51,6 +51,18 @@ public class CommonUtils {
     }
   }
 
+  public static void summonHighlight(ActorRef out, ArrayList<Tile> area) {
+    for (Tile tile : area) {
+      BasicCommands.drawTile(out, tile, 1);
+    }
+  }
+
+  public static void rmSummonHighlight(ActorRef out, ArrayList<Tile> area) {
+    for (Tile tile : area) {
+      BasicCommands.drawTile(out, tile, 0);
+    }
+  }
+
   public static void tinySleep() {
     try {Thread.sleep(10);} catch (InterruptedException e) {e.printStackTrace();}
   }

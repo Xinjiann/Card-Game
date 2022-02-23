@@ -92,21 +92,26 @@ public class TileClicked implements EventProcessor {
   private void afterCardSelectedClick(Tile clickedTile, GameState gameState, ActorRef out) {
     Card selectedCard = gameState.getCardSelected();
     int manaCost = selectedCard.getManacost();
-
     if (selectedCard.getType().equals("spell")) {
       playSpell(gameState, out, clickedTile, selectedCard, manaCost);
-    }
-
-    if (selectedCard.getType().equals("unit")) {
+    } else if (selectedCard.getType().equals("unit")) {
       summonUnit(gameState, out, clickedTile, selectedCard, manaCost);
+    } else {
+      BasicCommands.addPlayer1Notification(out, "card does not exist", 2);
+      CommonUtils.rmAllHighlight(gameState, out);
+      gameState.setCardSelected(null);
     }
-
   }
 
   private void playSpell(GameState gameState, ActorRef out, Tile clickedTile, Card selectedCard, int manaCost) {
   }
 
   private void summonUnit(GameState gameState, ActorRef out, Tile clickedTile, Card selectedCard, int manaCost) {
+    // check if clicked tile is allowed to put unit
+    if (!gameState.getGameBoard().getSummonArea().contains(clickedTile)) {
+      BasicCommands.addPlayer1Notification(out, "you can not summon unit at here", 2);
+      return;
+    }
     // mana cost
     gameState.getTurnOwner().setMana(gameState.getTurnOwner().getMana()-manaCost);
     BasicCommands.setPlayer1Mana(out, gameState.getTurnOwner());
@@ -119,10 +124,11 @@ public class TileClicked implements EventProcessor {
     CommonUtils.rmAllHighlight(gameState, out);
     // summon unit
     BasicCommands.drawUnit(out, monster, clickedTile);
-    // remove hand cards
+    // remove hand card
     gameState.getTurnOwner().getHand().getHandList().remove(selectedCard);
     BasicCommands.deleteCard(out, gameState.getCardPos());
     CommonUtils.sleep();
+    // update front end
     BasicCommands.setUnitAttack(out, monster, monster.getAttack());
     CommonUtils.sleep();
     BasicCommands.setUnitHealth(out, monster, monster.getHealth());

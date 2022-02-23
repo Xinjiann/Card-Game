@@ -1,7 +1,10 @@
 package structures.basic;
 
+import akka.actor.ActorRef;
+import commands.BasicCommands;
 import java.util.ArrayList;
 import java.util.HashSet;
+import structures.GameState;
 import utils.BasicObjectBuilders;
 
 public class Board {
@@ -9,6 +12,7 @@ public class Board {
   private Tile [][] gameBoard;
   private final int X;
   private final int Y;
+  private ArrayList<Tile> summonArea;
 
   public Board() {
     X = 9;
@@ -86,5 +90,31 @@ public class Board {
       }
     }
     return tileList;
+  }
+
+  public void setSummonArea(ActorRef out, GameState gameState,Position position) {
+    ArrayList<Tile> summonArea = new ArrayList<>();
+    int x_max = this.Y;
+    int y_max = this.X;
+    for (int i=position.getTilex()-1; i< position.getTilex()+2; i++) {
+      for (int j = position.getTiley() - 1; j < position.getTiley() + 2; j++) {
+        // make sure the tile is on the board
+        if (i >= 0 && i<x_max && j >= 0 && j<y_max) {
+          Monster otherUnit = this.gameBoard[j][i].getUnitOnTile();
+          if (otherUnit==null) {
+            summonArea.add(this.gameBoard[j][i]);
+          }
+        }
+      }
+    }
+    this.summonArea = summonArea;
+  }
+
+  public ArrayList<Tile> getSummonArea() {
+    return summonArea;
+  }
+
+  public void setSummonArea(ArrayList<Tile> summonArea) {
+    this.summonArea = summonArea;
   }
 }
