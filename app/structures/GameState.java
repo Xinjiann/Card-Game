@@ -1,6 +1,5 @@
 package structures;
 
-import org.checkerframework.checker.units.qual.A;
 import structures.basic.Avatar;
 import structures.basic.Board;
 import structures.basic.Card;
@@ -8,6 +7,7 @@ import structures.basic.Deck;
 import structures.basic.Hand;
 import structures.basic.Monster;
 import structures.basic.Player;
+import structures.basic.abilities.AbilityToCard;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
 
@@ -38,13 +38,16 @@ public class GameState {
 	public GameState() {
 		gameBoard = new Board();
 
+		// init abilities to cards
+		AbilityToCard.init();
+
 		// human deck
 		Deck humanDeck = new Deck();
 		humanDeck.humanDeck();
 		humanPlayer = new Player(20, 4);
 		// human hand
 		humanPlayer.setDeck(humanDeck);
-		humanDeck.shuffleDeck();
+//		humanDeck.shuffleDeck();
 		Hand humanHand = new Hand();
 		humanPlayer.setHand(humanHand);
 		humanHand.initialHand(humanDeck);

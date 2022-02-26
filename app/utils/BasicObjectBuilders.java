@@ -14,6 +14,7 @@ import structures.basic.Player;
 import structures.basic.Tile;
 import structures.basic.Unit;
 import structures.basic.abilities.Ability;
+import structures.basic.abilities.AbilityToCard;
 
 /**
  * This class contains methods for producing basic objects from configuration files
@@ -44,6 +45,9 @@ public class BasicObjectBuilders {
 			Card card = mapper.readValue(new File(configurationFile), classtype);
 			card.setId(id);
 			card.setType("spell");
+			if (AbilityToCard.abilityToCard.containsKey(card.getCardname())) {
+				card.setAbilityList(AbilityToCard.abilityToCard.get(card.getCardname()));
+			}
 			return card;
 		} catch (Exception e) {
 			e.printStackTrace();
