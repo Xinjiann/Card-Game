@@ -62,7 +62,7 @@ public class Initalize implements EventProcessor {
     unit1.setHealth(4);
     Monster unit2 = BasicObjectBuilders.loadMonsterUnit(StaticConfFiles.u_azure_herald, cBlazeHound, gameState.getHumanPlayer(), Monster.class);
     Tile tile3 = gameState.getGameBoard().getTile(3, 0);
-    Tile tile4 = gameState.getGameBoard().getTile(2, 1);
+    Tile tile4 = gameState.getGameBoard().getTile(4, 1);
     unit1.setPositionByTile(tile3);
     unit1.setPositionByTile(tile4);
     tile3.setUnitOnTile(unit1);

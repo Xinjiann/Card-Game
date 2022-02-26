@@ -7,23 +7,22 @@ import structures.basic.Monster;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
 
-public class Truestrike implements Ability{
+public class PlanarScout implements Ability{
 
   private EffectAnimation effectAnimation;
 
-  public Truestrike() {
+  public PlanarScout() {
 
     this.effectAnimation = BasicObjectBuilders.loadEffect(StaticConfFiles.f1_inmolation);
   }
 
   @Override
   public void execute(Monster monster, GameState gameState, ActorRef out) {
-    monster.setAttackCount(2);
+    monster.setMovesLeft(13);
   }
 
   @Override
   public EffectAnimation getEffectAnimation() {
-
     return this.effectAnimation;
   }
 }

@@ -44,7 +44,7 @@ public class GameState {
 		// human deck
 		Deck humanDeck = new Deck();
 		humanDeck.humanDeck();
-		humanPlayer = new Player(20, 2);
+		humanPlayer = new Player(20, 4);
 		// human hand
 		humanPlayer.setDeck(humanDeck);
 		humanDeck.shuffleDeck();
