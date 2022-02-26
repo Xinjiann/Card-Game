@@ -9,7 +9,7 @@ import structures.basic.Monster;
 import structures.basic.Tile;
 import structures.basic.UnitAnimationType;
 import structures.basic.abilities.Ability;
-import structures.basic.abilities.Truestrike;
+import structures.basic.abilities.Pyromancer;
 import utils.CommonUtils;
 
 /**
@@ -28,7 +28,7 @@ public class EndTurnClicked implements EventProcessor{
 	@Override
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
 
-		Ability ability = new Truestrike(); //开发完新ablity后修改此行以进行测试
+		Ability ability = new Pyromancer(); //开发完新ablity后修改此行以进行测试
 
 //		Ability ability = new SundropElixir();
 //		Ability ability = new StaffOfYkir();
@@ -40,7 +40,7 @@ public class EndTurnClicked implements EventProcessor{
 		if (selectedMonster != null) {
 			Tile selectedTile = gameState.getGameBoard().getTile(selectedMonster.getPosition().getTilex(), selectedMonster.getPosition().getTiley());
 			// execute ability
-			ability.execute(selectedMonster, gameState);
+			ability.execute(selectedMonster, gameState ,out);
 			// update front end
 			BasicCommands.playEffectAnimation(out, ability.getEffectAnimation(), selectedTile);
 			BasicCommands.setUnitHealth(out, selectedMonster, selectedMonster.getHealth());
