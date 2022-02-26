@@ -8,11 +8,8 @@ import structures.basic.Deck;
 import structures.basic.Hand;
 import structures.basic.Monster;
 import structures.basic.Player;
-import structures.basic.Unit;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
-
-import java.util.ArrayList;
 
 /**
  * This class can be used to hold information about the on-going game.

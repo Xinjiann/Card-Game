@@ -32,9 +32,11 @@ public class CardClicked implements EventProcessor{
 		Card clickedCard = gameState.getHumanPlayer().getHand().getHandList().get(handPosition);
 		Card preClickedCard = gameState.getCardSelected();
 
+		// set selected card
+		gameState.setCardSelected(clickedCard);
 		//firstly remove the highlight on the board
 		if(preClickedCard == clickedCard){
-			CommonUtils.rmSummonHighlight(out, gameState.gameBoard.getSummonArea());
+			CommonUtils.rmAllHighlight(gameState, out);
 			gameState.setCardSelected(null);
 		}
 		//first justify the card type(attack or assist), then determine the highlight area
@@ -43,14 +45,26 @@ public class CardClicked implements EventProcessor{
 			if (clickedCard.getManacost() <= gameState.getTurnOwner().getMana()) {
 				Avatar humanAvatar = gameState.getHumanAvatar();
 				Position pos = humanAvatar.getPosition();
-				if(clickedCard.getId() == 8 || clickedCard.getId() == 9){
+				if(clickedCard.getType().equals("spell")){
+					// remove all highlights
+					CommonUtils.rmAllHighlight(gameState, out);
+					CommonUtils.sleep();
 					//spell card type, complete later
-					//TODO
+					switch (clickedCard.getCardname()) {
+						case "Sundrop Elixir" -> gameState.gameBoard.setAllUnitTiles();
+						case "Truestrike" -> gameState.gameBoard.setAllEnemyTiles(gameState);
+						case "Staff of Y'Kir'" -> gameState.gameBoard.setAvatarArea(gameState);
+						case "Entropic Decay" -> gameState.gameBoard.setNoneAvatarUnitArea();
+					}
+					CommonUtils.listHighlight(out, gameState.gameBoard.getSpellArea());
 				}else{
 					//unit type card
-					gameState.getGameBoard().setSummonArea(out, gameState, pos);
-					CommonUtils.summonHighlight(out, gameState.gameBoard.getSummonArea());
-					gameState.setCardSelected(clickedCard);
+					// remove all highlights
+					CommonUtils.rmAllHighlight(gameState, out);
+					CommonUtils.sleep();
+					// highlight area
+					gameState.getGameBoard().setSummonArea(pos);
+					CommonUtils.listHighlight(out, gameState.gameBoard.getSummonArea());
 					gameState.setCardPos(handPosition);
 				}
 			} else {

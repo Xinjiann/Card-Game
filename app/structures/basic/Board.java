@@ -1,7 +1,5 @@
 package structures.basic;
 
-import akka.actor.ActorRef;
-import commands.BasicCommands;
 import java.util.ArrayList;
 import java.util.HashSet;
 import structures.GameState;
@@ -13,6 +11,7 @@ public class Board {
   private final int X;
   private final int Y;
   private ArrayList<Tile> summonArea;
+  private ArrayList<Tile> spellArea;
 
   public Board() {
     X = 9;
@@ -92,7 +91,7 @@ public class Board {
     return tileList;
   }
 
-  public void setSummonArea(ActorRef out, GameState gameState,Position position) {
+  public void setSummonArea(Position position) {
     ArrayList<Tile> summonArea = new ArrayList<>();
     int x_max = this.Y;
     int y_max = this.X;
@@ -114,7 +113,72 @@ public class Board {
     return summonArea;
   }
 
-  public void setSummonArea(ArrayList<Tile> summonArea) {
-    this.summonArea = summonArea;
+  public ArrayList<Tile> getSpellArea() {
+    return spellArea;
+  }
+
+
+  public void setAllUnitTiles() {
+    ArrayList<Tile> allUnitTiles = new ArrayList<>();
+    int x = gameBoard.length;
+    int y = gameBoard[0].length;
+    for (int i=0; i<x; i++) {
+      for (int j = 0; j < y; j++) {
+        Tile tile = gameBoard[i][j];
+        Monster monster = tile.getUnitOnTile();
+        if (monster != null) {
+          allUnitTiles.add(tile);
+        }
+      }
+    }
+    spellArea = allUnitTiles;
+  }
+
+  public void setAllEnemyTiles(GameState gameState) {
+    ArrayList<Tile> allEnemyTiles = new ArrayList<>();
+    int x = gameBoard.length;
+    int y = gameBoard[0].length;
+    for (int i=0; i<x; i++) {
+      for (int j = 0; j < y; j++) {
+        Tile tile = gameBoard[i][j];
+        Monster monster = tile.getUnitOnTile();
+        if (monster != null && monster.getOwner() != gameState.getTurnOwner()) {
+          allEnemyTiles.add(tile);
+        }
+      }
+    }
+    spellArea = allEnemyTiles;
+  }
+
+  public void setAvatarArea(GameState gameState) {
+    ArrayList<Tile> avatarTiles = new ArrayList<>();
+    int x = gameBoard.length;
+    int y = gameBoard[0].length;
+    for (int i=0; i<x; i++) {
+      for (int j = 0; j < y; j++) {
+        Tile tile = gameBoard[i][j];
+        Monster monster = tile.getUnitOnTile();
+        if (monster != null && monster.getClass() == Avatar.class && monster.getOwner() == gameState.getTurnOwner()) {
+          avatarTiles.add(tile);
+        }
+      }
+    }
+    spellArea = avatarTiles;
+  }
+
+  public void setNoneAvatarUnitArea() {
+    ArrayList<Tile> allUnitTiles = new ArrayList<>();
+    int x = gameBoard.length;
+    int y = gameBoard[0].length;
+    for (int i=0; i<x; i++) {
+      for (int j = 0; j < y; j++) {
+        Tile tile = gameBoard[i][j];
+        Monster monster = tile.getUnitOnTile();
+        if (monster != null && monster.getClass() != Avatar.class) {
+          allUnitTiles.add(tile);
+        }
+      }
+    }
+    spellArea = allUnitTiles;
   }
 }

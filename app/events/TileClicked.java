@@ -160,7 +160,7 @@ public class TileClicked implements EventProcessor {
     Tile previousTile = gameState.gameBoard.getTile(previous_x, previous_y);
 
     ArrayList<Tile> attachableTiles;
-    ArrayList<Tile> movableTiles = new ArrayList<Tile>();
+    ArrayList<Tile> movableTiles;
     // get all movable tiles
     movableTiles = gameState.getGameBoard()
         .movableTiles(previous_x, previous_y, previousMonster.getMovesLeft());
