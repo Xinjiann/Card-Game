@@ -32,14 +32,15 @@ public class Deck {
         StaticConfFiles.c_truestrike
     };
     String[] deck1Units = {
-        StaticConfFiles.u_comodo_charger,
-        StaticConfFiles.u_hailstone_golem,
         StaticConfFiles.u_azure_herald,
         StaticConfFiles.u_azurite_lion,
-        StaticConfFiles.u_pureblade_enforcer,
+        StaticConfFiles.u_comodo_charger,
+        StaticConfFiles.u_fire_spitter,
+        StaticConfFiles.u_hailstone_golem,
         StaticConfFiles.u_ironcliff_guardian,
+        StaticConfFiles.u_pureblade_enforcer,
         StaticConfFiles.u_silverguard_knight,
-        StaticConfFiles.u_fire_spitter
+
     };
     for (int i = 0; i<8; i++) {
       card = BasicObjectBuilders.loadCard(deck1Cards[i], deck1Units[i], i+2, Card.class); // 3 initial cards so index start from 2
@@ -62,24 +63,24 @@ public class Deck {
     String[] deck2Cards = {
         StaticConfFiles.c_blaze_hound,
         StaticConfFiles.c_bloodshard_golem,
-        StaticConfFiles.c_entropic_decay,
         StaticConfFiles.c_hailstone_golem,
         StaticConfFiles.c_planar_scout,
-        StaticConfFiles.c_pyromancer,
-        StaticConfFiles.c_serpenti,
-        StaticConfFiles.c_rock_pulveriser,
-        StaticConfFiles.c_staff_of_ykir,
         StaticConfFiles.c_windshrike,
+        StaticConfFiles.c_pyromancer,
+        StaticConfFiles.c_rock_pulveriser,
+        StaticConfFiles.c_serpenti,
+        StaticConfFiles.c_staff_of_ykir,
+        StaticConfFiles.c_entropic_decay,
     };
     String[] deck2Units = {
         StaticConfFiles.u_blaze_hound,
         StaticConfFiles.u_bloodshard_golem,
         StaticConfFiles.u_hailstone_golemR,
         StaticConfFiles.u_planar_scout,
+        StaticConfFiles.u_windshrike,
         StaticConfFiles.u_pyromancer,
         StaticConfFiles.u_rock_pulveriser,
         StaticConfFiles.u_serpenti,
-        StaticConfFiles.u_windshrike
     };
     for (int i = 0; i<8; i++) {
       card = BasicObjectBuilders.loadCard(deck2Cards[i], deck2Units[i], i+2+2*deck2Cards.length, Card.class); // 3 initial cards so index start from 2

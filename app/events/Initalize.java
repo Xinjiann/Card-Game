@@ -56,10 +56,11 @@ public class Initalize implements EventProcessor {
     BasicCommands.setUnitHealth(out, humanAvatar, humanAvatar.getHealth());
 
     // test
-    Card cFireSpitter = BasicObjectBuilders.loadCard(StaticConfFiles.c_fire_spitter, 3, Card.class);
-    Card cBlazeHound = BasicObjectBuilders.loadCard(StaticConfFiles.c_blaze_hound, 4, Card.class);
-    Monster unit1 = BasicObjectBuilders.loadMonsterUnit(StaticConfFiles.u_comodo_charger, cFireSpitter, gameState.getAiPlayer(), Monster.class);
+    Card card1 = BasicObjectBuilders.loadCard(StaticConfFiles.c_comodo_charger, StaticConfFiles.u_comodo_charger, 90, Card.class);
+    Card cBlazeHound = BasicObjectBuilders.loadCard(StaticConfFiles.c_blaze_hound, 91, Card.class);
+    Monster unit1 = BasicObjectBuilders.loadMonsterUnit(card1.getUnitConfigFiles(), card1, gameState.getAiPlayer(), Monster.class);
     unit1.setHealth(4);
+    unit1.setAttack(3);
     Monster unit2 = BasicObjectBuilders.loadMonsterUnit(StaticConfFiles.u_azure_herald, cBlazeHound, gameState.getHumanPlayer(), Monster.class);
     Tile tile3 = gameState.getGameBoard().getTile(3, 0);
     Tile tile4 = gameState.getGameBoard().getTile(4, 1);
