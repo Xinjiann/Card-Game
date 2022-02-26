@@ -24,16 +24,7 @@ public class OtherClicked implements EventProcessor{
 
 	@Override
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
-		Monster monster = gameState.getUnitSelected();
-		Card card = gameState.getCardSelected();
-		if (monster != null) {
-			CommonUtils.rmMonsterHighlightTiles(monster, gameState, out);
-			gameState.setUnitSelected(null);
-		}
-		if (card != null) {
-			CommonUtils.rmAdjTiles(gameState.getHumanAvatar(), gameState, out);
-			gameState.setCardSelected(null);
-		}
+		CommonUtils.rmAllHighlight(gameState, out);
 	}
 }
 

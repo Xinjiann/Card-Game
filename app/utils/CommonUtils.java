@@ -51,13 +51,13 @@ public class CommonUtils {
     }
   }
 
-  public static void summonHighlight(ActorRef out, ArrayList<Tile> area) {
+  public static void listHighlight(ActorRef out, ArrayList<Tile> area) {
     for (Tile tile : area) {
       BasicCommands.drawTile(out, tile, 1);
     }
   }
 
-  public static void rmSummonHighlight(ActorRef out, ArrayList<Tile> area) {
+  public static void rmListHighlight(ActorRef out, ArrayList<Tile> area) {
     for (Tile tile : area) {
       BasicCommands.drawTile(out, tile, 0);
     }
@@ -72,7 +72,7 @@ public class CommonUtils {
   }
 
   public static void longSleep() {
-
+    try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
   }
 
   public static void longlongSleep(int time) {
