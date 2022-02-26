@@ -13,6 +13,7 @@ import structures.basic.Monster;
 import structures.basic.Position;
 import structures.basic.Tile;
 import structures.basic.UnitAnimationType;
+import structures.basic.abilities.Ability;
 import utils.BasicObjectBuilders;
 import utils.CommonUtils;
 
@@ -104,6 +105,31 @@ public class TileClicked implements EventProcessor {
   }
 
   private void playSpell(GameState gameState, ActorRef out, Tile clickedTile, Card selectedCard, int manaCost) {
+    if (!gameState.gameBoard.getSpellArea().contains(clickedTile)) {
+      BasicCommands.addPlayer1Notification(out, "no target", 2);
+      return;
+    }
+    //remove highlight
+    CommonUtils.rmListHighlight(out, gameState.getGameBoard().getSpellArea());
+    Monster monster = clickedTile.getUnitOnTile();
+    // check ability
+    for (Ability ability : selectedCard.getAbilityList()) {
+      ability.execute(monster, gameState, out);
+      BasicCommands.playEffectAnimation(out, ability.getEffectAnimation(), clickedTile);
+    }
+    // unselect card
+    gameState.setCardSelected(null);
+    // update health
+    BasicCommands.setUnitHealth(out, monster, monster.getHealth());
+    CommonUtils.sleep();
+    BasicCommands.setUnitAttack(out, monster, monster.getAttack());
+    // unit dead
+    if (monster.getHealth() == 0) {
+      BasicCommands.playUnitAnimation(out, monster, UnitAnimationType.death);
+      CommonUtils.longlongSleep(1500);// time to play animation
+      BasicCommands.deleteUnit(out, monster);
+      clickedTile.rmUnitOnTile();
+    }
   }
 
   private void summonUnit(GameState gameState, ActorRef out, Tile clickedTile, Card selectedCard, int manaCost) {
