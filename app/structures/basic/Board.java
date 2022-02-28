@@ -181,4 +181,44 @@ public class Board {
     }
     spellArea = allUnitTiles;
   }
+
+  public ArrayList<Tile> getSummonableTiles(AiPlayer aiPlayer) {
+    ArrayList<Tile> summonableTiles = new ArrayList<>();
+    int x = gameBoard.length;
+    int y = gameBoard[0].length;
+    for (int i=0; i<x; i++) {
+      for (int j = 0; j < y; j++) {
+        Tile tile = gameBoard[i][j];
+        Monster monster = tile.getUnitOnTile();
+        if (monster != null && monster.getOwner() == aiPlayer) {
+          summonableTiles.addAll(this.getAdjTiles(tile));
+        }
+      }
+    }
+    return summonableTiles;
+  }
+
+  private ArrayList<Tile> getAdjTiles(Tile tile) {
+
+
+    ArrayList<Tile> list = new ArrayList<Tile>();
+    int xPos = tile.getTilex();
+    int yPos = tile.getTiley();
+
+
+    int x_max = this.Y;
+    int y_max = this.X;
+    for (int i=xPos-1; i< xPos+2; i++) {
+      for (int j = yPos - 1; j < yPos + 2; j++) {
+        // make sure the tile is on the board
+        if (i >= 0 && i<x_max && j >= 0 && j<y_max) {
+          Monster otherUnit = this.gameBoard[j][i].getUnitOnTile();
+          if (otherUnit==null) {
+            list.add(this.gameBoard[j][i]);
+          }
+        }
+      }
+    }
+    return list;
+  }
 }

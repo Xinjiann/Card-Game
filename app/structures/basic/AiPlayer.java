@@ -1,7 +1,7 @@
 package structures.basic;
 
-import java.util.ArrayList;
-import structures.basic.aiBasic.AiAction;
+import java.util.HashMap;
+import structures.GameState;
 import structures.basic.aiBasic.AiCards;
 
 public class AiPlayer extends Player{
@@ -14,8 +14,8 @@ public class AiPlayer extends Player{
     super(health, mana);
   }
 
-  public ArrayList<AiAction> getAction(Board gameBoard) {
+  public HashMap<Tile, Card> getCardAction(Board gameBoard, GameState gameState) {
     AiCards aiCards = new AiCards(this);
-    return aiCards.getCardsToPlay();
+    return aiCards.getCardsToPlay(gameBoard, gameState);
   }
 }
