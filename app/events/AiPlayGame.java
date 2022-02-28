@@ -1,13 +1,13 @@
 package events;
 
 import akka.actor.ActorRef;
-import java.util.ArrayList;
-import org.checkerframework.checker.units.qual.A;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import structures.GameState;
 import structures.basic.AiPlayer;
-import structures.basic.Player;
-import structures.basic.aiBasic.AiAction;
-import structures.basic.aiBasic.AiCards;
+import structures.basic.Card;
+import structures.basic.Tile;
 
 public class AiPlayGame {
 
@@ -22,7 +22,22 @@ public class AiPlayGame {
   public void paly() {
 
     AiPlayer ai = gameState.getAiPlayer();
-    ArrayList<AiAction> action = ai.getAction(gameState.getGameBoard());
+    HashMap<Tile, Card> cardCombo = ai.getCardAction(gameState.getGameBoard(), gameState);
+
+    if (!cardCombo.isEmpty()) {
+      Iterator<Entry<Tile, Card>> iterator = cardCombo.entrySet().iterator();
+      while(iterator.hasNext()){
+        Entry<Tile, Card> entry = iterator.next();
+        if (entry.getKey() == null || entry.getValue() == null) {
+          continue;
+        }
+        if (entry.getValue().getType().equals("spell")) {
+          // todo spell
+        } else if (entry.getValue().getType().equals("monster")) {
+          // todo summon
+        }
+      }
+    }
 
   }
 }

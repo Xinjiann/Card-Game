@@ -1,14 +1,15 @@
 package structures.basic.aiBasic;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
+import structures.GameState;
 import structures.basic.AiPlayer;
+import structures.basic.Board;
 import structures.basic.Card;
 import structures.basic.Hand;
+import structures.basic.Tile;
 
 public class AiCards {
 
@@ -20,15 +21,44 @@ public class AiCards {
     this.hand = aiPlayer.getHand();
   }
 
-  public ArrayList<AiAction> getCardsToPlay() {
+  public HashMap<Tile, Card> getCardsToPlay(Board gameBoard, GameState gameState) {
     ArrayList<Card> cardList = this.allAvalibleCards();
-
     ArrayList<Card> bestCombo = this.bestCombo(cardList);
+    HashMap<Tile, Card> cardToTile = this.cardToTile(bestCombo, gameBoard, gameState);
+    return cardToTile;
+  }
 
-    //Todo add tile and card link
+  private HashMap<Tile, Card> cardToTile(ArrayList<Card> bestCombo, Board gameBoard, GameState gameState) {
+    HashMap <Tile, Card> map = new HashMap<>();
+    ArrayList<Tile> summonableTiles = gameBoard.getSummonableTiles(aiPlayer);
+    ArrayList<Card> spellList = new ArrayList<>();
+    ArrayList<Card> monsterList = new ArrayList<>();
+    for (Card c : bestCombo) {
+      if (c.getType().equals("spell")) {
+        spellList.add(c);
+      } else {
+        monsterList.add(c);
+      }
+    }
 
+    // monster cards to tiles
+    for(int i=0; i<Math.min(summonableTiles.size(), monsterList.size()); i++) {
+      map.put(summonableTiles.get(i), monsterList.get(i));
+    }
 
-    return new ArrayList<AiAction>();
+    // spell cards to tiles
+    for (Card spell : spellList) {
+      Tile tile;
+      switch (spell.getCardname()) {
+        case "Sundrop Elixir" -> gameBoard.setAllUnitTiles();
+        case "Truestrike" -> gameBoard.setAllEnemyTiles(gameState);
+        case "Staff of Y'Kir'" -> gameBoard.setAvatarArea(gameState);
+        case "Entropic Decay" -> gameBoard.setNoneAvatarUnitArea();
+      }
+      tile = gameBoard.getSpellArea().get(0);
+      map.put(tile, spell);
+    }
+    return map;
   }
 
   private ArrayList<Card> bestCombo(ArrayList<Card> cardList) {
