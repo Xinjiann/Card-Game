@@ -14,6 +14,8 @@ public class AbilityToCard {
 		// spells
 		abilityToCard.put("Truestrike", loadAbilities(new Truestrike()));
 
+		// units
+
 	}
 
 	private  static ArrayList<Ability> loadAbilities(Ability ... abilities) {

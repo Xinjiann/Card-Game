@@ -1,5 +1,6 @@
 package structures;
 
+import structures.basic.AiPlayer;
 import structures.basic.Avatar;
 import structures.basic.Board;
 import structures.basic.Card;
@@ -27,13 +28,14 @@ public class GameState {
 
 	public Board gameBoard;
 	private Player humanPlayer;
-	private Player aiPlayer;
+	private AiPlayer aiPlayer;
 	private Avatar humanAvatar;
 	private Avatar aiAvatar;
 	private Monster unitSelected;
 	private Card cardSelected;
 	private Player turnOwner;
 	private int cardPos;
+	private int turnCount;
 
 	public GameState() {
 		gameBoard = new Board();
@@ -47,7 +49,7 @@ public class GameState {
 		humanPlayer = new Player(20, 4);
 		// human hand
 		humanPlayer.setDeck(humanDeck);
-		humanDeck.shuffleDeck();
+//		humanDeck.shuffleDeck();
 		Hand humanHand = new Hand();
 		humanPlayer.setHand(humanHand);
 		humanHand.initialHand(humanDeck);
@@ -55,10 +57,10 @@ public class GameState {
 		// ai deck
 		Deck aiDeck = new Deck();
 		aiDeck.aiDeck();
-		aiPlayer = new Player(20, 2);
+		aiPlayer = new AiPlayer(20, 9);
 		// ai hand
 		aiPlayer.setDeck(aiDeck);
-		aiDeck.shuffleDeck();
+//		aiDeck.shuffleDeck();
 		Hand aiHand = new Hand();
 		aiPlayer.setHand(aiHand);
 		aiHand.initialHand(aiDeck);
@@ -92,11 +94,11 @@ public class GameState {
 		this.humanPlayer = humanPlayer;
 	}
 
-	public Player getAiPlayer() {
+	public AiPlayer getAiPlayer() {
 		return aiPlayer;
 	}
 
-	public void setAiPlayer(Player aiPlayer) {
+	public void setAiPlayer(AiPlayer aiPlayer) {
 		this.aiPlayer = aiPlayer;
 	}
 
@@ -142,5 +144,18 @@ public class GameState {
 
 	public int getCardPos() {
 		return cardPos;
+	}
+
+	public void turnChange() {
+		this.turnOwner = (turnOwner == humanPlayer ? aiPlayer : humanPlayer);
+	}
+
+	public void giveMana() {
+		if (turnOwner == humanPlayer) {
+			this.turnCount +=1;
+			humanPlayer.addMana(this.turnCount);
+		} else {
+			aiPlayer.addMana(this.turnCount);
+		}
 	}
 }

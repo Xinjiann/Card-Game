@@ -15,12 +15,10 @@ public class Player {
 	Deck deck;
 	
 	public Player() {
-		super();
 		this.health = 20;
-		this.mana = 0;
+		this.mana = 2;
 	}
 	public Player(int health, int mana) {
-		super();
 		this.health = health;
 		this.mana = mana;
 	}
@@ -53,7 +51,10 @@ public class Player {
 	public void setMana(int mana) {
 		this.mana = mana;
 	}
-	
-	
-	
+
+
+	public void addMana(int turnCount) {
+		mana += turnCount;
+		mana = Math.min(mana, 9);
+	}
 }
