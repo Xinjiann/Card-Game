@@ -5,6 +5,7 @@ import commands.BasicCommands;
 import java.util.ArrayList;
 import structures.GameState;
 import structures.basic.Board;
+import structures.basic.Card;
 import structures.basic.Monster;
 import structures.basic.Tile;
 
@@ -79,4 +80,19 @@ public class CommonUtils {
     try {Thread.sleep(time);} catch (InterruptedException e) {e.printStackTrace();}
   }
 
+  public static void drawCardsInHand(ActorRef out, GameState gameState, int oldSize, ArrayList<Card> handList) {
+    // Delete all cards in the UI
+    for (int i = 0; i < oldSize; i++) {
+      BasicCommands.deleteCard(out, i);
+      sleep();
+    }
+
+    // Show all the cards in new positions
+    int i = 0;
+    for(Card c : handList) {
+      BasicCommands.drawCard(out, c, i, 0);
+      i++;
+      sleep();
+    }
+  }
 }

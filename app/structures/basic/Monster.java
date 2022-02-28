@@ -134,4 +134,7 @@ public class Monster  extends Unit{
   public void setAttackCount(int attackCount) {
     this.attackCount = attackCount;
   }
+
+  public void addMana(int turnCount) {
+  }
 }
