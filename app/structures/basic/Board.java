@@ -38,7 +38,7 @@ public class Board {
     return this.gameBoard[y][x];
   }
 
-  public ArrayList<Tile> movableTiles(int x, int y, int movesLeft) {
+  public ArrayList<Tile> getMovableTiles(int x, int y, int movesLeft) {
     ArrayList<Tile> movableTiles = new ArrayList<Tile>();
     for (int i = x - movesLeft; i <= (x + movesLeft); i++) {
       for (int j = y - movesLeft; j <= (y + movesLeft); j++) {
@@ -54,14 +54,14 @@ public class Board {
     return movableTiles;
   }
 
-  public ArrayList<Tile> attachableTiles(int x, int y, int movesLeft, int attackDistance) {
+  public ArrayList<Tile> getAttachableTiles(int x, int y, int movesLeft, int attackDistance) {
     Player player = this.getTile(x, y).getUnitOnTile().getOwner();
     ArrayList<Tile> reachableList;
     HashSet <Tile> attachableSet = new HashSet<Tile>();
     if (movesLeft == 0) {
       return new ArrayList<>(this.hasMovedAttachableTiles(x, y, player, attackDistance));
     }
-    reachableList = this.movableTiles(x, y, movesLeft);
+    reachableList = this.getMovableTiles(x, y, movesLeft);
     for (Tile t : reachableList) {
       if (t.getUnitOnTile()!=null && t.getUnitOnTile().getOwner()!=player) {
         attachableSet.add(t);
@@ -224,5 +224,17 @@ public class Board {
       }
     }
     return list;
+  }
+
+  public ArrayList<Monster> friendlyUnitsWithAvatar(Player aiPlayer) {
+    ArrayList<Monster> tiles = new ArrayList<Monster>();
+    for (int i = 0; i <gameBoard.length; i++) {
+      for (int k =0; k<gameBoard[0].length; k++) {
+        if (gameBoard[i][k].getUnitOnTile() != null && gameBoard[i][k].getUnitOnTile().getOwner()==aiPlayer) {
+          tiles.add(gameBoard[i][k].getUnitOnTile());
+        }
+      }
+    }
+    return tiles;
   }
 }

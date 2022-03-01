@@ -74,9 +74,9 @@ public class TileClicked implements EventProcessor {
     int x = monster.getPosition().getTilex();
     int y = monster.getPosition().getTiley();
     ArrayList<Tile> movableTiles = gameState.getGameBoard()
-        .movableTiles(x, y, monster.getMovesLeft());
+        .getMovableTiles(x, y, monster.getMovesLeft());
     ArrayList<Tile> attachableTiles = gameState.getGameBoard()
-        .attachableTiles(x, y, monster.getMovesLeft(), monster.getAttackDistance());
+        .getAttachableTiles(x, y, monster.getMovesLeft(), monster.getAttackDistance());
     movableTiles.addAll(attachableTiles);
     if (movableTiles.isEmpty() || monster.isFrozen()) {
       BasicCommands.addPlayer1Notification(out,
@@ -207,9 +207,9 @@ public class TileClicked implements EventProcessor {
     ArrayList<Tile> movableTiles;
     // get all movable tiles
     movableTiles = gameState.getGameBoard()
-        .movableTiles(previous_x, previous_y, previousMonster.getMovesLeft());
+        .getMovableTiles(previous_x, previous_y, previousMonster.getMovesLeft());
     attachableTiles = gameState.getGameBoard()
-        .attachableTiles(previous_x, previous_y, previousMonster.getMovesLeft(), previousMonster.getAttackDistance());
+        .getAttachableTiles(previous_x, previous_y, previousMonster.getMovesLeft(), previousMonster.getAttackDistance());
     movableTiles.addAll(attachableTiles);
 
     if ((!movableTiles.isEmpty())) {
@@ -321,7 +321,7 @@ public class TileClicked implements EventProcessor {
   private void moveAndAttack(Monster previousMonster, Monster clickedMonster,
       GameState gameState, ActorRef out, Tile previousTile, Tile clickedTile) {
 
-    ArrayList<Tile> movableTiles = gameState.gameBoard.movableTiles(previousTile.getTilex(), previousTile.getTiley() , previousMonster.getMovesLeft());
+    ArrayList<Tile> movableTiles = gameState.gameBoard.getMovableTiles(previousTile.getTilex(), previousTile.getTiley() , previousMonster.getMovesLeft());
     Tile tileToGo = null;
     for (Tile tile : movableTiles) {
       HashSet<Tile> attachableTiles = gameState.gameBoard.hasMovedAttachableTiles(tile.getTilex(), tile.getTiley(), gameState.getTurnOwner(), previousMonster.getAttackDistance());

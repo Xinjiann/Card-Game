@@ -15,9 +15,9 @@ public class CommonUtils {
     int x = monster.getPosition().getTilex();
     int y = monster.getPosition().getTiley();
     ArrayList<Tile> movableTiles = gameState.getGameBoard()
-        .movableTiles(x, y, monster.getMovesLeft());
+        .getMovableTiles(x, y, monster.getMovesLeft());
     ArrayList<Tile> attachableTiles = gameState.getGameBoard()
-        .attachableTiles(x, y, monster.getMovesLeft(), monster.getAttackDistance());
+        .getAttachableTiles(x, y, monster.getMovesLeft(), monster.getAttackDistance());
     movableTiles.addAll(attachableTiles);
     for (Tile t : movableTiles) {
       BasicCommands.drawTile(out, t, 0);
