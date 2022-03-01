@@ -92,11 +92,10 @@ public class TileClicked implements EventProcessor {
 
   private void afterCardSelectedClick(Tile clickedTile, GameState gameState, ActorRef out) {
     Card selectedCard = gameState.getCardSelected();
-    int manaCost = selectedCard.getManacost();
     if (selectedCard.getType().equals("spell")) {
-      playSpell(gameState, out, clickedTile, selectedCard, manaCost);
+      playSpell(gameState, out, clickedTile, selectedCard);
     } else if (selectedCard.getType().equals("unit")) {
-      summonUnit(gameState, out, clickedTile, selectedCard, manaCost);
+      summonUnit(gameState, out, clickedTile, selectedCard);
     } else {
       BasicCommands.addPlayer1Notification(out, "card does not exist", 2);
       CommonUtils.rmAllHighlight(gameState, out);
@@ -104,7 +103,8 @@ public class TileClicked implements EventProcessor {
     }
   }
 
-  private void playSpell(GameState gameState, ActorRef out, Tile clickedTile, Card selectedCard, int manaCost) {
+  public void playSpell(GameState gameState, ActorRef out, Tile clickedTile, Card selectedCard) {
+    int manaCost = selectedCard.getManacost();
     if (!gameState.gameBoard.getSpellArea().contains(clickedTile)) {
       BasicCommands.addPlayer1Notification(out, "no target", 2);
       return;
@@ -113,9 +113,11 @@ public class TileClicked implements EventProcessor {
     CommonUtils.rmListHighlight(out, gameState.getGameBoard().getSpellArea());
     Monster monster = clickedTile.getUnitOnTile();
     // check ability
-    for (Ability ability : selectedCard.getAbilityList()) {
-      ability.execute(monster, gameState, out);
-      BasicCommands.playEffectAnimation(out, ability.getEffectAnimation(), clickedTile);
+    if (selectedCard.getAbilityList() != null) {
+      for (Ability ability : selectedCard.getAbilityList()) {
+        ability.execute(monster, gameState, out);
+        BasicCommands.playEffectAnimation(out, ability.getEffectAnimation(), clickedTile);
+      }
     }
     // unselect card
     gameState.setCardSelected(null);
@@ -132,7 +134,8 @@ public class TileClicked implements EventProcessor {
     }
   }
 
-  private void summonUnit(GameState gameState, ActorRef out, Tile clickedTile, Card selectedCard, int manaCost) {
+  public void summonUnit(GameState gameState, ActorRef out, Tile clickedTile, Card selectedCard) {
+    int manaCost = selectedCard.getManacost();
     // check if clicked tile is allowed to put unit
     if (!gameState.getGameBoard().getSummonArea().contains(clickedTile)) {
       BasicCommands.addPlayer1Notification(out, "you can not summon unit at here", 2);
@@ -140,7 +143,8 @@ public class TileClicked implements EventProcessor {
     }
     // mana cost
     gameState.getTurnOwner().setMana(gameState.getTurnOwner().getMana()-manaCost);
-    BasicCommands.setPlayer1Mana(out, gameState.getTurnOwner());
+    BasicCommands.setPlayer1Mana(out, gameState.getHumanPlayer());
+    BasicCommands.setPlayer2Mana(out, gameState.getAiPlayer());
 
     Monster monster = BasicObjectBuilders.loadMonsterUnit(selectedCard.getUnitConfigFiles(), selectedCard, gameState.getTurnOwner(), Monster.class);
     monster.setPositionByTile(clickedTile);

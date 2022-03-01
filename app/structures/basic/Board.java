@@ -109,6 +109,10 @@ public class Board {
     this.summonArea = summonArea;
   }
 
+  public void setSummonArea(ArrayList<Tile> area) {
+    this.summonArea = area;
+  }
+
   public ArrayList<Tile> getSummonArea() {
     return summonArea;
   }
