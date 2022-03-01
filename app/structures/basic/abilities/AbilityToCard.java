@@ -12,11 +12,16 @@ public class AbilityToCard {
 	public static void init() {
 
 		// spells
+		// deck 1
 		abilityToCard.put("Truestrike", loadAbilities(new Truestrike()));
+		// deck 2
 		abilityToCard.put("Staff of Y'Kir'", loadAbilities(new StaffOfYkir()));
 
 		// units
+		// deck 1
 
+		// deck 2
+		abilityToCard.put("Serpenti", loadAbilities(new AttackTwice()));
 	}
 
 	private  static ArrayList<Ability> loadAbilities(Ability ... abilities) {

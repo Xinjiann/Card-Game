@@ -62,6 +62,9 @@ public class BasicObjectBuilders {
 			card.setId(id);
 			card.setUnitConfigFiles(unitConfigFile);
 			card.setType("unit");
+			if (AbilityToCard.abilityToCard.containsKey(card.getCardname())) {
+				card.setAbilityList(AbilityToCard.abilityToCard.get(card.getCardname()));
+			}
 			return card;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -109,20 +112,22 @@ public class BasicObjectBuilders {
 		
 	}
 
-	public static Monster loadMonsterUnit(String configFile, Card statsRef, Player p, Class<? extends Monster> classType) {
+	public static Monster loadMonsterUnit(String configFile, Card card, Player p, Class<? extends Monster> classType) {
 
 		try {
 			Monster monster = mapper.readValue(new File(configFile), classType);
 
 			// Set monster attributes from reference Card info
-			monster.setId(statsRef.getId());
-			monster.setHealth(statsRef.getBigCard().getHealth());
-			monster.setAttack(statsRef.getBigCard().getAttack());
+			monster.setId(card.getId());
+			monster.setHealth(card.getBigCard().getHealth());
+			monster.setAttack(card.getBigCard().getAttack());
 			// Set Player owner
 			monster.setOwner(p);
 			// Ability setting
-			if(monster.getAbilities() == null) {	monster.setAbilities(new ArrayList<Ability>());	}
-			monster.setAbilities(statsRef.getAbilityList());
+			if(monster.getAbilities() == null) {
+				monster.setAbilities(new ArrayList<>());
+			}
+			monster.setAbilities(card.getAbilityList());
 
 //			// Check for abilities requiring EffectAnimation to be stored
 //			if(monster.getAbilities().size() != 0) {

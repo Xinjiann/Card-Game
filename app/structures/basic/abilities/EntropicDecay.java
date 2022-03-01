@@ -1,5 +1,6 @@
 package structures.basic.abilities;
 
+import akka.actor.ActorRef;
 import structures.GameState;
 import structures.basic.EffectAnimation;
 import structures.basic.Monster;
@@ -19,6 +20,11 @@ public class EntropicDecay implements Ability {
 	public void execute(Monster monsterEntity, GameState gameState) {
 		if(!(monsterEntity instanceof Avatar))
 			monsterEntity.setHealth(0);
+	}
+
+	@Override
+	public WhenToCall getWhenTOCall() {
+		return WhenToCall.spell;
 	}
 
 	@Override
