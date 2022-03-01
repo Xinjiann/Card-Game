@@ -14,6 +14,7 @@ import structures.basic.Position;
 import structures.basic.Tile;
 import structures.basic.UnitAnimationType;
 import structures.basic.abilities.Ability;
+import structures.basic.abilities.WhenToCall;
 import utils.BasicObjectBuilders;
 import utils.CommonUtils;
 
@@ -115,8 +116,10 @@ public class TileClicked implements EventProcessor {
     // check ability
     if (selectedCard.getAbilityList() != null) {
       for (Ability ability : selectedCard.getAbilityList()) {
-        ability.execute(monster, gameState, out);
-        BasicCommands.playEffectAnimation(out, ability.getEffectAnimation(), clickedTile);
+        ability.execute(monster, gameState);
+        if (ability.getEffectAnimation() != null) {
+          BasicCommands.playEffectAnimation(out, ability.getEffectAnimation(), clickedTile);
+        }
       }
     }
     // unselect card
@@ -148,6 +151,17 @@ public class TileClicked implements EventProcessor {
 
     Monster monster = BasicObjectBuilders.loadMonsterUnit(selectedCard.getUnitConfigFiles(), selectedCard, gameState.getTurnOwner(), Monster.class);
     monster.setPositionByTile(clickedTile);
+    // check ability
+    if (selectedCard.getAbilityList() != null) {
+      for (Ability ability : selectedCard.getAbilityList()) {
+        if (ability.getWhenTOCall() == WhenToCall.summon) {
+          ability.execute(monster, gameState);
+        }
+        if (ability.getEffectAnimation() != null) {
+          BasicCommands.playEffectAnimation(out, ability.getEffectAnimation(), clickedTile);
+        }
+      }
+    }
     clickedTile.setUnitOnTile(monster);
 
     // remove all highlight tiles

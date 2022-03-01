@@ -19,18 +19,23 @@ public class Pyromancer implements Ability{
   }
 
   @Override
-  public void execute(Monster monster, GameState gameState, ActorRef out) {
-    monster.setAttackDistance(13);
-    Tile[][] allTile =  gameState.getGameBoard().getGameBoard();
-    for (int i = 0; i < allTile.length; i++) {
-      Tile[] tiles = allTile[i];
-      for (int j = 0; j < tiles.length; j++) {
-        Tile tile = tiles[j];
-        if (tile.getUnitOnTile() != null&& tile.getUnitOnTile().getOwner() != gameState.getTurnOwner()) {
-          BasicCommands.drawTile(out, tile, 2);
-        }
-      }
-    }
+  public void execute(Monster monster, GameState gameState) {
+//    monster.setAttackDistance(13);
+//    Tile[][] allTile =  gameState.getGameBoard().getGameBoard();
+//    for (int i = 0; i < allTile.length; i++) {
+//      Tile[] tiles = allTile[i];
+//      for (int j = 0; j < tiles.length; j++) {
+//        Tile tile = tiles[j];
+//        if (tile.getUnitOnTile() != null&& tile.getUnitOnTile().getOwner() != gameState.getTurnOwner()) {
+//          BasicCommands.drawTile(out, tile, 2);
+//        }
+//      }
+//    }
+  }
+
+  @Override
+  public WhenToCall getWhenTOCall() {
+    return null;
   }
 
   @Override

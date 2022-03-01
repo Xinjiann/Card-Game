@@ -22,6 +22,11 @@ public class SundropElixir implements Ability {
 	}
 
 	@Override
+	public WhenToCall getWhenTOCall() {
+		return WhenToCall.spell;
+	}
+
+	@Override
 	public EffectAnimation getEffectAnimation() {
 		return this.effectAnimation;
 	}
