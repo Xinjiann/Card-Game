@@ -13,6 +13,7 @@ public class AbilityToCard {
 
 		// spells
 		abilityToCard.put("Truestrike", loadAbilities(new Truestrike()));
+		abilityToCard.put("Staff of Y'Kir'", loadAbilities(new StaffOfYkir()));
 
 		// units
 

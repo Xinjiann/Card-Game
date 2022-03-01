@@ -16,22 +16,22 @@ public class Hand {
     ArrayList<Card> drawDeck = deck.getCardList();//create temporary instance of player deck
 
     //finds top three cards from deck
-    Card cardOne = drawDeck.get(0);
-    Card cardTwo = drawDeck.get(1);
-    Card cardThree = drawDeck.get(2);
-    Card card4 = drawDeck.get(3);
+    Card cardOne = drawDeck.get(15);
+    Card cardTwo = drawDeck.get(17);
+//    Card cardThree = drawDeck.get(2);
+//    Card card4 = drawDeck.get(3);
 
     //adds the cards to the Hand class's array of Cards
     handList.add(cardOne);
     handList.add(cardTwo);
-    handList.add(cardThree);
-    handList.add(card4);
+//    handList.add(cardThree);
+//    handList.add(card4);
 
     //removes three cards from deck
-    deck.delCard(0);
-    deck.delCard(1);
-    deck.delCard(2);
-    deck.delCard(3);
+    deck.delCard(15);
+    deck.delCard(17);
+//    deck.delCard(2);
+//    deck.delCard(3);
   }
 
   public void drawCard(Deck deck) {

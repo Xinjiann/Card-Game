@@ -31,6 +31,7 @@ public class AiCards {
   private HashMap<Tile, Card> cardToTile(ArrayList<Card> bestCombo, Board gameBoard, GameState gameState) {
     HashMap <Tile, Card> map = new HashMap<>();
     ArrayList<Tile> summonableTiles = gameBoard.getSummonableTiles(aiPlayer);
+    gameBoard.setSummonArea(summonableTiles);
     ArrayList<Card> spellList = new ArrayList<>();
     ArrayList<Card> monsterList = new ArrayList<>();
     for (Card c : bestCombo) {
