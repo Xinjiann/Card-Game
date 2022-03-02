@@ -13,7 +13,7 @@ public class EntropicDecay implements Ability {
 	private EffectAnimation effectAnimation;
 	
 	public EntropicDecay() {
-		this.effectAnimation = BasicObjectBuilders.loadEffect(StaticConfFiles.f1_inmolation);
+		this.effectAnimation = BasicObjectBuilders.loadEffect(StaticConfFiles.f1_martyrdom);
 	}
 
 	@Override

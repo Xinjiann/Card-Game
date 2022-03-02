@@ -188,11 +188,18 @@ public class TileClicked implements EventProcessor {
       friendClick(previousMonster, monster, gameState, out, clickedTile);
     } else if (clickedTile.getUnitOnTile() != null
         && clickedTile.getUnitOnTile().getOwner() != gameState.getTurnOwner()) {
-      // attack
-      enemyClick(monster, gameState, out, clickedTile);
+    	if(previousMonster.isBeenProvoke() && !previousMonster.getProvokeOwners().contains(monster))
+    		//attack cannot be settled
+    		BasicCommands.addPlayer1Notification(out, "You can only attack the unit with provoke", 2);
+    	else
+    		// attack
+    		enemyClick(monster, gameState, out, clickedTile);
     } else {
-      // move
-      moveClick(previousMonster, gameState, out, clickedTile);
+    	if(previousMonster.isBeenProvoke())
+    		BasicCommands.addPlayer1Notification(out, "You cannot move this unit under provoke", 2);
+    	else
+    		// move
+    		moveClick(previousMonster, gameState, out, clickedTile);
     }
   }
 
