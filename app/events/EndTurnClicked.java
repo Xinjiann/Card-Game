@@ -40,7 +40,7 @@ public class EndTurnClicked implements EventProcessor{
 
 	}
 
-	private void endTurn(ActorRef out, GameState gameState) {
+	public void endTurn(ActorRef out, GameState gameState) {
 		// clear mana
 		gameState.getTurnOwner().setMana(0);
 		BasicCommands.setPlayer1Mana(out, gameState.getHumanPlayer());

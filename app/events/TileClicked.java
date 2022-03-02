@@ -203,7 +203,7 @@ public class TileClicked implements EventProcessor {
     }
   }
 
-  private void moveClick(Monster previousMonster, GameState gameState, ActorRef out,
+  public void moveClick(Monster previousMonster, GameState gameState, ActorRef out,
       Tile clickedTile) {
 
     int previous_x = previousMonster.getPosition().getTilex();
@@ -325,7 +325,7 @@ public class TileClicked implements EventProcessor {
     }
   }
 
-  private void moveAndAttack(Monster previousMonster, Monster clickedMonster,
+  public void moveAndAttack(Monster previousMonster, Monster clickedMonster,
       GameState gameState, ActorRef out, Tile previousTile, Tile clickedTile) {
 
     ArrayList<Tile> movableTiles = gameState.gameBoard.getMovableTiles(previousTile.getTilex(), previousTile.getTiley() , previousMonster.getMovesLeft());
@@ -341,6 +341,8 @@ public class TileClicked implements EventProcessor {
       moveClick(previousMonster, gameState, out, tileToGo);
       CommonUtils.longlongSleep(2200);
       attack(previousMonster, clickedMonster, gameState, out, tileToGo, clickedTile);
+    } else {
+      attack(previousMonster, clickedMonster, gameState, out, previousTile, clickedTile);
     }
   }
 
