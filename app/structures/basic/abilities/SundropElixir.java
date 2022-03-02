@@ -1,5 +1,6 @@
 package structures.basic.abilities;
 
+import akka.actor.ActorRef;
 import structures.GameState;
 import structures.basic.EffectAnimation;
 import structures.basic.Monster;

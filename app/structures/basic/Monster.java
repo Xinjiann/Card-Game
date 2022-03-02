@@ -3,6 +3,7 @@ package structures.basic;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
+import java.util.HashSet;
 import structures.basic.abilities.Ability;
 
 public class Monster  extends Unit{
@@ -20,6 +21,8 @@ public class Monster  extends Unit{
   int attackCount;
   boolean frozen;
   boolean isAlive;
+  boolean beenProvoke;
+  HashSet<Monster> provokeOwners;
 
   public Monster() {
     super();
@@ -29,6 +32,8 @@ public class Monster  extends Unit{
     this.abilities = null;
     this.frozen = false;
     this.isAlive = true;
+    this.provokeOwners = null;
+    this.beenProvoke=false;
   }
 
   public Monster(int id, UnitAnimationSet animations, ImageCorrection correction) {
@@ -137,4 +142,23 @@ public class Monster  extends Unit{
 
   public void addMana(int turnCount) {
   }
+  
+  public void addProvokeOwner(Monster provokeOwner) {
+	this.provokeOwners.add(provokeOwner);
+  }
+  
+  public HashSet<Monster> getProvokeOwners() {
+	return provokeOwners;
+  }
+  
+  public boolean isBeenProvoke() {
+	return beenProvoke;
+  }
+
+  public void setBeenProvoke(boolean beenProvoke) {
+	this.beenProvoke = beenProvoke;
+  }
+  
+  
+  
 }

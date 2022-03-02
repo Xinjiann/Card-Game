@@ -45,6 +45,20 @@ public class EndTurnClicked implements EventProcessor{
 		gameState.getTurnOwner().setMana(0);
 		BasicCommands.setPlayer1Mana(out, gameState.getHumanPlayer());
 		BasicCommands.setPlayer2Mana(out, gameState.getAiPlayer());
+		
+		// default all units on board
+		for(int i=0;i<5;i++)
+			for(int j=0;j<9;j++) {
+				if(!gameState.gameBoard.getGameBoard()[i][j].getAvailable()) {
+					Monster monster=gameState.gameBoard.getGameBoard()[i][j].getUnitOnTile();
+					monster.setFrozen(false);
+					monster.setBeenProvoke(false);
+					monster.getProvokeOwners().clear();
+					monster.setAttackCount(1);
+					monster.setMovesLeft(2);
+				}
+			}
+			
 
 		gameState.getTurnOwner().getHand().drawCard(gameState.getTurnOwner().getDeck());
 

@@ -126,7 +126,11 @@ public class Tile {
 	}
 
 	public void rmUnitOnTile() {
-		this.isAvalible = false;
+		this.isAvalible = true;//seems to be wrong,change it from false to true
 		this.unitOnTile = null;
+	}
+	
+	public boolean getAvailable() {
+		return isAvalible;
 	}
 }
