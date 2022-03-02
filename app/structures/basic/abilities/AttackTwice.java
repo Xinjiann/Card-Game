@@ -13,6 +13,7 @@ public class AttackTwice implements Ability{
   @Override
   public void execute(Monster monsterEntity, GameState gameState) {
     monsterEntity.setAttackCount(2);
+    monsterEntity.setMaxAttackCount(2);
   }
 
   @Override

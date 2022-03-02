@@ -17,8 +17,10 @@ public class Monster  extends Unit{
   Player owner;
   ArrayList<Ability> abilities;
   int movesLeft;
+  int maxMove;
   int attackDistance;
   int attackCount;
+  int maxAttackCount;
   boolean frozen;
   boolean isAlive;
   boolean beenProvoke;
@@ -28,7 +30,9 @@ public class Monster  extends Unit{
     super();
     this.attackDistance = 1;
     this.attackCount = 1;
+    this.maxAttackCount = 1;
     this.movesLeft = 2;
+    this.maxMove = 2;
     this.abilities = null;
     this.frozen = false;
     this.isAlive = true;
@@ -158,7 +162,20 @@ public class Monster  extends Unit{
   public void setBeenProvoke(boolean beenProvoke) {
 	this.beenProvoke = beenProvoke;
   }
-  
-  
-  
+
+  public int getMaxMove() {
+    return maxMove;
+  }
+
+  public void setMaxMove(int maxMove) {
+    this.maxMove = maxMove;
+  }
+
+  public int getMaxAttackCount() {
+    return maxAttackCount;
+  }
+
+  public void setMaxAttackCount(int maxAttackCount) {
+    this.maxAttackCount = maxAttackCount;
+  }
 }

@@ -93,8 +93,8 @@ public class Board {
 
   public void setSummonArea(Position position) {
     ArrayList<Tile> summonArea = new ArrayList<>();
-    int x_max = this.Y;
-    int y_max = this.X;
+    int x_max = this.X;
+    int y_max = this.Y;
     for (int i=position.getTilex()-1; i< position.getTilex()+2; i++) {
       for (int j = position.getTiley() - 1; j < position.getTiley() + 2; j++) {
         // make sure the tile is on the board

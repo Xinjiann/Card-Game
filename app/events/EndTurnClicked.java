@@ -54,8 +54,8 @@ public class EndTurnClicked implements EventProcessor{
 					monster.setFrozen(false);
 					monster.setBeenProvoke(false);
 					monster.getProvokeOwners().clear();
-					monster.setAttackCount(1);
-					monster.setMovesLeft(2);
+					monster.setAttackCount(monster.getMaxAttackCount());
+					monster.setMovesLeft(monster.getMaxMove());
 				}
 			}
 			

@@ -1,6 +1,7 @@
 package events;
 
 import akka.actor.ActorRef;
+import commands.BasicCommands;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -111,6 +112,7 @@ public class AiPlayGame {
     // Ai's turn end
     EndTurnClicked endTurnClicked = new EndTurnClicked();
     endTurnClicked.endTurn(out, gameState);
+    BasicCommands.addPlayer1Notification(out, "Your turn!", 2);
   }
 
   private HashMap<Monster, Tile> getUnitMoveTarget(ArrayList<Monster> allMovableOnlyUnit) {
@@ -206,7 +208,6 @@ public class AiPlayGame {
   private ArrayList<Tile> rankAttachableTargetUnit(
       HashMap<Monster, ArrayList<Tile>> attachableTiles) {
     HashSet<Tile> set = new HashSet<>();
-    ArrayList<Tile> tileList = new ArrayList<>();
     HashMap<Tile, Integer> scoreMap = new HashMap<Tile, Integer>();
     for (ArrayList<Tile> list : attachableTiles.values()) {
       set.addAll(list);
@@ -231,7 +232,7 @@ public class AiPlayGame {
     });
     List<Tile> list1 = list.stream().map(Entry::getKey).collect(Collectors.toList());
 
-    return new ArrayList<Tile>(list1);
+    return new ArrayList<>(list1);
   }
 
   private ArrayList<Monster> rankAttachableUnit(HashMap<Monster, ArrayList<Tile>> allMovableUnit) {
