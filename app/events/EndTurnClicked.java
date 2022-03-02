@@ -53,7 +53,9 @@ public class EndTurnClicked implements EventProcessor{
 					Monster monster=gameState.gameBoard.getGameBoard()[i][j].getUnitOnTile();
 					monster.setFrozen(false);
 					monster.setBeenProvoke(false);
-					monster.getProvokeOwners().clear();
+					if (monster.getProvokeOwners() != null) {
+						monster.getProvokeOwners().clear();
+					}
 					monster.setAttackCount(monster.getMaxAttackCount());
 					monster.setMovesLeft(monster.getMaxMove());
 				}
