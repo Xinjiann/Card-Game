@@ -210,8 +210,8 @@ public class Board {
     int yPos = tile.getTiley();
 
 
-    int x_max = this.Y;
-    int y_max = this.X;
+    int x_max = this.X;
+    int y_max = this.Y;
     for (int i=xPos-1; i< xPos+2; i++) {
       for (int j = yPos - 1; j < yPos + 2; j++) {
         // make sure the tile is on the board

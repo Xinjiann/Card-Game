@@ -55,27 +55,27 @@ public class Initalize implements EventProcessor {
     BasicCommands.setUnitAttack(out, humanAvatar, humanAvatar.getAttack());
     BasicCommands.setUnitHealth(out, humanAvatar, humanAvatar.getHealth());
 
-    // test
-    Card card1 = BasicObjectBuilders.loadCard(StaticConfFiles.c_comodo_charger, StaticConfFiles.u_comodo_charger, 90, Card.class);
-    Card cBlazeHound = BasicObjectBuilders.loadCard(StaticConfFiles.c_blaze_hound, 91, Card.class);
-    Monster unit1 = BasicObjectBuilders.loadMonsterUnit(card1.getUnitConfigFiles(), card1, gameState.getAiPlayer(), Monster.class);
-    unit1.setHealth(4);
-    unit1.setAttack(3);
-    Monster unit2 = BasicObjectBuilders.loadMonsterUnit(StaticConfFiles.u_azure_herald, cBlazeHound, gameState.getHumanPlayer(), Monster.class);
-    Tile tile3 = gameState.getGameBoard().getTile(3, 0);
-    Tile tile4 = gameState.getGameBoard().getTile(4, 1);
-    unit1.setPositionByTile(tile3);
-    unit1.setPositionByTile(tile4);
-    tile3.setUnitOnTile(unit1);
-//    tile4.setUnitOnTile(unit2);
-    BasicCommands.drawUnit(out, unit1, tile3);
-//    BasicCommands.drawUnit(out, unit2, tile4);
-    CommonUtils.sleep();
-    BasicCommands.setUnitAttack(out, unit1, unit1.getAttack());
-//    BasicCommands.setUnitAttack(out, unit2, unit2.getAttack());
-    CommonUtils.sleep();
-    BasicCommands.setUnitHealth(out, unit1, unit1.getHealth());
-//    BasicCommands.setUnitHealth(out, unit2, unit2.getHealth());
+//    // test
+//    Card card1 = BasicObjectBuilders.loadCard(StaticConfFiles.c_comodo_charger, StaticConfFiles.u_comodo_charger, 90, Card.class);
+//    Card cBlazeHound = BasicObjectBuilders.loadCard(StaticConfFiles.c_blaze_hound, 91, Card.class);
+//    Monster unit1 = BasicObjectBuilders.loadMonsterUnit(card1.getUnitConfigFiles(), card1, gameState.getAiPlayer(), Monster.class);
+//    unit1.setHealth(4);
+//    unit1.setAttack(3);
+////    Monster unit2 = BasicObjectBuilders.loadMonsterUnit(card1.getUnitConfigFiles(), card1, gameState.getHumanPlayer(), Monster.class);
+//    Tile tile3 = gameState.getGameBoard().getTile(3, 0);
+//    Tile tile4 = gameState.getGameBoard().getTile(4, 1);
+//    unit1.setPositionByTile(tile3);
+//    unit1.setPositionByTile(tile4);
+//    tile3.setUnitOnTile(unit1);
+////    tile4.setUnitOnTile(unit2);
+//    BasicCommands.drawUnit(out, unit1, tile3);
+////    BasicCommands.drawUnit(out, unit2, tile4);
+//    CommonUtils.sleep();
+//    BasicCommands.setUnitAttack(out, unit1, unit1.getAttack());
+////    BasicCommands.setUnitAttack(out, unit2, unit2.getAttack());
+//    CommonUtils.sleep();
+//    BasicCommands.setUnitHealth(out, unit1, unit1.getHealth());
+////    BasicCommands.setUnitHealth(out, unit2, unit2.getHealth());
 
 
     //aiAvatar
