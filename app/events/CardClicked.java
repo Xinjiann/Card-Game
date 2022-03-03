@@ -34,8 +34,7 @@ public class CardClicked implements EventProcessor{
 		Card clickedCard = gameState.getHumanPlayer().getHand().getHandList().get(handPosition);
 		Card preClickedCard = gameState.getCardSelected();
 
-		// set selected card
-		gameState.setCardSelected(clickedCard);
+
 		//firstly remove the highlight on the board
 		if(preClickedCard == clickedCard){
 			CommonUtils.rmAllHighlight(gameState, out);
@@ -45,8 +44,8 @@ public class CardClicked implements EventProcessor{
 		else {
 			// check mana
 			if (clickedCard.getManacost() <= gameState.getTurnOwner().getMana()) {
-				Avatar humanAvatar = gameState.getHumanAvatar();
-				Position pos = humanAvatar.getPosition();
+				// set selected card
+				gameState.setCardSelected(clickedCard);
 				if(clickedCard.getType().equals("spell")){
 					// remove all highlights
 					CommonUtils.rmAllHighlight(gameState, out);
@@ -74,6 +73,8 @@ public class CardClicked implements EventProcessor{
 
 					}
 					// highlight area
+					Avatar humanAvatar = gameState.getHumanAvatar();
+					Position pos = humanAvatar.getPosition();
 					gameState.getGameBoard().setSummonArea(pos);
 					CommonUtils.listHighlight(out, gameState.gameBoard.getSummonArea());
 					gameState.setCardPos(handPosition);

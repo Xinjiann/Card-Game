@@ -1,6 +1,7 @@
 package structures.basic.abilities;
 
 import akka.actor.ActorRef;
+import commands.BasicCommands;
 import structures.GameState;
 import structures.basic.EffectAnimation;
 import structures.basic.Monster;
@@ -23,7 +24,8 @@ public class addAvatarHealth implements Ability{
 
   @Override
   public void execute(Monster monsterEntity, GameState gameState, ActorRef out) {
-    gameState.getTurnOwner().setHealth(Math.min(gameState.getTurnOwner().getHealth()+3, 20));
+    gameState.getHumanAvatar().setHealth(Math.min(gameState.getHumanAvatar().getHealth()+3, 20));
+    BasicCommands.setUnitHealth(out, gameState.getHumanAvatar(), gameState.getHumanAvatar().getHealth());
   }
 
   @Override

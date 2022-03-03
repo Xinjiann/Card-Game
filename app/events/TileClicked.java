@@ -8,13 +8,13 @@ import commands.BasicCommands;
 import java.util.ArrayList;
 import java.util.HashSet;
 import structures.GameState;
+import structures.basic.Avatar;
 import structures.basic.Card;
 import structures.basic.Monster;
 import structures.basic.Position;
 import structures.basic.Tile;
 import structures.basic.UnitAnimationType;
 import structures.basic.abilities.Ability;
-import structures.basic.abilities.DrawCardWhenSummon;
 import structures.basic.abilities.WhenToCall;
 import utils.BasicObjectBuilders;
 import utils.CommonUtils;
@@ -156,17 +156,9 @@ public class TileClicked implements EventProcessor {
     ArrayList<Tile> list = CommonUtils.getAllUnits(gameState);
     for (Tile tile : list) {
       Monster monster = tile.getUnitOnTile();
-      if (monster.getAbilities() != null && !monster.getAbilities().isEmpty()) {
-        for (Ability ability : monster.getAbilities()) {
-          if (ability.getWhenTOCall() == WhenToCall.castSpell) {
-            ability.execute(monster, gameState, out);
-          }
-          if (ability.getEffectAnimation() != null) {
-            BasicCommands.playEffectAnimation(out, ability.getEffectAnimation(), tile);
-          }
-        }
-      }
+      CommonUtils.executeMonsterAbility(out, gameState, WhenToCall.castSpell, monster, tile);
     }
+
   }
 
   public void summonUnit(GameState gameState, ActorRef out, Tile clickedTile, Card selectedCard) {
@@ -188,10 +180,11 @@ public class TileClicked implements EventProcessor {
       for (Ability ability : selectedCard.getAbilityList()) {
         if (ability.getWhenTOCall() == WhenToCall.summon) {
           ability.execute(monster, gameState, out);
+          if (ability.getEffectAnimation() != null) {
+            BasicCommands.playEffectAnimation(out, ability.getEffectAnimation(), clickedTile);
+          }
         }
-        if (ability.getEffectAnimation() != null) {
-          BasicCommands.playEffectAnimation(out, ability.getEffectAnimation(), clickedTile);
-        }
+
       }
     }
     clickedTile.setUnitOnTile(monster);
@@ -320,6 +313,17 @@ public class TileClicked implements EventProcessor {
     // play animation
     BasicCommands.playUnitAnimation(out,attacker,UnitAnimationType.attack);
 
+    // execute avatar be attacked ability
+    if (defender.getClass() == Avatar.class) {
+      ArrayList<Tile> list = CommonUtils.getAllUnits(gameState);
+      for (Tile tile : list) {
+        Monster monster = tile.getUnitOnTile();
+        if (monster.getOwner() == defender.getOwner()) {
+          CommonUtils.executeMonsterAbility(out, gameState, WhenToCall.avatarBeAttacked, monster, tile);
+        }
+      }
+    }
+
 
     if(!survived) {
       // unit dead
@@ -330,6 +334,9 @@ public class TileClicked implements EventProcessor {
       clickedTile.rmUnitOnTile();
       // re-idle
       BasicCommands.playUnitAnimation(out,attacker,UnitAnimationType.idle);
+
+      // execute death ability
+      CommonUtils.executeMonsterAbility(out, gameState, WhenToCall.death, defender, clickedTile);
     } else {
       // counter-attack
       if (Math.abs(previousTile.getTilex()-clickedTile.getTilex()) > defender.getAttackDistance() && Math.abs(previousTile.getTiley()-clickedTile.getTiley()) > defender.getAttackDistance()) {
@@ -341,7 +348,16 @@ public class TileClicked implements EventProcessor {
       // update front end
       BasicCommands.setUnitHealth(out, attacker, attacker.getHealth());
       CommonUtils.longlongSleep(2500);
-
+      // execute avatar be attacked ability
+      if (attacker.getClass() == Avatar.class) {
+        ArrayList<Tile> list = CommonUtils.getAllUnits(gameState);
+        for (Tile tile : list) {
+          Monster monster = tile.getUnitOnTile();
+          if (monster.getOwner() == attacker.getOwner()) {
+            CommonUtils.executeMonsterAbility(out, gameState, WhenToCall.avatarBeAttacked, monster, tile);
+          }
+        }
+      }
       //if die from counter-attack
       if (!survived) {
         BasicCommands.playUnitAnimation(out, attacker, UnitAnimationType.death);
@@ -350,6 +366,9 @@ public class TileClicked implements EventProcessor {
 
         previousTile.rmUnitOnTile();
         gameState.setUnitSelected(null);
+
+        // execute death ability
+        CommonUtils.executeMonsterAbility(out, gameState, WhenToCall.death, attacker, previousTile);
 
       } else {
         BasicCommands.playUnitAnimation(out,attacker,UnitAnimationType.idle);

@@ -8,6 +8,8 @@ import structures.basic.Board;
 import structures.basic.Card;
 import structures.basic.Monster;
 import structures.basic.Tile;
+import structures.basic.abilities.Ability;
+import structures.basic.abilities.WhenToCall;
 
 public class CommonUtils {
 
@@ -90,6 +92,21 @@ public class CommonUtils {
     for(Card c : handList) {
       BasicCommands.drawCard(out, c, i, 0);
       i++;
+    }
+  }
+
+  public static void executeMonsterAbility(ActorRef out, GameState gameState, WhenToCall whenToCall,
+      Monster monster, Tile tile) {
+    if (monster.getAbilities() != null && !monster.getAbilities().isEmpty()) {
+      for (Ability ability : monster.getAbilities()) {
+        if (ability.getWhenTOCall() == whenToCall) {
+          ability.execute(monster, gameState, out);
+          if (ability.getEffectAnimation() != null) {
+            BasicCommands.playEffectAnimation(out, ability.getEffectAnimation(), tile);
+          }
+        }
+
+      }
     }
   }
 }

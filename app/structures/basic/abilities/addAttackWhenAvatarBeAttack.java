@@ -1,7 +1,9 @@
 package structures.basic.abilities;
 
 import akka.actor.ActorRef;
+import commands.BasicCommands;
 import structures.GameState;
+import structures.basic.Avatar;
 import structures.basic.EffectAnimation;
 import structures.basic.Monster;
 import utils.BasicObjectBuilders;
@@ -23,12 +25,13 @@ public class addAttackWhenAvatarBeAttack implements Ability{
 
   @Override
   public void execute(Monster monsterEntity, GameState gameState, ActorRef out) {
-
+    monsterEntity.setAttack(monsterEntity.getAttack()+2);
+    BasicCommands.setUnitAttack(out, monsterEntity, monsterEntity.getAttack());
   }
 
   @Override
   public WhenToCall getWhenTOCall() {
-    return WhenToCall.beAttacked;
+    return WhenToCall.avatarBeAttacked;
   }
 
 }
