@@ -1,5 +1,6 @@
 package structures.basic.abilities;
 
+import akka.actor.ActorRef;
 import structures.GameState;
 import structures.basic.EffectAnimation;
 import structures.basic.Monster;
@@ -11,7 +12,7 @@ public class AttackTwice implements Ability{
   }
 
   @Override
-  public void execute(Monster monsterEntity, GameState gameState) {
+  public void execute(Monster monsterEntity, GameState gameState, ActorRef out) {
     monsterEntity.setAttackCount(2);
     monsterEntity.setMaxAttackCount(2);
   }

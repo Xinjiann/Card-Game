@@ -49,7 +49,7 @@ public class GameState {
 		humanPlayer = new Player(20, 9);
 		// human hand
 		humanPlayer.setDeck(humanDeck);
-//		humanDeck.shuffleDeck();
+		humanDeck.shuffleDeck();
 		Hand humanHand = new Hand();
 		humanPlayer.setHand(humanHand);
 		humanHand.initialHand(humanDeck);
@@ -60,7 +60,7 @@ public class GameState {
 		aiPlayer = new AiPlayer(20, 9);
 		// ai hand
 		aiPlayer.setDeck(aiDeck);
-//		aiDeck.shuffleDeck();
+		aiDeck.shuffleDeck();
 		Hand aiHand = new Hand();
 		aiPlayer.setHand(aiHand);
 		aiHand.initialHand(aiDeck);

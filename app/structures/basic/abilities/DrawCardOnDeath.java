@@ -14,9 +14,11 @@ public class DrawCardOnDeath implements Ability {
 	}
 
 	@Override
-	public void execute(Monster monsterEntity, GameState gameState) {
-		if(!monsterEntity.isAlive())
+	public void execute(Monster monsterEntity, GameState gameState, ActorRef out) {
+		if(!monsterEntity.isAlive()) {
 			monsterEntity.getOwner().getHand().drawCard(monsterEntity.getOwner().getDeck());
+			BasicCommands.addPlayer1Notification(out, "player2 draw 1 card", 2);
+		}
 	}
 
 	@Override

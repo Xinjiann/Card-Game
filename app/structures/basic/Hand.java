@@ -6,7 +6,7 @@ public class Hand {
   ArrayList<Card> handList;
 
   public Hand() {
-    this.handList = new ArrayList<Card>();
+    this.handList = new ArrayList<>();
   }
 
   public void initialHand(Deck deck) {

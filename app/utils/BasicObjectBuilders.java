@@ -120,6 +120,7 @@ public class BasicObjectBuilders {
 			// Set monster attributes from reference Card info
 			monster.setId(card.getId());
 			monster.setHealth(card.getBigCard().getHealth());
+			monster.setMaxHealth(card.getBigCard().getHealth());
 			monster.setAttack(card.getBigCard().getAttack());
 			// Set Player owner
 			monster.setOwner(p);

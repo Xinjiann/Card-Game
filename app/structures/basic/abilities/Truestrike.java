@@ -17,7 +17,7 @@ public class Truestrike implements Ability{
   }
 
   @Override
-  public void execute(Monster monster, GameState gameState) {
+  public void execute(Monster monster, GameState gameState, ActorRef out) {
     monster.beAttacked(2);
   }
 

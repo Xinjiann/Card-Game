@@ -17,7 +17,7 @@ public class StaffOfYkir implements Ability{
   }
 
   @Override
-  public void execute(Monster monster, GameState gameState) {
+  public void execute(Monster monster, GameState gameState, ActorRef out) {
     monster.setAttack(monster.getAttack()+2);
   }
 

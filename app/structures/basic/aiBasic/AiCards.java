@@ -41,12 +41,10 @@ public class AiCards {
         monsterList.add(c);
       }
     }
-
     // monster cards to tiles
     for(int i=0; i<Math.min(summonableTiles.size(), monsterList.size()); i++) {
       map.put(summonableTiles.get(i), monsterList.get(i));
     }
-
     // spell cards to tiles
     for (Card spell : spellList) {
       Tile tile;
@@ -56,8 +54,10 @@ public class AiCards {
         case "Staff of Y'Kir'" -> gameBoard.setAvatarArea(gameState);
         case "Entropic Decay" -> gameBoard.setNoneAvatarUnitArea();
       }
-      tile = gameBoard.getSpellArea().get(0);
-      map.put(tile, spell);
+      if (!gameBoard.getSpellArea().isEmpty()) {
+        tile = gameBoard.getSpellArea().get(0);
+        map.put(tile, spell);
+      }
     }
     return map;
   }

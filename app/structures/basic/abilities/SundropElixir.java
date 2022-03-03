@@ -16,7 +16,7 @@ public class SundropElixir implements Ability {
 	}
 
 	@Override
-	public void execute(Monster monsterEntity, GameState gameState) {
+	public void execute(Monster monsterEntity, GameState gameState, ActorRef out) {
 		monsterEntity.setHealth(monsterEntity.getHealth()+5);
 		if(monsterEntity.getHealth()>monsterEntity.getMaxHealth())
 			monsterEntity.setHealth(monsterEntity.getMaxHealth());	

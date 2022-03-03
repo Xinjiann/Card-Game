@@ -28,8 +28,9 @@ public class Deck {
         StaticConfFiles.c_ironcliff_guardian,
         StaticConfFiles.c_pureblade_enforcer,
         StaticConfFiles.c_silverguard_knight,
-        StaticConfFiles.c_sundrop_elixir,
-        StaticConfFiles.c_truestrike
+        StaticConfFiles.c_staff_of_ykir,
+        StaticConfFiles.c_entropic_decay,
+
     };
     String[] deck1Units = {
         StaticConfFiles.u_azure_herald,
@@ -69,8 +70,9 @@ public class Deck {
         StaticConfFiles.c_pyromancer,
         StaticConfFiles.c_rock_pulveriser,
         StaticConfFiles.c_serpenti,
-        StaticConfFiles.c_staff_of_ykir,
-        StaticConfFiles.c_entropic_decay,
+
+        StaticConfFiles.c_sundrop_elixir,
+        StaticConfFiles.c_truestrike
     };
     String[] deck2Units = {
         StaticConfFiles.u_blaze_hound,

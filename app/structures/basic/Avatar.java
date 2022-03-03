@@ -6,6 +6,7 @@ public class Avatar extends Monster{
     super();
     this.health = 20;
     this.attack = 2;
+    this.maxHealth = 20;
   }
 
 }

@@ -106,6 +106,7 @@ public class TileClicked implements EventProcessor {
   }
 
   public void playSpell(GameState gameState, ActorRef out, Tile clickedTile, Card selectedCard) {
+
     int manaCost = selectedCard.getManacost();
     if (!gameState.gameBoard.getSpellArea().contains(clickedTile)) {
       BasicCommands.addPlayer1Notification(out, "no target", 2);
@@ -117,11 +118,21 @@ public class TileClicked implements EventProcessor {
     // check ability
     if (selectedCard.getAbilityList() != null) {
       for (Ability ability : selectedCard.getAbilityList()) {
-        ability.execute(monster, gameState);
+        ability.execute(monster, gameState, out);
         if (ability.getEffectAnimation() != null) {
           BasicCommands.playEffectAnimation(out, ability.getEffectAnimation(), clickedTile);
         }
       }
+    }
+    // mana cost
+    gameState.getTurnOwner().setMana(gameState.getTurnOwner().getMana()-manaCost);
+    BasicCommands.setPlayer1Mana(out, gameState.getHumanPlayer());
+    BasicCommands.setPlayer2Mana(out, gameState.getAiPlayer());
+    // remove hand card
+    gameState.getTurnOwner().getHand().getHandList().remove(selectedCard);
+    // front end rm card
+    if (gameState.getTurnOwner() == gameState.getHumanPlayer()) {
+      CommonUtils.drawCardsInHand(out, gameState.getTurnOwner().getHand().getHandList());
     }
     // unselect card
     gameState.setCardSelected(null);
@@ -156,7 +167,7 @@ public class TileClicked implements EventProcessor {
     if (selectedCard.getAbilityList() != null) {
       for (Ability ability : selectedCard.getAbilityList()) {
         if (ability.getWhenTOCall() == WhenToCall.summon) {
-          ability.execute(monster, gameState);
+          ability.execute(monster, gameState, out);
         }
         if (ability.getEffectAnimation() != null) {
           BasicCommands.playEffectAnimation(out, ability.getEffectAnimation(), clickedTile);

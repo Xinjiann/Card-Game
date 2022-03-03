@@ -17,7 +17,7 @@ public class SummonAnywhere implements Ability{
   }
 
   @Override
-  public void execute(Monster monster, GameState gameState) {
+  public void execute(Monster monster, GameState gameState, ActorRef out) {
     int x = gameState.getHumanAvatar().getPosition().getTilex();
     int limit = Math.max(gameState.getGameBoard().getX() - x, x);
 

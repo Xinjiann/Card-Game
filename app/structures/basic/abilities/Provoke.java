@@ -18,7 +18,7 @@ public class Provoke implements Ability {
 	  }
 
 	@Override
-	public void execute(Monster monsterEntity, GameState gameState) {
+	public void execute(Monster monsterEntity, GameState gameState, ActorRef out) {
 		Position position = monsterEntity.getPosition();
 		for (int i = -1; i < 2; i++)
 			for (int j = -1; j < 2; j++) {

@@ -18,6 +18,7 @@ public class Board {
   public Board() {
     X = 9;
     Y = 5;
+    summonDistance = 1;
     gameBoard = new Tile[Y][X];
     for (int i = 0; i<Y; i++) {
       for (int k = 0; k<X; k++) {

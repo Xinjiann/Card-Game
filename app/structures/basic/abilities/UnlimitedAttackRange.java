@@ -19,7 +19,7 @@ public class UnlimitedAttackRange implements Ability{
   }
 
   @Override
-  public void execute(Monster monster, GameState gameState) {
+  public void execute(Monster monster, GameState gameState, ActorRef out) {
     int x = monster.getPosition().getTilex();
     int attackDistance = Math.max(gameState.getGameBoard().getX() - x, x);
     monster.setAttackDistance(attackDistance);

@@ -66,10 +66,12 @@ public class CardClicked implements EventProcessor{
 					CommonUtils.sleep();
 					// check ability
 					if (clickedCard.getAbilityList() != null && !clickedCard.getAbilityList().isEmpty()) {
-						Ability ability = clickedCard.getAbilityList().get(0);
-						if (ability.getWhenTOCall() == WhenToCall.cardClick) {
-							ability.execute(null, gameState);
+						for (Ability ability : clickedCard.getAbilityList()) {
+							if (ability.getWhenTOCall() == WhenToCall.cardClick) {
+								ability.execute(null, gameState, out);
+							}
 						}
+
 					}
 					// highlight area
 					gameState.getGameBoard().setSummonArea(pos);

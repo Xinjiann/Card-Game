@@ -14,8 +14,10 @@ public class AbilityToCard {
 		// spells
 		// deck 1
 		abilityToCard.put("Truestrike", loadAbilities(new Truestrike()));
+		abilityToCard.put("Sundrop Elixir", loadAbilities(new SundropElixir()));
 		// deck 2
 		abilityToCard.put("Staff of Y'Kir'", loadAbilities(new StaffOfYkir()));
+		abilityToCard.put("Entropic Decay", loadAbilities(new EntropicDecay()));
 
 		// units
 		// deck 1

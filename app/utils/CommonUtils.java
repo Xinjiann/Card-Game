@@ -55,14 +55,14 @@ public class CommonUtils {
   public static void listHighlight(ActorRef out, ArrayList<Tile> area) {
     for (Tile tile : area) {
       BasicCommands.drawTile(out, tile, 1);
-      CommonUtils.tinySleep();
+//      CommonUtils.tinySleep();
     }
   }
 
   public static void rmListHighlight(ActorRef out, ArrayList<Tile> area) {
     for (Tile tile : area) {
       BasicCommands.drawTile(out, tile, 0);
-      CommonUtils.tinySleep();
+//      CommonUtils.tinySleep();
     }
   }
 
@@ -86,7 +86,6 @@ public class CommonUtils {
     // Delete all cards in the UI
     for (int i = 0; i < 6; i++) {
       BasicCommands.deleteCard(out, i);
-      tinySleep();
     }
 
     // Show all the cards in new positions
@@ -94,7 +93,6 @@ public class CommonUtils {
     for(Card c : handList) {
       BasicCommands.drawCard(out, c, i, 0);
       i++;
-      tinySleep();
     }
   }
 }

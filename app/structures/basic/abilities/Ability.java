@@ -7,7 +7,7 @@ import structures.basic.Monster;
 public interface Ability {
 
 	
-	public void execute(Monster monsterEntity, GameState gameState);
+	public void execute(Monster monsterEntity, GameState gameState, ActorRef out);
 
 	public WhenToCall getWhenTOCall();
 
