@@ -59,7 +59,7 @@ public class EndTurnClicked implements EventProcessor{
 					monster.setMovesLeft(monster.getMaxMove());
 				}
 			}
-		
+
 		gameState.getTurnOwner().getHand().drawCard(gameState.getTurnOwner().getDeck());
 
 		// when human player getting a new card, re-display all card in hand

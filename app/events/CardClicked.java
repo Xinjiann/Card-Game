@@ -57,10 +57,14 @@ public class CardClicked implements EventProcessor{
 					CommonUtils.sleep();
 					//spell card type, complete later
 					switch (clickedCard.getCardname()) {
-						case "Sundrop Elixir" -> gameState.gameBoard.setAllUnitTiles();
-						case "Truestrike" -> gameState.gameBoard.setAllEnemyTiles(gameState);
-						case "Staff of Y'Kir'" -> gameState.gameBoard.setAvatarArea(gameState);
-						case "Entropic Decay" -> gameState.gameBoard.setNoneAvatarUnitArea();
+						case "Sundrop Elixir" :
+							gameState.gameBoard.setAllUnitTiles();
+						case "Truestrike" :
+							gameState.gameBoard.setAllEnemyTiles(gameState);
+						case "Staff of Y'Kir'" :
+							gameState.gameBoard.setAvatarArea(gameState);
+						case "Entropic Decay" :
+							gameState.gameBoard.setNoneAvatarUnitArea();
 					}
 					CommonUtils.listHighlight(out, gameState.gameBoard.getSpellArea());
 				}else{
