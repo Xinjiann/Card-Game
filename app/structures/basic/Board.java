@@ -11,7 +11,9 @@ public class Board {
   private final int X;
   private final int Y;
   private ArrayList<Tile> summonArea;
+  private int summonDistance;
   private ArrayList<Tile> spellArea;
+
 
   public Board() {
     X = 9;
@@ -93,12 +95,10 @@ public class Board {
 
   public void setSummonArea(Position position) {
     ArrayList<Tile> summonArea = new ArrayList<>();
-    int x_max = this.X;
-    int y_max = this.Y;
-    for (int i=position.getTilex()-1; i< position.getTilex()+2; i++) {
-      for (int j = position.getTiley() - 1; j < position.getTiley() + 2; j++) {
+    for (int i = position.getTilex()-summonDistance; i <= position.getTilex() + summonDistance; i++) {
+      for (int j = position.getTiley() - summonDistance; j <= position.getTiley() + summonDistance; j++) {
         // make sure the tile is on the board
-        if (i >= 0 && i<x_max && j >= 0 && j<y_max) {
+        if (i >= 0 && i< this.X && j >= 0 && j< this.Y) {
           Monster otherUnit = this.gameBoard[j][i].getUnitOnTile();
           if (otherUnit==null) {
             summonArea.add(this.gameBoard[j][i]);
@@ -107,6 +107,7 @@ public class Board {
       }
     }
     this.summonArea = summonArea;
+    summonDistance = 1;
   }
 
   public void setSummonArea(ArrayList<Tile> area) {
@@ -236,5 +237,21 @@ public class Board {
       }
     }
     return tiles;
+  }
+
+  public int getSummonDistance() {
+    return summonDistance;
+  }
+
+  public void setSummonDistance(int summonDistance) {
+    this.summonDistance = summonDistance;
+  }
+
+  public int getX() {
+    return X;
+  }
+
+  public int getY() {
+    return Y;
   }
 }

@@ -22,6 +22,11 @@ public class AbilityToCard {
 
 		// deck 2
 		abilityToCard.put("Serpenti", loadAbilities(new AttackTwice()));
+		abilityToCard.put("Planar Scout", loadAbilities(new SummonAnywhere()));
+		abilityToCard.put("Pyromancer", loadAbilities(new UnlimitedAttackRange()));
+		abilityToCard.put("Blaze Hound", loadAbilities(new DrawCardWhenSummon()));
+		abilityToCard.put("WindShrike", loadAbilities(new Flying(), new DrawCardOnDeath()));
+		abilityToCard.put("Rock Pulveriser", loadAbilities(new Provoke()));
 	}
 
 	private  static ArrayList<Ability> loadAbilities(Ability ... abilities) {

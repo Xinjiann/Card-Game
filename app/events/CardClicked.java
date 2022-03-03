@@ -7,6 +7,8 @@ import akka.actor.ActorRef;
 import commands.BasicCommands;
 import structures.GameState;
 import structures.basic.*;
+import structures.basic.abilities.Ability;
+import structures.basic.abilities.WhenToCall;
 import utils.CommonUtils;
 
 /**
@@ -62,6 +64,13 @@ public class CardClicked implements EventProcessor{
 					// remove all highlights
 					CommonUtils.rmAllHighlight(gameState, out);
 					CommonUtils.sleep();
+					// check ability
+					if (clickedCard.getAbilityList() != null && !clickedCard.getAbilityList().isEmpty()) {
+						Ability ability = clickedCard.getAbilityList().get(0);
+						if (ability.getWhenTOCall() == WhenToCall.cardClick) {
+							ability.execute(null, gameState);
+						}
+					}
 					// highlight area
 					gameState.getGameBoard().setSummonArea(pos);
 					CommonUtils.listHighlight(out, gameState.gameBoard.getSummonArea());

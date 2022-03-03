@@ -24,21 +24,21 @@ public class CommonUtils {
     }
   }
 
-  public static void rmAdjTiles(Monster monster, GameState gameState, ActorRef out) {
-    int x = monster.getPosition().getTilex();
-    int y = monster.getPosition().getTiley();
-    int x_max = gameState.gameBoard.getGameBoard().length;
-    int y_max = gameState.gameBoard.getGameBoard()[0].length;
-    for (int i=x-1; i<=x+1; i++) {
-      for (int j=y-1; j<=y+1; j++) {
-        if (i >= 0 && i< x_max && j >= 0 && j<y_max) {
-          Tile tile = gameState.getGameBoard().getGameBoard()[j][i];
-          BasicCommands.drawTile(out, tile, 0);
-          CommonUtils.tinySleep();
-        }
-      }
-    }
-  }
+//  public static void rmAdjTiles(Monster monster, GameState gameState, ActorRef out) {
+//    int x = monster.getPosition().getTilex();
+//    int y = monster.getPosition().getTiley();
+//    int x_max = gameState.gameBoard.getGameBoard().length;
+//    int y_max = gameState.gameBoard.getGameBoard()[0].length;
+//    for (int i=x-1; i<=x+1; i++) {
+//      for (int j=y-1; j<=y+1; j++) {
+//        if (i >= 0 && i< x_max && j >= 0 && j<y_max) {
+//          Tile tile = gameState.getGameBoard().getGameBoard()[j][i];
+//          BasicCommands.drawTile(out, tile, 0);
+//          CommonUtils.tinySleep();
+//        }
+//      }
+//    }
+//  }
 
   public static void rmAllHighlight(GameState gameState, ActorRef out) {
     Board board = gameState.gameBoard;
@@ -55,12 +55,14 @@ public class CommonUtils {
   public static void listHighlight(ActorRef out, ArrayList<Tile> area) {
     for (Tile tile : area) {
       BasicCommands.drawTile(out, tile, 1);
+      CommonUtils.tinySleep();
     }
   }
 
   public static void rmListHighlight(ActorRef out, ArrayList<Tile> area) {
     for (Tile tile : area) {
       BasicCommands.drawTile(out, tile, 0);
+      CommonUtils.tinySleep();
     }
   }
 
@@ -80,11 +82,11 @@ public class CommonUtils {
     try {Thread.sleep(time);} catch (InterruptedException e) {e.printStackTrace();}
   }
 
-  public static void drawCardsInHand(ActorRef out, GameState gameState, int oldSize, ArrayList<Card> handList) {
+  public static void drawCardsInHand(ActorRef out, ArrayList<Card> handList) {
     // Delete all cards in the UI
-    for (int i = 0; i < oldSize; i++) {
+    for (int i = 0; i < 6; i++) {
       BasicCommands.deleteCard(out, i);
-      sleep();
+      tinySleep();
     }
 
     // Show all the cards in new positions
@@ -92,7 +94,7 @@ public class CommonUtils {
     for(Card c : handList) {
       BasicCommands.drawCard(out, c, i, 0);
       i++;
-      sleep();
+      tinySleep();
     }
   }
 }

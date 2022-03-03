@@ -23,7 +23,7 @@ public class StaffOfYkir implements Ability{
 
   @Override
   public WhenToCall getWhenTOCall() {
-    return null;
+    return WhenToCall.spell;
   }
 
   @Override

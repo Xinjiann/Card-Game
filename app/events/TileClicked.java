@@ -14,6 +14,7 @@ import structures.basic.Position;
 import structures.basic.Tile;
 import structures.basic.UnitAnimationType;
 import structures.basic.abilities.Ability;
+import structures.basic.abilities.DrawCardWhenSummon;
 import structures.basic.abilities.WhenToCall;
 import utils.BasicObjectBuilders;
 import utils.CommonUtils;
@@ -163,14 +164,16 @@ public class TileClicked implements EventProcessor {
       }
     }
     clickedTile.setUnitOnTile(monster);
-
     // remove all highlight tiles
     CommonUtils.rmAllHighlight(gameState, out);
     // summon unit
     BasicCommands.drawUnit(out, monster, clickedTile);
     // remove hand card
     gameState.getTurnOwner().getHand().getHandList().remove(selectedCard);
-    BasicCommands.deleteCard(out, gameState.getCardPos());
+    // front end rm card
+    if (gameState.getTurnOwner() == gameState.getHumanPlayer()) {
+      CommonUtils.drawCardsInHand(out, gameState.getTurnOwner().getHand().getHandList());
+    }
     CommonUtils.sleep();
     // update front end
     BasicCommands.setUnitAttack(out, monster, monster.getAttack());

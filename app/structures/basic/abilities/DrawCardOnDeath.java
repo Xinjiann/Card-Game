@@ -6,10 +6,10 @@ import structures.basic.EffectAnimation;
 import structures.basic.Monster;
 import commands.BasicCommands;
 
-public class OnDeath implements Ability {
+public class DrawCardOnDeath implements Ability {
 	
 	
-	public OnDeath() {
+	public DrawCardOnDeath() {
 		
 	}
 
@@ -26,8 +26,7 @@ public class OnDeath implements Ability {
 
 	@Override
 	public WhenToCall getWhenTOCall() {
-		// TODO Auto-generated method stub
-		return null;
+		return WhenToCall.death;
 	}
 
 }

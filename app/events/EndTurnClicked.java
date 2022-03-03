@@ -7,10 +7,6 @@ import commands.BasicCommands;
 import structures.GameState;
 import structures.basic.Card;
 import structures.basic.Monster;
-import structures.basic.Tile;
-import structures.basic.UnitAnimationType;
-import structures.basic.abilities.Ability;
-import structures.basic.abilities.Pyromancer;
 import utils.CommonUtils;
 
 /**
@@ -62,13 +58,12 @@ public class EndTurnClicked implements EventProcessor{
 			}
 			
 
+		// todo specify huamn or ai click endturn
 		gameState.getTurnOwner().getHand().drawCard(gameState.getTurnOwner().getDeck());
 
 		// when human player getting a new card, re-display all card in hand
 		if(gameState.getTurnOwner() == gameState.getHumanPlayer()) {
-			Card card = gameState.getTurnOwner().getDeck().getCardList().get(0);
-			int oldCardSize = (gameState.getTurnOwner().getHand().getHandList().size()) -1;
-			CommonUtils.drawCardsInHand(out, gameState, oldCardSize, gameState.getTurnOwner().getHand().getHandList());
+			CommonUtils.drawCardsInHand(out, gameState.getTurnOwner().getHand().getHandList());
 		}
 
 		// set new turn owner and give mana

@@ -1,29 +1,33 @@
 package structures.basic.abilities;
 
 import akka.actor.ActorRef;
+import commands.BasicCommands;
 import structures.GameState;
 import structures.basic.EffectAnimation;
 import structures.basic.Monster;
+import structures.basic.Tile;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
 
-public class PlanarScout implements Ability{
+public class UnlimitedAttackRange implements Ability{
 
   private EffectAnimation effectAnimation;
 
-  public PlanarScout() {
+  public UnlimitedAttackRange() {
 
     this.effectAnimation = BasicObjectBuilders.loadEffect(StaticConfFiles.f1_inmolation);
   }
 
   @Override
   public void execute(Monster monster, GameState gameState) {
-    monster.setMovesLeft(13);
+    int x = monster.getPosition().getTilex();
+    int attackDistance = Math.max(gameState.getGameBoard().getX() - x, x);
+    monster.setAttackDistance(attackDistance);
   }
 
   @Override
   public WhenToCall getWhenTOCall() {
-    return null;
+    return WhenToCall.summon;
   }
 
   @Override
