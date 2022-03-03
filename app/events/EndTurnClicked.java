@@ -25,9 +25,12 @@ public class EndTurnClicked implements EventProcessor{
 	@Override
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
 
+		if (gameState.isLock()) {
+			BasicCommands.addPlayer1Notification(out, "please wait...", 2);
+			return;
+		}
 		// change state
 		endTurn(out, gameState);
-
 		// ai play
 		if (gameState.getTurnOwner() == gameState.getAiPlayer()) {
 			AiPlayGame aiPlayGame = new AiPlayGame(gameState, out);
@@ -56,9 +59,7 @@ public class EndTurnClicked implements EventProcessor{
 					monster.setMovesLeft(monster.getMaxMove());
 				}
 			}
-			
-
-		// todo specify huamn or ai click endturn
+		
 		gameState.getTurnOwner().getHand().drawCard(gameState.getTurnOwner().getDeck());
 
 		// when human player getting a new card, re-display all card in hand

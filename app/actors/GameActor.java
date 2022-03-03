@@ -1,5 +1,6 @@
 package actors;
 
+import commands.BasicCommands;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -21,6 +22,7 @@ import events.UnitMoving;
 import events.UnitStopped;
 import play.libs.Json;
 import structures.GameState;
+import utils.CommonUtils;
 import utils.ImageListForPreLoad;
 import play.libs.Json;
 
@@ -107,6 +109,10 @@ public class GameActor extends AbstractActor {
 			// Unknown event type received
 			System.err.println("GameActor: Recieved unknown event type "+messageType);
 		} else {
+			if (gameState.isGameover()) {
+				BasicCommands.addPlayer1Notification(out, "Game over", 2);
+				return;
+			}
 			processor.processEvent(out, gameState, message); // process the event
 		}
 	}

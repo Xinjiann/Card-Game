@@ -29,6 +29,11 @@ public class CardClicked implements EventProcessor{
 	@Override
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
 
+		if (gameState.isLock()) {
+			BasicCommands.addPlayer1Notification(out, "please wait...", 2);
+			return;
+		}
+
 		int handPosition = message.get("position").asInt();
 
 		Card clickedCard = gameState.getHumanPlayer().getHand().getHandList().get(handPosition);

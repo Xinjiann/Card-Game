@@ -1,5 +1,7 @@
 package structures.basic;
 
+import structures.GameState;
+
 /**
  * A basic representation of of the Player. A player
  * has health and mana.

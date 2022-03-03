@@ -36,6 +36,8 @@ public class GameState {
 	private Player turnOwner;
 	private int cardPos;
 	private int turnCount;
+	private boolean lock;
+	private boolean gameover;
 
 	public GameState() {
 		gameBoard = new Board();
@@ -157,5 +159,21 @@ public class GameState {
 		} else {
 			aiPlayer.addMana(this.turnCount);
 		}
+	}
+
+	public boolean isLock() {
+		return lock;
+	}
+
+	public void setLock(boolean lock) {
+		this.lock = lock;
+	}
+
+	public boolean isGameover() {
+		return gameover;
+	}
+
+	public void setGameover(boolean gameover) {
+		this.gameover = gameover;
 	}
 }

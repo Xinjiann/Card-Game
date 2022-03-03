@@ -33,6 +33,11 @@ public class TileClicked implements EventProcessor {
   @Override
   public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
 
+    if (gameState.isLock()) {
+      BasicCommands.addPlayer1Notification(out, "please wait...", 2);
+      return;
+    }
+
     int tilex = message.get("tilex").asInt();
     int tiley = message.get("tiley").asInt();
 
@@ -124,6 +129,9 @@ public class TileClicked implements EventProcessor {
         }
       }
     }
+    // update front end
+    BasicCommands.setPlayer1Health(out, gameState.getHumanPlayer());
+    BasicCommands.setPlayer2Health(out, gameState.getAiPlayer());
     // mana cost
     gameState.getTurnOwner().setMana(gameState.getTurnOwner().getMana()-manaCost);
     BasicCommands.setPlayer1Mana(out, gameState.getHumanPlayer());
@@ -310,8 +318,13 @@ public class TileClicked implements EventProcessor {
     boolean survived = defender.beAttacked(attacker.getAttack());
     // update front end
     BasicCommands.setUnitHealth(out, defender, defender.getHealth());
+    BasicCommands.setPlayer1Health(out, gameState.getHumanPlayer());
+    BasicCommands.setPlayer2Health(out, gameState.getAiPlayer());
     // play animation
     BasicCommands.playUnitAnimation(out,attacker,UnitAnimationType.attack);
+    if (this.gameOver(gameState, out)) {
+      gameState.setGameover(true);
+    }
 
     // execute avatar be attacked ability
     if (defender.getClass() == Avatar.class) {
@@ -323,8 +336,6 @@ public class TileClicked implements EventProcessor {
         }
       }
     }
-
-
     if(!survived) {
       // unit dead
       BasicCommands.playUnitAnimation(out, defender, UnitAnimationType.death);
@@ -347,7 +358,13 @@ public class TileClicked implements EventProcessor {
       BasicCommands.playUnitAnimation(out,defender,UnitAnimationType.attack);
       // update front end
       BasicCommands.setUnitHealth(out, attacker, attacker.getHealth());
-      CommonUtils.longlongSleep(2500);
+      BasicCommands.setPlayer1Health(out, gameState.getHumanPlayer());
+      BasicCommands.setPlayer2Health(out, gameState.getAiPlayer());
+
+      CommonUtils.longlongSleep(2200);
+      if (this.gameOver(gameState, out)) {
+        gameState.setGameover(true);
+      }
       // execute avatar be attacked ability
       if (attacker.getClass() == Avatar.class) {
         ArrayList<Tile> list = CommonUtils.getAllUnits(gameState);
@@ -361,7 +378,7 @@ public class TileClicked implements EventProcessor {
       //if die from counter-attack
       if (!survived) {
         BasicCommands.playUnitAnimation(out, attacker, UnitAnimationType.death);
-        CommonUtils.longlongSleep(1500);// time to play animation
+        CommonUtils.longlongSleep(1300);// time to play animation
         BasicCommands.deleteUnit(out, attacker);
 
         previousTile.rmUnitOnTile();
@@ -378,6 +395,15 @@ public class TileClicked implements EventProcessor {
     }
   }
 
+  private boolean gameOver(GameState gameState, ActorRef out) {
+    if (gameState.getHumanPlayer().getHealth() <=0 || gameState.getAiPlayer().getHealth() <=0) {
+      String s = gameState.getHumanPlayer().getHealth() == 0 ? "lose" : "win";
+      BasicCommands.addPlayer1Notification(out, "You " + s, 10);
+      return true;
+    }
+    return false;
+  }
+
   public void moveAndAttack(Monster previousMonster, Monster clickedMonster,
       GameState gameState, ActorRef out, Tile previousTile, Tile clickedTile) {
 
@@ -392,7 +418,9 @@ public class TileClicked implements EventProcessor {
     }
     if (tileToGo != null) {
       moveClick(previousMonster, gameState, out, tileToGo);
-      CommonUtils.longlongSleep(2200);
+      // set waiting time according to the moving distance
+      int delta = Math.abs(tileToGo.getTilex()-previousTile.getTilex())+Math.abs(tileToGo.getTiley()-previousTile.getTiley());
+      CommonUtils.longlongSleep(1075*delta);
       attack(previousMonster, clickedMonster, gameState, out, tileToGo, clickedTile);
     } else {
       attack(previousMonster, clickedMonster, gameState, out, previousTile, clickedTile);
