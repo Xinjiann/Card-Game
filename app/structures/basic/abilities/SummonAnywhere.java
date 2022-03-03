@@ -9,12 +9,7 @@ import utils.StaticConfFiles;
 
 public class SummonAnywhere implements Ability{
 
-  private EffectAnimation effectAnimation;
 
-  public SummonAnywhere() {
-
-    this.effectAnimation = BasicObjectBuilders.loadEffect(StaticConfFiles.f1_inmolation);
-  }
 
   @Override
   public void execute(Monster monster, GameState gameState, ActorRef out) {
@@ -31,6 +26,6 @@ public class SummonAnywhere implements Ability{
 
   @Override
   public EffectAnimation getEffectAnimation() {
-    return this.effectAnimation;
+    return null;
   }
 }

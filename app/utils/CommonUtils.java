@@ -11,6 +11,19 @@ import structures.basic.Tile;
 
 public class CommonUtils {
 
+  public static ArrayList<Tile> getAllUnits(GameState gameState) {
+    Board board = gameState.getGameBoard();
+    ArrayList<Tile> tiles = new ArrayList<>();
+    for (int i = 0; i < board.getX(); i++) {
+      for (int j = 0; j < board.getY(); j++) {
+        if (!board.getTile(i, j).getAvailable()) {
+          tiles.add(board.getTile(i, j));
+        }
+      }
+    }
+    return tiles;
+  }
+
   public static void rmMonsterHighlightTiles(Monster monster, GameState gameState, ActorRef out) {
     int x = monster.getPosition().getTilex();
     int y = monster.getPosition().getTiley();
@@ -23,22 +36,6 @@ public class CommonUtils {
       BasicCommands.drawTile(out, t, 0);
     }
   }
-
-//  public static void rmAdjTiles(Monster monster, GameState gameState, ActorRef out) {
-//    int x = monster.getPosition().getTilex();
-//    int y = monster.getPosition().getTiley();
-//    int x_max = gameState.gameBoard.getGameBoard().length;
-//    int y_max = gameState.gameBoard.getGameBoard()[0].length;
-//    for (int i=x-1; i<=x+1; i++) {
-//      for (int j=y-1; j<=y+1; j++) {
-//        if (i >= 0 && i< x_max && j >= 0 && j<y_max) {
-//          Tile tile = gameState.getGameBoard().getGameBoard()[j][i];
-//          BasicCommands.drawTile(out, tile, 0);
-//          CommonUtils.tinySleep();
-//        }
-//      }
-//    }
-//  }
 
   public static void rmAllHighlight(GameState gameState, ActorRef out) {
     Board board = gameState.gameBoard;

@@ -21,7 +21,12 @@ public class AbilityToCard {
 
 		// units
 		// deck 1
-
+		abilityToCard.put("Pureblade Enforcer", loadAbilities(new growWhenCastSpell()));
+		abilityToCard.put("Azure Herald", loadAbilities(new addAvatarHealth()));
+		abilityToCard.put("Silverguard Knight", loadAbilities(new addAttackWhenAvatarBeAttack(), new Provoke()));
+		abilityToCard.put("Azurite Lion", loadAbilities(new AttackTwice()));
+		abilityToCard.put("Fire Spitter", loadAbilities(new UnlimitedAttackRange()));
+		abilityToCard.put("Ironcliff Guardian", loadAbilities(new SummonAnywhere(), new Provoke()));
 		// deck 2
 		abilityToCard.put("Serpenti", loadAbilities(new AttackTwice()));
 		abilityToCard.put("Planar Scout", loadAbilities(new SummonAnywhere()));

@@ -147,6 +147,26 @@ public class TileClicked implements EventProcessor {
       BasicCommands.deleteUnit(out, monster);
       clickedTile.rmUnitOnTile();
     }
+
+    // check ability
+    this.checkAbility(gameState, out);
+  }
+
+  private void checkAbility(GameState gameState, ActorRef out) {
+    ArrayList<Tile> list = CommonUtils.getAllUnits(gameState);
+    for (Tile tile : list) {
+      Monster monster = tile.getUnitOnTile();
+      if (monster.getAbilities() != null && !monster.getAbilities().isEmpty()) {
+        for (Ability ability : monster.getAbilities()) {
+          if (ability.getWhenTOCall() == WhenToCall.castSpell) {
+            ability.execute(monster, gameState, out);
+          }
+          if (ability.getEffectAnimation() != null) {
+            BasicCommands.playEffectAnimation(out, ability.getEffectAnimation(), tile);
+          }
+        }
+      }
+    }
   }
 
   public void summonUnit(GameState gameState, ActorRef out, Tile clickedTile, Card selectedCard) {

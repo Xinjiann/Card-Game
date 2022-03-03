@@ -1,5 +1,5 @@
 package structures.basic.abilities;
 
 public enum WhenToCall {
-  summon, death, cardClick, spell
+  summon, death, cardClick, spell, castSpell, beAttacked
 }

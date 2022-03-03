@@ -15,7 +15,7 @@ public class UnlimitedAttackRange implements Ability{
 
   public UnlimitedAttackRange() {
 
-    this.effectAnimation = BasicObjectBuilders.loadEffect(StaticConfFiles.f1_inmolation);
+    this.effectAnimation = BasicObjectBuilders.loadEffect(StaticConfFiles.f1_projectiles);
   }
 
   @Override
