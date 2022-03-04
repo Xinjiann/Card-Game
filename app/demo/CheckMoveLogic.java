@@ -6,6 +6,7 @@ import structures.basic.Card;
 import structures.basic.Tile;
 import structures.basic.Unit;
 import utils.BasicObjectBuilders;
+import utils.CommonUtils;
 import utils.StaticConfFiles;
 
 public class CheckMoveLogic {
@@ -27,19 +28,19 @@ public class CheckMoveLogic {
 		BasicCommands.moveUnitToTile(out, unit, tile2);
 		unit.setPositionByTile(tile2); 
 		
-		try {Thread.sleep(4000);} catch (InterruptedException e) {e.printStackTrace();}
+		CommonUtils.longlongSleep(4000);
 		
 		// Move unit, default, horizontal then vertical
 		BasicCommands.moveUnitToTile(out, unit, tile);
 		unit.setPositionByTile(tile); 
 		
-		try {Thread.sleep(4000);} catch (InterruptedException e) {e.printStackTrace();}
+		CommonUtils.longlongSleep(4000);
 		
 		// Move unit, alternative, vertical then horizontal
 		BasicCommands.moveUnitToTile(out, unit, tile2, true);
 		unit.setPositionByTile(tile2); 
 		
-		try {Thread.sleep(4000);} catch (InterruptedException e) {e.printStackTrace();}
+		CommonUtils.longlongSleep(4000);
 		
 		// Move unit, alternative, vertical then horizontal
 		BasicCommands.moveUnitToTile(out, unit, tile, true);
