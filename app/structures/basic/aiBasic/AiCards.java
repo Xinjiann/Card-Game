@@ -51,12 +51,16 @@ public class AiCards {
       switch (spell.getCardname()) {
         case "Sundrop Elixir" :
           gameBoard.setAllUnitTiles();
+          break;
         case "Truestrike" :
           gameBoard.setAllEnemyTiles(gameState);
+          break;
         case "Staff of Y'Kir'" :
           gameBoard.setAvatarArea(gameState);
+          break;
         case "Entropic Decay" :
           gameBoard.setNoneAvatarUnitArea();
+          break;
       }
       if (!gameBoard.getSpellArea().isEmpty()) {
         tile = gameBoard.getSpellArea().get(0);

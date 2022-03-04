@@ -307,7 +307,7 @@ public class TileClicked implements EventProcessor {
 
   private void attack(Monster attacker, Monster defender, GameState gameState, ActorRef out, Tile previousTile, Tile clickedTile) {
     // remove all highlight
-    nonSpellHighlight(out, gameState, attacker.getPosition());
+    CommonUtils.rmMonsterSelectedHighlightTiles(attacker, gameState, out);
     // check coolDown
     if (attacker.isFrozen()) {
       BasicCommands.addPlayer1Notification(out, "you can not attack in this turn", 2);
@@ -432,7 +432,7 @@ public class TileClicked implements EventProcessor {
     Tile previousTile = gameState.gameBoard.getTile(previousMonster.getPosition().getTilex(),
         previousMonster.getPosition().getTiley());
     // first remove all the highlight tiles
-    CommonUtils.rmMonsterHighlightTiles(previousMonster, gameState, out);
+    CommonUtils.rmMonsterSelectedHighlightTiles(previousMonster, gameState, out);
     if (previousTile == clickedTile) {
       // remove selected unit
       gameState.setUnitSelected(null);

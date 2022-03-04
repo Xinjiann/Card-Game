@@ -13,6 +13,8 @@ public class Board {
   private ArrayList<Tile> summonArea;
   private int summonDistance;
   private ArrayList<Tile> spellArea;
+  private ArrayList<Tile> movableTiles;
+  private ArrayList<Tile> attachableTiles;
 
 
   public Board() {
@@ -27,6 +29,8 @@ public class Board {
         gameBoard[i][k].unitOnTile = null;
       }
     }
+    attachableTiles = new ArrayList<>();
+    movableTiles = new ArrayList<>();
   }
 
   public Tile[][] getGameBoard() {
@@ -54,7 +58,8 @@ public class Board {
       }
     }
     movableTiles.removeIf(t -> t.getUnitOnTile()!=null);
-    return movableTiles;
+    this.movableTiles = movableTiles;
+    return this.movableTiles;
   }
 
   public ArrayList<Tile> getAttachableTiles(int x, int y, int movesLeft, int attackDistance) {
@@ -76,7 +81,13 @@ public class Board {
       HashSet <Tile> attRange = hasMovedAttachableTiles(t.getTilex(), t.getTiley(), player, attackDistance);
       attachableSet.addAll(attRange);
     }
-    return new ArrayList<>(attachableSet);
+    attachableTiles = new ArrayList<>(attachableSet);
+    return attachableTiles;
+  }
+
+  public ArrayList<Tile> getAllAttachableAndMovableTiles() {
+    movableTiles.addAll(attachableTiles);
+    return movableTiles;
   }
 
   public HashSet<Tile> hasMovedAttachableTiles(int x, int y, Player player, int attackDistance) {
@@ -153,7 +164,7 @@ public class Board {
         }
       }
     }
-    spellArea = allEnemyTiles;
+    this.spellArea = allEnemyTiles;
   }
 
   public void setAvatarArea(GameState gameState) {
@@ -169,7 +180,7 @@ public class Board {
         }
       }
     }
-    spellArea = avatarTiles;
+    this.spellArea = avatarTiles;
   }
 
   public void setNoneAvatarUnitArea() {

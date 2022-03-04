@@ -14,7 +14,7 @@ import structures.basic.abilities.WhenToCall;
 
 public class CommonUtils {
 
-  private static final int bufferSize = 15;
+  private static final int bufferSize = 16;
 
   public static ArrayList<Tile> getAllUnits(GameState gameState) {
     Board board = gameState.getGameBoard();
@@ -29,15 +29,9 @@ public class CommonUtils {
     return tiles;
   }
 
-  public static void rmMonsterHighlightTiles(Monster monster, GameState gameState, ActorRef out) {
-    int x = monster.getPosition().getTilex();
-    int y = monster.getPosition().getTiley();
-    ArrayList<Tile> movableTiles = gameState.getGameBoard()
-        .getMovableTiles(x, y, monster.getMovesLeft());
-    ArrayList<Tile> attachableTiles = gameState.getGameBoard()
-        .getAttachableTiles(x, y, monster.getMovesLeft(), monster.getAttackDistance());
-    movableTiles.addAll(attachableTiles);
-    drawTilesInBatch(out, movableTiles, 0);
+  public static void rmMonsterSelectedHighlightTiles(Monster monster, GameState gameState, ActorRef out) {
+
+    drawTilesInBatch(out, gameState.getGameBoard().getAllAttachableAndMovableTiles(), 0);
   }
 
   public static void rmAllHighlight(GameState gameState, ActorRef out) {
