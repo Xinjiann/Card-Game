@@ -38,8 +38,8 @@ public class CardClicked implements EventProcessor{
 
 		Card clickedCard = gameState.getHumanPlayer().getHand().getHandList().get(handPosition);
 		Card preClickedCard = gameState.getCardSelected();
-
-
+		// unselect unit
+		gameState.setUnitSelected(null);
 		//firstly remove the highlight on the board
 		if(preClickedCard == clickedCard){
 			CommonUtils.rmAllHighlight(gameState, out);
@@ -66,7 +66,7 @@ public class CardClicked implements EventProcessor{
 						case "Entropic Decay" :
 							gameState.gameBoard.setNoneAvatarUnitArea();
 					}
-					CommonUtils.listHighlight(out, gameState.gameBoard.getSpellArea());
+					CommonUtils.drawTilesInBatch(out, gameState.gameBoard.getSpellArea(), 1);
 				}else{
 					//unit type card
 					// remove all highlights
@@ -85,7 +85,7 @@ public class CardClicked implements EventProcessor{
 					Avatar humanAvatar = gameState.getHumanAvatar();
 					Position pos = humanAvatar.getPosition();
 					gameState.getGameBoard().setSummonArea(pos);
-					CommonUtils.listHighlight(out, gameState.gameBoard.getSummonArea());
+					CommonUtils.drawTilesInBatch(out, gameState.gameBoard.getSummonArea(), 1);
 					gameState.setCardPos(handPosition);
 				}
 			} else {

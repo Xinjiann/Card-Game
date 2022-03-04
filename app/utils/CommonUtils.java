@@ -3,6 +3,7 @@ package utils;
 import akka.actor.ActorRef;
 import commands.BasicCommands;
 import java.util.ArrayList;
+import java.util.Arrays;
 import structures.GameState;
 import structures.basic.Board;
 import structures.basic.Card;
@@ -12,6 +13,8 @@ import structures.basic.abilities.Ability;
 import structures.basic.abilities.WhenToCall;
 
 public class CommonUtils {
+
+  private static final int bufferSize = 15;
 
   public static ArrayList<Tile> getAllUnits(GameState gameState) {
     Board board = gameState.getGameBoard();
@@ -34,36 +37,44 @@ public class CommonUtils {
     ArrayList<Tile> attachableTiles = gameState.getGameBoard()
         .getAttachableTiles(x, y, monster.getMovesLeft(), monster.getAttackDistance());
     movableTiles.addAll(attachableTiles);
-    for (Tile t : movableTiles) {
-      BasicCommands.drawTile(out, t, 0);
-    }
+    drawTilesInBatch(out, movableTiles, 0);
   }
 
   public static void rmAllHighlight(GameState gameState, ActorRef out) {
     Board board = gameState.gameBoard;
     int x = board.getGameBoard().length;
     int y = board.getGameBoard()[0].length;
+    ArrayList<Tile> list = new ArrayList<>();
     for (int i=0; i<x; i++) {
-      for (int j=0; j<y; j++) {
-        Tile tile = board.getGameBoard()[i][j];
-        BasicCommands.drawTile(out, tile, 0);
+      list.addAll(Arrays.asList(board.getGameBoard()[i]).subList(0, y));
+    }
+    drawTilesInBatch(out, list, 0);
+  }
+
+  public static void drawTilesInBatch(ActorRef out, ArrayList<Tile> area, int mode){
+    if (area.size() < bufferSize) {
+      for (Tile tile : area) {
+        BasicCommands.drawTile(out, tile, mode);
+      }
+      sleep();
+    } else {
+      int batch = area.size()/bufferSize+1;
+      for (int i=0; i<batch; i++) {
+        if (i == batch-1) {
+          for (int j = i*bufferSize; j < area.size(); j++) {
+            BasicCommands.drawTile(out, area.get(j), mode);
+          }
+          sleep();
+        } else {
+          for (int j = i*bufferSize; j < (i+1)*bufferSize; j++) {
+            BasicCommands.drawTile(out, area.get(j), mode);
+          }
+          sleep();
+        }
       }
     }
   }
 
-  public static void listHighlight(ActorRef out, ArrayList<Tile> area) {
-    for (Tile tile : area) {
-      BasicCommands.drawTile(out, tile, 1);
-//      CommonUtils.tinySleep();
-    }
-  }
-
-  public static void rmListHighlight(ActorRef out, ArrayList<Tile> area) {
-    for (Tile tile : area) {
-      BasicCommands.drawTile(out, tile, 0);
-//      CommonUtils.tinySleep();
-    }
-  }
 
   public static void tinySleep() {
     try {Thread.sleep(10);} catch (InterruptedException e) {e.printStackTrace();}

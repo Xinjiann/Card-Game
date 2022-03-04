@@ -118,7 +118,7 @@ public class TileClicked implements EventProcessor {
       return;
     }
     //remove highlight
-    CommonUtils.rmListHighlight(out, gameState.getGameBoard().getSpellArea());
+    CommonUtils.drawTilesInBatch(out, gameState.getGameBoard().getSpellArea(), 0);
     Monster monster = clickedTile.getUnitOnTile();
     // check ability
     if (selectedCard.getAbilityList() != null) {
