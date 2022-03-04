@@ -29,21 +29,18 @@ public class AiPlayGame {
     ArrayList<Card> handList = gameState.getTurnOwner().getHand().getHandList();
 
     if (!cardCombo.isEmpty()) {
-      Iterator<Entry<Tile, Card>> iterator = cardCombo.entrySet().iterator();
-      while (iterator.hasNext()) {
+      // set selected card
+      cardCombo.entrySet().forEach(entry -> {
         CommonUtils.sleep();
-        Entry<Tile, Card> entry = iterator.next();
         if (entry.getKey() == null || entry.getValue() == null) {
-          continue;
+          return;
         }
-        // set selected card
         for (Card card : handList) {
           if (card.getId() == entry.getValue().getId()) {
             gameState.setCardSelected(card);
             gameState.setCardPos(handList.indexOf(card));
           }
         }
-
         if (entry.getValue().getType().equals("spell")) {
           // play spell card
           tileClicked.playSpell(gameState, out, entry.getKey(), entry.getValue());
@@ -51,7 +48,7 @@ public class AiPlayGame {
           // summon unit
           tileClicked.summonUnit(gameState, out, entry.getKey(), entry.getValue());
         }
-      }
+      });
     }
 
     /* ai attack **/
@@ -93,12 +90,10 @@ public class AiPlayGame {
     // get best move target
     HashMap<Monster, Tile> moveTarget = this.getUnitMoveTarget(allMovableOnlyUnit);
     // move
-    Iterator<Map.Entry<Monster, Tile>> entries = moveTarget.entrySet().iterator();
-    while (entries.hasNext()) {
-      Map.Entry<Monster, Tile> entry = entries.next();
-      tileClicked.moveClick(entry.getKey(), gameState, out, entry.getValue());
+    moveTarget.forEach((key, value) -> {
+      tileClicked.moveClick(key, gameState, out, value);
       CommonUtils.longlongSleep(2200);
-    }
+    });
     // Ai's turn end
     EndTurnClicked endTurnClicked = new EndTurnClicked();
     endTurnClicked.endTurn(out, gameState);
@@ -215,11 +210,7 @@ public class AiPlayGame {
       scoreMap.put(tile, score);
     }
     List<Entry<Tile, Integer>> list = new ArrayList<Entry<Tile, Integer>>(scoreMap.entrySet());
-    list.sort(new Comparator<Entry<Tile, Integer>>() {
-      public int compare(Entry<Tile, Integer> o1, Entry<Tile, Integer> o2) {
-        return (o2.getValue() - o1.getValue());
-      }
-    });
+    list.sort(Comparator.comparingInt(Entry::getValue));
     List<Tile> list1 = list.stream().map(Entry::getKey).collect(Collectors.toList());
 
     return new ArrayList<>(list1);
@@ -240,11 +231,7 @@ public class AiPlayGame {
     }
     List<Entry<Monster, Integer>> list = new ArrayList<Entry<Monster, Integer>>(
         scoreMap.entrySet());
-    list.sort(new Comparator<Entry<Monster, Integer>>() {
-      public int compare(Entry<Monster, Integer> o1, Entry<Monster, Integer> o2) {
-        return (o1.getValue() - o2.getValue());
-      }
-    });
+    list.sort(Comparator.comparingInt(Entry::getValue));
     List<Monster> list1 = list.stream().map(Entry::getKey).collect(Collectors.toList());
     return new ArrayList<Monster>(list1);
   }
