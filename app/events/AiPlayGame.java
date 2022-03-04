@@ -77,10 +77,7 @@ public class AiPlayGame {
     HashMap<Monster, ArrayList<Tile>> attachableTiles = this.getAllAttachableTiles(allAvailableUnit,
         allMovableOnlyUnit);
 
-    while (attachableTiles.entrySet().iterator().hasNext() && !attachableTiles.entrySet().iterator()
-        .next().getValue().isEmpty()) {
-
-      // todo optimize cal speed
+    for (Entry<Monster, ArrayList<Tile>> monsterArrayListEntry : attachableTiles.entrySet()) {
       // rank the enemy unit (The higher the unit ability, the higher the priority)
       attachableTargetRank = this.rankAttachableTargetUnit(attachableTiles);
       // rank attachable unit (The lower the unit ability, the higher the priority)

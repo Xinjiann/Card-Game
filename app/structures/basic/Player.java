@@ -18,7 +18,7 @@ public class Player {
 	
 	public Player() {
 		this.health = 20;
-		this.mana = 2;
+		this.mana = 0;
 	}
 	public Player(int health, int mana) {
 		this.health = health;

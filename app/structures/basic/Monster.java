@@ -29,12 +29,12 @@ public class Monster  extends Unit{
   public Monster() {
     super();
     this.attackDistance = 1;
-    this.attackCount = 1;
+    this.attackCount = 0;
     this.maxAttackCount = 1;
-    this.movesLeft = 2;
+    this.movesLeft = 0;
     this.maxMove = 2;
     this.abilities = null;
-    this.frozen = false;
+    this.frozen = true;
     this.isAlive = true;
     this.provokeOwners = null;
     this.beenProvoke=false;

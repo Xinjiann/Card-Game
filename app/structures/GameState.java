@@ -45,10 +45,13 @@ public class GameState {
 		// init abilities to cards
 		AbilityToCard.init();
 
+		// record turn count
+		turnCount = 1;
+
 		// human deck
 		Deck humanDeck = new Deck();
 		humanDeck.humanDeck();
-		humanPlayer = new Player(20, 9);
+		humanPlayer = new Player();
 		// human hand
 		humanPlayer.setDeck(humanDeck);
 		humanDeck.shuffleDeck();
@@ -59,7 +62,7 @@ public class GameState {
 		// ai deck
 		Deck aiDeck = new Deck();
 		aiDeck.aiDeck();
-		aiPlayer = new AiPlayer(20, 9);
+		aiPlayer = new AiPlayer();
 		// ai hand
 		aiPlayer.setDeck(aiDeck);
 		aiDeck.shuffleDeck();
