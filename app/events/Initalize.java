@@ -6,6 +6,7 @@ import akka.actor.ActorRef;
 import commands.BasicCommands;
 import demo.CheckMoveLogic;
 import demo.CommandDemo;
+import java.util.ArrayList;
 import play.api.Play;
 import structures.GameState;
 import structures.basic.Avatar;
@@ -55,7 +56,7 @@ public class Initalize implements EventProcessor {
     BasicCommands.setUnitAttack(out, humanAvatar, humanAvatar.getAttack());
     CommonUtils.sleep();
     BasicCommands.setUnitHealth(out, humanAvatar, humanAvatar.getHealth());
-
+    CommonUtils.sleep();
 //    // test
 //    Card card1 = BasicObjectBuilders.loadCard(StaticConfFiles.c_comodo_charger, StaticConfFiles.u_comodo_charger, 90, Card.class);
 //    Card cBlazeHound = BasicObjectBuilders.loadCard(StaticConfFiles.c_blaze_hound, 91, Card.class);
@@ -88,6 +89,7 @@ public class Initalize implements EventProcessor {
     BasicCommands.setUnitAttack(out, aiAvatar, aiAvatar.getAttack());
     CommonUtils.sleep();
     BasicCommands.setUnitHealth(out, aiAvatar, aiAvatar.getHealth());
+    CommonUtils.sleep();
   }
 
   private void initializePlayers(ActorRef out, GameState gameState) {
@@ -95,12 +97,14 @@ public class Initalize implements EventProcessor {
     Player humanPlayer = gameState.getHumanPlayer();
     CommonUtils.sleep(); // time for front end to process
     BasicCommands.setPlayer1Health(out, humanPlayer);
-    CommonUtils.sleep();
-    BasicCommands.setPlayer1Mana(out, humanPlayer);
 
     Player aiPlayer = gameState.getAiPlayer();
     CommonUtils.sleep(); // time for front end to process
     BasicCommands.setPlayer2Health(out, aiPlayer);
+    CommonUtils.sleep();
+    // set mana
+    gameState.giveMana();
+    BasicCommands.setPlayer1Mana(out, humanPlayer);
     CommonUtils.sleep();
     BasicCommands.setPlayer2Mana(out, aiPlayer);
     //draw hand cards
@@ -110,14 +114,14 @@ public class Initalize implements EventProcessor {
   }
 
   private void initializeTiles(ActorRef out, GameState gameState) {
+    ArrayList<Tile> list = new ArrayList<>();
     Board board = gameState.gameBoard;
     for (int i = 0; i<board.getGameBoard().length; i++) {
       for (int k = 0; k<board.getGameBoard()[0].length; k++) {
-        BasicCommands.drawTile(out, board.getGameBoard()[i][k], 0);
+        list.add(board.getGameBoard()[i][k]);
       }
-      CommonUtils.sleep();// time for front end to process
     }
-    CommonUtils.sleep();
+    CommonUtils.drawTilesInBatch(out, list, 0);
   }
 
 }

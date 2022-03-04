@@ -14,7 +14,7 @@ import structures.basic.abilities.WhenToCall;
 
 public class CommonUtils {
 
-  private static final int bufferSize = 16;
+  private static final int bufferSize = 15;
 
   public static ArrayList<Tile> getAllUnits(GameState gameState) {
     Board board = gameState.getGameBoard();
