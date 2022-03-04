@@ -30,6 +30,7 @@ public class growWhenCastSpell implements Ability{
       monsterEntity.setHealth(Math.min(monsterEntity.getHealth()+1, monsterEntity.getMaxHealth()));
       CommonUtils.tinySleep();
       BasicCommands.setUnitAttack(out, monsterEntity, monsterEntity.getAttack());
+      CommonUtils.sleep();
       BasicCommands.setUnitHealth(out, monsterEntity, monsterEntity.getHealth());
     }
   }

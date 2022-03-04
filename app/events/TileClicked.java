@@ -131,10 +131,12 @@ public class TileClicked implements EventProcessor {
     }
     // update front end
     BasicCommands.setPlayer1Health(out, gameState.getHumanPlayer());
+    CommonUtils.sleep();
     BasicCommands.setPlayer2Health(out, gameState.getAiPlayer());
     // mana cost
     gameState.getTurnOwner().setMana(gameState.getTurnOwner().getMana()-manaCost);
     BasicCommands.setPlayer1Mana(out, gameState.getHumanPlayer());
+    CommonUtils.sleep();
     BasicCommands.setPlayer2Mana(out, gameState.getAiPlayer());
     // remove hand card
     gameState.getTurnOwner().getHand().getHandList().remove(selectedCard);
@@ -148,6 +150,7 @@ public class TileClicked implements EventProcessor {
     BasicCommands.setUnitHealth(out, monster, monster.getHealth());
     CommonUtils.sleep();
     BasicCommands.setUnitAttack(out, monster, monster.getAttack());
+    CommonUtils.sleep();
     // unit dead
     if (monster.getHealth() == 0) {
       BasicCommands.playUnitAnimation(out, monster, UnitAnimationType.death);
@@ -179,6 +182,7 @@ public class TileClicked implements EventProcessor {
     // mana cost
     gameState.getTurnOwner().setMana(gameState.getTurnOwner().getMana()-manaCost);
     BasicCommands.setPlayer1Mana(out, gameState.getHumanPlayer());
+    CommonUtils.sleep();
     BasicCommands.setPlayer2Mana(out, gameState.getAiPlayer());
 
     Monster monster = BasicObjectBuilders.loadMonsterUnit(selectedCard.getUnitConfigFiles(), selectedCard, gameState.getTurnOwner(), Monster.class);
@@ -318,7 +322,9 @@ public class TileClicked implements EventProcessor {
     boolean survived = defender.beAttacked(attacker.getAttack());
     // update front end
     BasicCommands.setUnitHealth(out, defender, defender.getHealth());
+    CommonUtils.sleep();
     BasicCommands.setPlayer1Health(out, gameState.getHumanPlayer());
+    CommonUtils.sleep();
     BasicCommands.setPlayer2Health(out, gameState.getAiPlayer());
     // play animation
     BasicCommands.playUnitAnimation(out,attacker,UnitAnimationType.attack);
@@ -358,7 +364,9 @@ public class TileClicked implements EventProcessor {
       BasicCommands.playUnitAnimation(out,defender,UnitAnimationType.attack);
       // update front end
       BasicCommands.setUnitHealth(out, attacker, attacker.getHealth());
+      CommonUtils.sleep();
       BasicCommands.setPlayer1Health(out, gameState.getHumanPlayer());
+      CommonUtils.sleep();
       BasicCommands.setPlayer2Health(out, gameState.getAiPlayer());
 
       CommonUtils.longlongSleep(2200);

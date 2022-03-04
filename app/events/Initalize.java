@@ -53,6 +53,7 @@ public class Initalize implements EventProcessor {
     BasicCommands.drawUnit(out, humanAvatar, tile1);
     CommonUtils.sleep();// time for front end to process
     BasicCommands.setUnitAttack(out, humanAvatar, humanAvatar.getAttack());
+    CommonUtils.sleep();
     BasicCommands.setUnitHealth(out, humanAvatar, humanAvatar.getHealth());
 
 //    // test
@@ -85,6 +86,7 @@ public class Initalize implements EventProcessor {
     BasicCommands.drawUnit(out, aiAvatar, tile2);
     CommonUtils.sleep(); // time for front end to process
     BasicCommands.setUnitAttack(out, aiAvatar, aiAvatar.getAttack());
+    CommonUtils.sleep();
     BasicCommands.setUnitHealth(out, aiAvatar, aiAvatar.getHealth());
   }
 
@@ -93,11 +95,13 @@ public class Initalize implements EventProcessor {
     Player humanPlayer = gameState.getHumanPlayer();
     CommonUtils.sleep(); // time for front end to process
     BasicCommands.setPlayer1Health(out, humanPlayer);
+    CommonUtils.sleep();
     BasicCommands.setPlayer1Mana(out, humanPlayer);
 
     Player aiPlayer = gameState.getAiPlayer();
     CommonUtils.sleep(); // time for front end to process
     BasicCommands.setPlayer2Health(out, aiPlayer);
+    CommonUtils.sleep();
     BasicCommands.setPlayer2Mana(out, aiPlayer);
     //draw hand cards
     for (int i=0; i<humanPlayer.getHand().getHandList().size(); i++) {

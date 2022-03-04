@@ -71,6 +71,7 @@ public class EndTurnClicked implements EventProcessor{
 		gameState.turnChange();
 		gameState.giveMana();
 		BasicCommands.setPlayer1Mana(out, gameState.getHumanPlayer());
+		CommonUtils.sleep();
 		BasicCommands.setPlayer2Mana(out, gameState.getAiPlayer());
 	}
 
