@@ -267,9 +267,7 @@ public class TileClicked implements EventProcessor {
       } else {
         previousMonster.setMovesLeft(previousMonster.getMovesLeft() - (deltaX + deltaY));
         previousMonster.setPositionByTile(clickedTile);
-        for (Tile t : movableTiles) {
-          BasicCommands.drawTile(out, t, 0);
-        }
+        CommonUtils.drawTilesInBatch(out, movableTiles, 0);
         previousTile.rmUnitOnTile();
         clickedTile.setUnitOnTile(previousMonster);
         gameState.setUnitSelected(null);
@@ -303,10 +301,11 @@ public class TileClicked implements EventProcessor {
 
     if (Math.abs(previousTile.getTilex()-clickedTile.getTilex()) <= previousMonster.getAttackDistance() && Math.abs(previousTile.getTiley()-clickedTile.getTiley()) <= previousMonster.getAttackDistance()) {
       attack(previousMonster, clickedMonster, gameState, out, previousTile, clickedTile);
+      gameState.setUnitSelected(null);
     } else {
       moveAndAttack(previousMonster, clickedMonster, gameState, out, previousTile, clickedTile);
     }
-    gameState.setUnitSelected(null);
+
   }
 
   private void attack(Monster attacker, Monster defender, GameState gameState, ActorRef out, Tile previousTile, Tile clickedTile) {
@@ -430,8 +429,10 @@ public class TileClicked implements EventProcessor {
       int delta = Math.abs(tileToGo.getTilex()-previousTile.getTilex())+Math.abs(tileToGo.getTiley()-previousTile.getTiley());
       CommonUtils.longlongSleep(1075*delta);
       attack(previousMonster, clickedMonster, gameState, out, tileToGo, clickedTile);
+      // unselect unit
+      gameState.setUnitSelected(null);
     } else {
-      attack(previousMonster, clickedMonster, gameState, out, previousTile, clickedTile);
+      BasicCommands.addPlayer1Notification(out, "you can not attack that unit", 2);
     }
   }
 
