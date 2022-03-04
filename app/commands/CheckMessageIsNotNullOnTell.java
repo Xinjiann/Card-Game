@@ -1,8 +1,8 @@
 package commands;
 
-import static org.junit.Assert.assertNotNull;
-
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import static org.junit.Assert.assertNotNull;
 
 public class CheckMessageIsNotNullOnTell implements DummyTell {
 

@@ -1,13 +1,13 @@
 package utils;
 
+import structures.basic.Card;
+import structures.basic.Tile;
+import structures.basic.Unit;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import structures.basic.Card;
-import structures.basic.Tile;
-import structures.basic.Unit;
 
 /**
  * This is a utility class that builds a large set of image URLs

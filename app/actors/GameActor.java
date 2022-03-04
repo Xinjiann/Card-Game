@@ -1,30 +1,19 @@
 package actors;
 
-import commands.BasicCommands;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
+import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import akka.actor.AbstractActor;
-import akka.actor.ActorRef;
-import events.CardClicked;
-import events.EndTurnClicked;
-import events.EventProcessor;
-import events.Heartbeat;
-import events.Initalize;
-import events.OtherClicked;
-import events.TileClicked;
-import events.UnitMoving;
-import events.UnitStopped;
+import commands.BasicCommands;
+import events.*;
 import play.libs.Json;
 import structures.GameState;
-import utils.CommonUtils;
 import utils.ImageListForPreLoad;
-import play.libs.Json;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * The game actor is an Akka Actor that receives events from the user front-end UI (e.g. when 

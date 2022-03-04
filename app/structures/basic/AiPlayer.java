@@ -1,10 +1,9 @@
 package structures.basic;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import structures.GameState;
-
 import structures.basic.aiBasic.AiCards;
+
+import java.util.HashMap;
 
 public class AiPlayer extends Player{
 

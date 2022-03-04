@@ -1,10 +1,10 @@
 package structures.basic;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class BetterUnit extends Unit {
 

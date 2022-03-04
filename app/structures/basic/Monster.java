@@ -2,9 +2,10 @@ package structures.basic;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import structures.basic.abilities.Ability;
+
 import java.util.ArrayList;
 import java.util.HashSet;
-import structures.basic.abilities.Ability;
 
 public class Monster  extends Unit{
 

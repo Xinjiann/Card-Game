@@ -1,13 +1,6 @@
 package structures;
 
-import structures.basic.AiPlayer;
-import structures.basic.Avatar;
-import structures.basic.Board;
-import structures.basic.Card;
-import structures.basic.Deck;
-import structures.basic.Hand;
-import structures.basic.Monster;
-import structures.basic.Player;
+import structures.basic.*;
 import structures.basic.abilities.AbilityToCard;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;

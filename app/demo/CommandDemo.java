@@ -2,12 +2,7 @@ package demo;
 
 import akka.actor.ActorRef;
 import commands.BasicCommands;
-import structures.basic.Card;
-import structures.basic.EffectAnimation;
-import structures.basic.Player;
-import structures.basic.Tile;
-import structures.basic.Unit;
-import structures.basic.UnitAnimationType;
+import structures.basic.*;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
 

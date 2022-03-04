@@ -4,11 +4,7 @@ import akka.actor.ActorRef;
 import structures.GameState;
 import structures.basic.EffectAnimation;
 import structures.basic.Monster;
-import utils.BasicObjectBuilders;
-import utils.StaticConfFiles;
 import structures.basic.Position;
-import structures.basic.Tile;
-import structures.basic.Board;
 
 public class Provoke implements Ability {
 	

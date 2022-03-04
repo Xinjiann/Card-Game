@@ -1,23 +1,18 @@
 package events;
 
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import akka.actor.ActorRef;
+import com.fasterxml.jackson.databind.JsonNode;
 import commands.BasicCommands;
-import java.util.ArrayList;
-import java.util.HashSet;
 import structures.GameState;
-import structures.basic.Avatar;
-import structures.basic.Card;
-import structures.basic.Monster;
-import structures.basic.Position;
-import structures.basic.Tile;
-import structures.basic.UnitAnimationType;
+import structures.basic.*;
 import structures.basic.abilities.Ability;
 import structures.basic.abilities.WhenToCall;
 import utils.BasicObjectBuilders;
 import utils.CommonUtils;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Indicates that the user has clicked an object on the game canvas, in this case a tile. The event

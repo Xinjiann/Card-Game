@@ -1,9 +1,8 @@
 package events;
 
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import akka.actor.ActorRef;
+import com.fasterxml.jackson.databind.JsonNode;
 import structures.GameState;
 
 /**

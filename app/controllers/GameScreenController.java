@@ -1,7 +1,5 @@
 package controllers;
 
-import javax.inject.Inject;
-
 import actors.GameActor;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
@@ -15,6 +13,8 @@ import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.WebSocket;
 import structures.User;
+
+import javax.inject.Inject;
 
 /**
  * This is the Controller class for the game. 

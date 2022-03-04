@@ -2,9 +2,9 @@ package structures.basic.abilities;
 
 import akka.actor.ActorRef;
 import structures.GameState;
+import structures.basic.Avatar;
 import structures.basic.EffectAnimation;
 import structures.basic.Monster;
-import structures.basic.Avatar;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
 

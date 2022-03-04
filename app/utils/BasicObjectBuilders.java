@@ -1,20 +1,12 @@
 package utils;
 
-import java.io.File;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.util.ArrayList;
-import structures.basic.Avatar;
-import structures.basic.Card;
-import structures.basic.EffectAnimation;
-import structures.basic.Monster;
-import structures.basic.Player;
-import structures.basic.Tile;
-import structures.basic.Unit;
-import structures.basic.abilities.Ability;
+import structures.basic.*;
 import structures.basic.abilities.AbilityToCard;
+
+import java.io.File;
+import java.util.ArrayList;
 
 /**
  * This class contains methods for producing basic objects from configuration files

@@ -1,15 +1,12 @@
 package structures.basic.aiBasic;
 
+import structures.GameState;
+import structures.basic.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import structures.GameState;
-import structures.basic.AiPlayer;
-import structures.basic.Board;
-import structures.basic.Card;
-import structures.basic.Hand;
-import structures.basic.Tile;
 
 public class AiCards {
 

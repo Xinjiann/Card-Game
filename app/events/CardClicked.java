@@ -1,12 +1,13 @@
 package events;
 
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import akka.actor.ActorRef;
+import com.fasterxml.jackson.databind.JsonNode;
 import commands.BasicCommands;
 import structures.GameState;
-import structures.basic.*;
+import structures.basic.Avatar;
+import structures.basic.Card;
+import structures.basic.Position;
 import structures.basic.abilities.Ability;
 import structures.basic.abilities.WhenToCall;
 import utils.CommonUtils;

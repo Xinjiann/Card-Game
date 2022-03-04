@@ -1,9 +1,10 @@
 package structures.basic;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import structures.GameState;
 import utils.BasicObjectBuilders;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Board {
 

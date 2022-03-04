@@ -2,23 +2,13 @@ package events;
 
 import akka.actor.ActorRef;
 import commands.BasicCommands;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.stream.Collectors;
 import structures.GameState;
-import structures.basic.AiPlayer;
-import structures.basic.Avatar;
-import structures.basic.Card;
-import structures.basic.Monster;
-import structures.basic.Tile;
+import structures.basic.*;
 import utils.CommonUtils;
+
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 public class AiPlayGame {
 

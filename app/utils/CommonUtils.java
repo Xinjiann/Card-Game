@@ -2,8 +2,6 @@ package utils;
 
 import akka.actor.ActorRef;
 import commands.BasicCommands;
-import java.util.ArrayList;
-import java.util.Arrays;
 import structures.GameState;
 import structures.basic.Board;
 import structures.basic.Card;
@@ -11,6 +9,9 @@ import structures.basic.Monster;
 import structures.basic.Tile;
 import structures.basic.abilities.Ability;
 import structures.basic.abilities.WhenToCall;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CommonUtils {
 

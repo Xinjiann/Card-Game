@@ -1,10 +1,10 @@
 package structures.basic.abilities;
 
 import akka.actor.ActorRef;
+import commands.BasicCommands;
 import structures.GameState;
 import structures.basic.EffectAnimation;
 import structures.basic.Monster;
-import commands.BasicCommands;
 
 public class DrawCardOnDeath implements Ability {
 	

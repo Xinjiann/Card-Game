@@ -1,9 +1,9 @@
 package utils;
 
+import structures.basic.Card;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import structures.basic.Card;
 
 /**
  * This is a utility class that provides methods for loading the decks for each

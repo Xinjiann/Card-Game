@@ -1,8 +1,9 @@
 package structures.basic;
 
 
-import java.util.ArrayList;
 import structures.basic.abilities.Ability;
+
+import java.util.ArrayList;
 
 /**
  * This is the base representation of a Card which is rendered in the player's hand.

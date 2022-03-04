@@ -1,9 +1,10 @@
 package structures.basic;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Deck {
 
