@@ -29,6 +29,23 @@ public class CommonUtils {
     return tiles;
   }
 
+  public static ArrayList<Tile> getAdjTiles(Monster monster, GameState gameState) {
+    int x = monster.getPosition().getTilex();
+    int y = monster.getPosition().getTiley();
+    int x_max = gameState.getGameBoard().getX();
+    int y_max = gameState.getGameBoard().getY();
+    ArrayList<Tile> list = new ArrayList<>();
+    for (int i=x-1; i<x+2; i++) {
+      for (int j=y-1; j<y+2; j++) {
+        if (i >= 0 && i< x_max && j >= 0 && j< y_max) {
+          Tile tile1 = gameState.getGameBoard().getTile(i, j);
+          list.add(tile1);
+        }
+      }
+    }
+    return list;
+  }
+
   public static void rmMonsterSelectedHighlightTiles(Monster monster, GameState gameState, ActorRef out) {
 
     drawTilesInBatch(out, gameState.getGameBoard().getAllAttachableAndMovableTiles(), 0);

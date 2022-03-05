@@ -79,14 +79,28 @@ public class TileClicked implements EventProcessor {
     int x = monster.getPosition().getTilex();
     int y = monster.getPosition().getTiley();
     ArrayList<Tile> movableTiles = gameState.getGameBoard()
-        .getMovableTiles(x, y, monster.getMovesLeft());
+        .getMovableTiles(x, y, monster.getMovesLeft(), gameState);
     ArrayList<Tile> attachableTiles = gameState.getGameBoard()
-        .getAttachableTiles(x, y, monster.getMovesLeft(), monster.getAttackDistance());
+        .getAttachableTiles(x, y, monster.getMovesLeft(), gameState, monster.getAttackDistance());
     if (gameState.getGameBoard().getAllAttachableAndMovableTiles().isEmpty()
         || monster.isFrozen()) {
       BasicCommands.addPlayer1Notification(out,
           "No more actions allowed for this unit in this turn", 2);
+      return;
     }
+//    ArrayList<Tile> adjTiles = CommonUtils.getAdjTiles(monster, gameState);
+//    for (Tile tile : adjTiles) {
+//      Monster monster1 = tile.getUnitOnTile();
+//      if (monster1 != null && monster1.isProvoke() && monster1.getOwner() != gameState.getTurnOwner()) {
+//        // set movable tiles to empty
+//        movableTiles = new ArrayList<>();
+//        gameState.getGameBoard().setMovableTiles(movableTiles);
+//        // set attachable tiles to provoke unit
+//        attachableTiles = new ArrayList<>();
+//        attachableTiles.add(tile);
+//        gameState.getGameBoard().setAttachableTiles(attachableTiles);
+//      }
+//    }
     CommonUtils.drawTilesInBatch(out, movableTiles, 1);
     CommonUtils.drawTilesInBatch(out, attachableTiles, 2);
   }
@@ -180,7 +194,7 @@ public class TileClicked implements EventProcessor {
     BasicCommands.setPlayer2Mana(out, gameState.getAiPlayer());
 
     Monster monster = BasicObjectBuilders.loadMonsterUnit(selectedCard.getUnitConfigFiles(),
-        selectedCard, gameState.getTurnOwner(), Monster.class);
+        selectedCard, gameState, out, Monster.class);
     monster.setPositionByTile(clickedTile);
     // check ability
     if (selectedCard.getAbilityList() != null) {
@@ -223,23 +237,11 @@ public class TileClicked implements EventProcessor {
       friendClick(previousMonster, monster, gameState, out, clickedTile);
     } else if (clickedTile.getUnitOnTile() != null
         && clickedTile.getUnitOnTile().getOwner() != gameState.getTurnOwner()) {
-      if (previousMonster.isBeenProvoke() && !previousMonster.getProvokeOwners().contains(monster))
-      //attack cannot be settled
-      {
-        BasicCommands.addPlayer1Notification(out, "You can only attack the unit with provoke", 2);
-      } else
       // attack
-      {
-        enemyClick(monster, gameState, out, clickedTile);
-      }
+      enemyClick(monster, gameState, out, clickedTile);
     } else {
-      if (previousMonster.isBeenProvoke()) {
-        BasicCommands.addPlayer1Notification(out, "You cannot move this unit under provoke", 2);
-      } else
       // move
-      {
-        moveClick(previousMonster, gameState, out, clickedTile);
-      }
+      moveClick(previousMonster, gameState, out, clickedTile);
     }
   }
 
@@ -250,18 +252,10 @@ public class TileClicked implements EventProcessor {
     int previous_y = previousMonster.getPosition().getTiley();
     Tile previousTile = gameState.gameBoard.getTile(previous_x, previous_y);
 
-    // get all movable tiles
-    gameState.getGameBoard()
-        .getMovableTiles(previous_x, previous_y, previousMonster.getMovesLeft());
-    gameState.getGameBoard()
-        .getAttachableTiles(previous_x, previous_y, previousMonster.getMovesLeft(),
-            previousMonster.getAttackDistance());
-//    movableTiles.addAll(attachableTiles);
-
-    if ((!gameState.getGameBoard().getAllAttachableAndMovableTiles().isEmpty())) {
+    if ((!gameState.getGameBoard().getMovableTiles().isEmpty())) {
       int deltaX = Math.abs(previous_x - clickedTile.getTilex());
       int deltaY = Math.abs(previous_y - clickedTile.getTiley());
-      if ((deltaX + deltaY) > previousMonster.getMovesLeft()) {
+      if (!gameState.getGameBoard().getMovableTiles().contains(clickedTile)) {
         // outweigh the move limit of 2
         BasicCommands.addPlayer1Notification(out, "You can not move that far", 2);
       } else {
@@ -277,6 +271,8 @@ public class TileClicked implements EventProcessor {
         // animation
         BasicCommands.playUnitAnimation(out, previousMonster, UnitAnimationType.move);
       }
+    } else {
+      BasicCommands.addPlayer1Notification(out, "you can not move to that tile", 2);
     }
   }
 
@@ -286,19 +282,24 @@ public class TileClicked implements EventProcessor {
     Tile previousTile = gameState.gameBoard.getTile(previousMonster.getPosition().getTilex(),
         previousMonster.getPosition().getTiley());
 
-    if (Math.abs(previousTile.getTilex() - clickedTile.getTilex())
-        <= previousMonster.getAttackDistance()
-        && Math.abs(previousTile.getTiley() - clickedTile.getTiley())
-        <= previousMonster.getAttackDistance()) {
-      attack(previousMonster, clickedMonster, gameState, out, previousTile, clickedTile);
-      gameState.setUnitSelected(null);
+    if (gameState.getGameBoard().getAllAttachableAndMovableTiles().contains(clickedTile)) {
+      if (Math.abs(previousTile.getTilex() - clickedTile.getTilex())
+          <= previousMonster.getAttackDistance()
+          && Math.abs(previousTile.getTiley() - clickedTile.getTiley())
+          <= previousMonster.getAttackDistance()) {
+        attack(previousMonster, clickedMonster, gameState, out, previousTile, clickedTile);
+        gameState.setUnitSelected(null);
+      } else {
+        moveAndAttack(previousMonster, clickedMonster, gameState, out, previousTile, clickedTile);
+      }
     } else {
-      moveAndAttack(previousMonster, clickedMonster, gameState, out, previousTile, clickedTile);
+      BasicCommands.addPlayer1Notification(out, "you can not attack that unit", 2);
     }
+
 
   }
 
-  private void attack(Monster attacker, Monster defender, GameState gameState, ActorRef out,
+  public void attack(Monster attacker, Monster defender, GameState gameState, ActorRef out,
       Tile previousTile, Tile clickedTile) {
     // remove all highlight
     CommonUtils.rmMonsterSelectedHighlightTiles(attacker, gameState, out);
@@ -410,7 +411,7 @@ public class TileClicked implements EventProcessor {
       GameState gameState, ActorRef out, Tile previousTile, Tile clickedTile) {
 
     ArrayList<Tile> movableTiles = gameState.gameBoard.getMovableTiles(previousTile.getTilex(),
-        previousTile.getTiley(), previousMonster.getMovesLeft());
+        previousTile.getTiley(), previousMonster.getMovesLeft(), gameState);
     Tile tileToGo = null;
     for (Tile tile : movableTiles) {
       HashSet<Tile> attachableTiles = gameState.gameBoard.hasMovedAttachableTiles(tile.getTilex(),

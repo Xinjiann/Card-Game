@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import structures.GameState;
 import utils.BasicObjectBuilders;
+import utils.CommonUtils;
 
 public class Board {
 
@@ -45,31 +46,59 @@ public class Board {
     return this.gameBoard[y][x];
   }
 
-  public ArrayList<Tile> getMovableTiles(int x, int y, int movesLeft) {
-    ArrayList<Tile> movableTiles = new ArrayList<Tile>();
+  public ArrayList<Tile> getMovableTiles(int x, int y, int movesLeft, GameState gameState) {
+    ArrayList<Tile> movableTiles = new ArrayList<>();
     for (int i = x - movesLeft; i <= (x + movesLeft); i++) {
       for (int j = y - movesLeft; j <= (y + movesLeft); j++) {
         // Check limits
         if ( (i <= (this.X - 1) && i >= 0) && (j <= (this.Y - 1) && j >= 0)) {
-          if ( (Math.abs(i - x) + Math.abs(j - y)) <= movesLeft) {
-            movableTiles.add(this.getTile(i, j));
+          Tile tile = this.getTile(i, j);
+          Monster monster = tile.getUnitOnTile();
+          if (monster != null) {
+            if (monster.isProvoke() && monster.getOwner() != gameState.getTurnOwner() && Math.abs(i-x)<2 && Math.abs(j-y)<2) {
+              this.movableTiles = new ArrayList<>();
+              return this.movableTiles;
+            }
+          } else {
+            if ( (Math.abs(i - x) + Math.abs(j - y)) <= movesLeft) {
+              movableTiles.add(tile);
+            }
           }
         }
       }
     }
-    movableTiles.removeIf(t -> t.getUnitOnTile()!=null);
     this.movableTiles = movableTiles;
     return this.movableTiles;
   }
 
-  public ArrayList<Tile> getAttachableTiles(int x, int y, int movesLeft, int attackDistance) {
+  public void setMovableTiles(ArrayList<Tile> movableTiles) {
+    this.movableTiles = movableTiles;
+  }
+
+  public ArrayList<Tile> getMovableTiles() {
+    return this.movableTiles;
+  }
+
+  public ArrayList<Tile> getAttachableTiles(int x, int y, int movesLeft, GameState gameState, int attackDistance) {
     Player player = this.getTile(x, y).getUnitOnTile().getOwner();
     ArrayList<Tile> reachableList;
     HashSet <Tile> attachableSet = new HashSet<Tile>();
     if (movesLeft == 0) {
       return new ArrayList<>(this.hasMovedAttachableTiles(x, y, player, attackDistance));
     }
-    reachableList = this.getMovableTiles(x, y, movesLeft);
+    reachableList = this.getMovableTiles(x, y, movesLeft, gameState);
+    // if provoke exist
+    if (reachableList.isEmpty()) {
+      ArrayList<Tile> adjTiles = CommonUtils.getAdjTiles(this.getTile(x, y).getUnitOnTile(), gameState);
+      for (Tile tile : adjTiles) {
+        Monster monster = tile.getUnitOnTile();
+        if (monster != null && monster.isProvoke() && monster.getOwner() != gameState.getTurnOwner()) {
+          this.attachableTiles = new ArrayList<>();
+          this.attachableTiles.add(tile);
+          return this.attachableTiles;
+        }
+      }
+    }
     for (Tile t : reachableList) {
       if (t.getUnitOnTile()!=null && t.getUnitOnTile().getOwner()!=player) {
         attachableSet.add(t);
@@ -83,6 +112,14 @@ public class Board {
     }
     attachableTiles = new ArrayList<>(attachableSet);
     return attachableTiles;
+  }
+
+  public void setAttachableTiles(ArrayList<Tile> attachableTiles) {
+    this.attachableTiles = attachableTiles;
+  }
+
+  public ArrayList<Tile> getAttachableTiles() {
+    return this.attachableTiles;
   }
 
   public ArrayList<Tile> getAllAttachableAndMovableTiles() {

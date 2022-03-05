@@ -1,11 +1,14 @@
 package utils;
 
+import akka.actor.ActorRef;
+import commands.BasicCommands;
 import java.io.File;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
+import structures.GameState;
 import structures.basic.Avatar;
 import structures.basic.Card;
 import structures.basic.EffectAnimation;
@@ -15,6 +18,7 @@ import structures.basic.Tile;
 import structures.basic.Unit;
 import structures.basic.abilities.Ability;
 import structures.basic.abilities.AbilityToCard;
+import structures.basic.abilities.WhenToCall;
 
 /**
  * This class contains methods for producing basic objects from configuration files
@@ -112,11 +116,12 @@ public class BasicObjectBuilders {
 		
 	}
 
-	public static Monster loadMonsterUnit(String configFile, Card card, Player p, Class<? extends Monster> classType) {
+	public static Monster loadMonsterUnit(String configFile, Card card, GameState gameState, ActorRef out, Class<? extends Monster> classType) {
 
 		try {
 			Monster monster = mapper.readValue(new File(configFile), classType);
 
+			Player p = gameState.getTurnOwner();
 			// Set monster attributes from reference Card info
 			monster.setId(card.getId());
 			monster.setHealth(card.getBigCard().getHealth());
@@ -125,19 +130,13 @@ public class BasicObjectBuilders {
 			// Set Player owner
 			monster.setOwner(p);
 			// Ability setting
-			if(monster.getAbilities() == null) {
-				monster.setAbilities(new ArrayList<>());
+			if (card.getAbilityList() != null) {
+				for (Ability ability : card.getAbilityList()) {
+					if (ability.getWhenTOCall() == WhenToCall.constructor) {
+						ability.execute(monster, gameState, out);
+					}
+				}
 			}
-			monster.setAbilities(card.getAbilityList());
-
-//			// Check for abilities requiring EffectAnimation to be stored
-//			if(monster.getAbilities().size() != 0) {
-//				for(Ability a : monster.getAbilities()) {
-//					if(a.getClass() == A_U_RangedAttacker.class) {
-//						monster.setAbAnimation(BasicObjectBuilders.loadEffect(StaticConfFiles.f1_projectiles));
-//					}
-//				}
-//			}
 			return monster;
 		} catch (Exception e) {
 			e.printStackTrace();

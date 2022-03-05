@@ -83,13 +83,31 @@ public class AiPlayGame {
       // rank attachable unit (The lower the unit ability, the higher the priority)
       attachableUnitRank = this.rankAttachableUnit(attachableTiles);
 
-      // attack
-      Monster attacker = attachableUnitRank.get(0);
-      Tile defenderTile = attachableTargetRank.get(0);
-      tileClicked.moveAndAttack(attacker, defenderTile.getUnitOnTile(), gameState, out,
-          gameState.getGameBoard()
-              .getTile(attacker.getPosition().getTilex(), attacker.getPosition().getTiley()),
-          defenderTile);
+
+      Monster attacker;
+      Tile defenderTile;
+      // match the low priority friendly unit to high priority enemy unit
+      int i = 0;
+      while (true) {
+         attacker = attachableUnitRank.get(0);
+         defenderTile = attachableTargetRank.get(i);
+         if (attachableTiles.get(attacker).contains(defenderTile)) {
+           break;
+         }
+         i++;
+      }
+      if (Math.abs(attacker.getPosition().getTilex()-defenderTile.getTilex())<2 && Math.abs(attacker.getPosition().getTiley()-defenderTile.getTiley())<2) {
+        // attack
+        tileClicked.attack(attacker, defenderTile.getUnitOnTile(), gameState, out, gameState.getGameBoard()
+            .getTile(attacker.getPosition().getTilex(), attacker.getPosition().getTiley()), defenderTile);
+      } else {
+        // move and attack
+        tileClicked.moveAndAttack(attacker, defenderTile.getUnitOnTile(), gameState, out,
+            gameState.getGameBoard()
+                .getTile(attacker.getPosition().getTilex(), attacker.getPosition().getTiley()),
+            defenderTile);
+      }
+
       // refresh attachableTiles
       attachableTiles = this.getAllAttachableTiles(allAvailableUnit, allMovableOnlyUnit);
     }
@@ -98,13 +116,15 @@ public class AiPlayGame {
     // add the rest attachable units to movable only list
     allMovableOnlyUnit.addAll(attachableTiles.keySet());
     // get best move target
-    HashMap<Monster, Tile> moveTarget = this.getUnitMoveTarget(allMovableOnlyUnit);
+    HashMap<Monster, Tile> moveTarget = this.getUnitMoveTarget(allMovableOnlyUnit, gameState);
     // move
     Iterator<Map.Entry<Monster, Tile>> entries = moveTarget.entrySet().iterator();
     while (entries.hasNext()) {
       Map.Entry<Monster, Tile> entry = entries.next();
-      tileClicked.moveClick(entry.getKey(), gameState, out, entry.getValue());
-      CommonUtils.longlongSleep(2200);
+      if (entry.getValue() != null) {
+        tileClicked.moveClick(entry.getKey(), gameState, out, entry.getValue());
+        CommonUtils.longlongSleep(2200);
+      }
     }
     // Ai's turn end
     EndTurnClicked endTurnClicked = new EndTurnClicked();
@@ -112,13 +132,16 @@ public class AiPlayGame {
     BasicCommands.addPlayer1Notification(out, "Your turn!", 2);
   }
 
-  private HashMap<Monster, Tile> getUnitMoveTarget(ArrayList<Monster> allMovableOnlyUnit) {
+  private HashMap<Monster, Tile> getUnitMoveTarget(ArrayList<Monster> allMovableOnlyUnit, GameState gameState) {
     HashMap<Monster, Tile> map = new HashMap<>();
+    if (allMovableOnlyUnit.isEmpty()) {
+      return map;
+    }
     for (Monster monster : allMovableOnlyUnit) {
       int x = monster.getPosition().getTilex();
       int y = monster.getPosition().getTiley();
       ArrayList<Tile> movableTiles = gameState.getGameBoard()
-          .getMovableTiles(x, y, monster.getMovesLeft());
+          .getMovableTiles(x, y, monster.getMovesLeft(), gameState);
       Tile bestTile = getBestMoveTarget(movableTiles);
       map.put(monster, bestTile);
     }
@@ -167,7 +190,7 @@ public class AiPlayGame {
           int y = monster.getPosition().getTiley();
           int movesLeft = monster.getMovesLeft();
           int attackDistance = monster.getAttackDistance();
-          ArrayList<Tile> tileList = gameState.gameBoard.getAttachableTiles(x, y, movesLeft,
+          ArrayList<Tile> tileList = gameState.gameBoard.getAttachableTiles(x, y, movesLeft, gameState,
               attackDistance);
           map.put(monster, tileList);
         }
@@ -177,25 +200,14 @@ public class AiPlayGame {
     return map;
   }
 
-  private HashMap<Monster, ArrayList<Tile>> getAllMovableTiles(
-      ArrayList<Monster> allMovableUnit) {
-    HashMap<Monster, ArrayList<Tile>> map = new HashMap<>();
-    for (Monster monster : allMovableUnit) {
-      int x = monster.getPosition().getTilex();
-      int y = monster.getPosition().getTiley();
-      int movesLeft = monster.getMovesLeft();
-      ArrayList<Tile> tileList = gameState.gameBoard.getMovableTiles(x, y, movesLeft);
-      map.put(monster, tileList);
-    }
-    return map;
-  }
 
   private ArrayList<Monster> getAllMovableOnlyUnit(
       ArrayList<Monster> allAvailableUnit) {
     ArrayList<Monster> list = new ArrayList<>();
     for (Monster m : allAvailableUnit) {
-      if (gameState.gameBoard.getAttachableTiles(m.getPosition().getTilex(),
-          m.getPosition().getTiley(), m.getMovesLeft(), m.getAttackDistance()).isEmpty()) {
+      ArrayList<Tile> attachableTiles = gameState.gameBoard.getAttachableTiles(m.getPosition().getTilex(),
+          m.getPosition().getTiley(), m.getMovesLeft(), gameState, m.getAttackDistance());
+      if (attachableTiles.isEmpty()) {
         list.add(m);
       }
     }
