@@ -179,4 +179,13 @@ public class GameState {
 	public void setGameover(boolean gameover) {
 		this.gameover = gameover;
 	}
+
+	public int getTurnCount() {
+		return turnCount;
+	}
+
+	public void setTurnCount(int turnCount) {
+		this.turnCount = turnCount;
+	}
+
 }

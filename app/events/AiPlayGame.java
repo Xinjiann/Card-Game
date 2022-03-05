@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -83,7 +82,6 @@ public class AiPlayGame {
       // rank attachable unit (The lower the unit ability, the higher the priority)
       attachableUnitRank = this.rankAttachableUnit(attachableTiles);
 
-
       Monster attacker;
       Tile defenderTile;
       // match the low priority friendly unit to high priority enemy unit
@@ -107,7 +105,6 @@ public class AiPlayGame {
                 .getTile(attacker.getPosition().getTilex(), attacker.getPosition().getTiley()),
             defenderTile);
       }
-
       // refresh attachableTiles
       attachableTiles = this.getAllAttachableTiles(allAvailableUnit, allMovableOnlyUnit);
     }
@@ -115,37 +112,25 @@ public class AiPlayGame {
     /* ai move unit **/
     // add the rest attachable units to movable only list
     allMovableOnlyUnit.addAll(attachableTiles.keySet());
-    // get best move target
-    HashMap<Monster, Tile> moveTarget = this.getUnitMoveTarget(allMovableOnlyUnit, gameState);
-    // move
-    Iterator<Map.Entry<Monster, Tile>> entries = moveTarget.entrySet().iterator();
-    while (entries.hasNext()) {
-      Map.Entry<Monster, Tile> entry = entries.next();
-      if (entry.getValue() != null) {
-        tileClicked.moveClick(entry.getKey(), gameState, out, entry.getValue());
-        CommonUtils.longlongSleep(2200);
-      }
-    }
-    // Ai's turn end
-    EndTurnClicked endTurnClicked = new EndTurnClicked();
-    endTurnClicked.endTurn(out, gameState);
-    BasicCommands.addPlayer1Notification(out, "Your turn!", 2);
-  }
 
-  private HashMap<Monster, Tile> getUnitMoveTarget(ArrayList<Monster> allMovableOnlyUnit, GameState gameState) {
-    HashMap<Monster, Tile> map = new HashMap<>();
-    if (allMovableOnlyUnit.isEmpty()) {
-      return map;
-    }
     for (Monster monster : allMovableOnlyUnit) {
+      // get best move target
       int x = monster.getPosition().getTilex();
       int y = monster.getPosition().getTiley();
       ArrayList<Tile> movableTiles = gameState.getGameBoard()
           .getMovableTiles(x, y, monster.getMovesLeft(), gameState);
       Tile bestTile = getBestMoveTarget(movableTiles);
-      map.put(monster, bestTile);
+      int delta = Math.abs(bestTile.getTilex() - monster.getPosition().getTilex()) + Math.abs(
+          bestTile.getTiley() - monster.getPosition().getTiley());
+      tileClicked.moveClick(monster, gameState, out, bestTile);
+      // set waiting time according to the moving distance
+      CommonUtils.longlongSleep(1075 * delta);
+
     }
-    return map;
+    // Ai's turn end
+    EndTurnClicked endTurnClicked = new EndTurnClicked();
+    endTurnClicked.endTurn(out, gameState);
+    BasicCommands.addPlayer1Notification(out, "Your turn!", 2);
   }
 
   private Tile getBestMoveTarget(ArrayList<Tile> movableTiles) {

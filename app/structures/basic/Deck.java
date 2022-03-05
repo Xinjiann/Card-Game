@@ -8,6 +8,7 @@ import utils.StaticConfFiles;
 public class Deck {
 
   ArrayList<Card> cardList;
+  String owner;
 
   public ArrayList<Card> getCardList() {
     return cardList;
@@ -18,6 +19,7 @@ public class Deck {
   }
 
   public void humanDeck() {
+    this.owner = "human";
     Card card;
     String[] deck1Cards = {
         StaticConfFiles.c_azure_herald,
@@ -59,7 +61,8 @@ public class Deck {
   }
 
   public void aiDeck() {
-  Card card;
+    this.owner = "ai";
+    Card card;
     String[] deck2Cards = {
         StaticConfFiles.c_blaze_hound,
         StaticConfFiles.c_bloodshard_golem,

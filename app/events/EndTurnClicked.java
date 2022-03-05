@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import akka.actor.ActorRef;
 import commands.BasicCommands;
 import structures.GameState;
+import structures.basic.Avatar;
 import structures.basic.Card;
 import structures.basic.Monster;
 import utils.CommonUtils;
@@ -45,7 +46,7 @@ public class EndTurnClicked implements EventProcessor{
 		BasicCommands.setPlayer1Mana(out, gameState.getHumanPlayer());
 		BasicCommands.setPlayer2Mana(out, gameState.getAiPlayer());
 		
-		// default all units on board
+		// refresh all units on board
 		for(int i=0;i<5;i++)
 			for(int j=0;j<9;j++) {
 				if(!gameState.gameBoard.getGameBoard()[i][j].getAvailable()) {
@@ -53,10 +54,14 @@ public class EndTurnClicked implements EventProcessor{
 					monster.setFrozen(false);
 					monster.setAttackCount(monster.getMaxAttackCount());
 					monster.setMovesLeft(monster.getMaxMove());
+					if (gameState.getTurnCount() == 2 && monster.getClass() == Avatar.class
+							&& gameState.getTurnOwner() == gameState.getHumanPlayer()) {
+						monster.setFrozen(true);
+					}
 				}
 			}
 
-		gameState.getTurnOwner().getHand().drawCard(gameState.getTurnOwner().getDeck());
+		gameState.getTurnOwner().getHand().drawCard(gameState.getTurnOwner().getDeck(), gameState, out);
 
 		// when human player getting a new card, re-display all card in hand
 		if(gameState.getTurnOwner() == gameState.getHumanPlayer()) {

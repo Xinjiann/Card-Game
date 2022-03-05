@@ -88,19 +88,6 @@ public class TileClicked implements EventProcessor {
           "No more actions allowed for this unit in this turn", 2);
       return;
     }
-//    ArrayList<Tile> adjTiles = CommonUtils.getAdjTiles(monster, gameState);
-//    for (Tile tile : adjTiles) {
-//      Monster monster1 = tile.getUnitOnTile();
-//      if (monster1 != null && monster1.isProvoke() && monster1.getOwner() != gameState.getTurnOwner()) {
-//        // set movable tiles to empty
-//        movableTiles = new ArrayList<>();
-//        gameState.getGameBoard().setMovableTiles(movableTiles);
-//        // set attachable tiles to provoke unit
-//        attachableTiles = new ArrayList<>();
-//        attachableTiles.add(tile);
-//        gameState.getGameBoard().setAttachableTiles(attachableTiles);
-//      }
-//    }
     CommonUtils.drawTilesInBatch(out, movableTiles, 1);
     CommonUtils.drawTilesInBatch(out, attachableTiles, 2);
   }
@@ -322,7 +309,6 @@ public class TileClicked implements EventProcessor {
     if (this.gameOver(gameState, out)) {
       gameState.setGameover(true);
     }
-
     // execute avatar be attacked ability
     if (defender.getClass() == Avatar.class) {
       ArrayList<Tile> list = CommonUtils.getAllUnits(gameState);

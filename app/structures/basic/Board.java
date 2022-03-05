@@ -142,24 +142,27 @@ public class Board {
     return tileList;
   }
 
-  public void setSummonArea(Position position) {
-    ArrayList<Tile> summonArea = new ArrayList<>();
-    for (int i = position.getTilex()-summonDistance; i <= position.getTilex() + summonDistance; i++) {
-      for (int j = position.getTiley() - summonDistance; j <= position.getTiley() + summonDistance; j++) {
-        // make sure the tile is on the board
-        if (i >= 0 && i< this.X && j >= 0 && j< this.Y) {
-          Monster otherUnit = this.gameBoard[j][i].getUnitOnTile();
-          if (otherUnit==null) {
-            summonArea.add(this.gameBoard[j][i]);
+  public void setSummonArea(ArrayList<Monster> friendlyList) {
+    HashSet<Tile> summonArea = new HashSet<>();
+    for (Monster monster : friendlyList) {
+      Position position = monster.getPosition();
+      for (int i = position.getTilex()-summonDistance; i <= position.getTilex() + summonDistance; i++) {
+        for (int j = position.getTiley() - summonDistance; j <= position.getTiley() + summonDistance; j++) {
+          // make sure the tile is on the board
+          if (i >= 0 && i< this.X && j >= 0 && j< this.Y) {
+            Monster otherUnit = this.gameBoard[j][i].getUnitOnTile();
+            if (otherUnit==null) {
+              summonArea.add(this.gameBoard[j][i]);
+            }
           }
         }
       }
     }
-    this.summonArea = summonArea;
+    this.summonArea = new ArrayList<>(summonArea);
     summonDistance = 1;
   }
 
-  public void setSummonArea(ArrayList<Tile> area) {
+  public void setSummonAreaSimple(ArrayList<Tile> area) {
     this.summonArea = area;
   }
 
@@ -276,11 +279,11 @@ public class Board {
     return list;
   }
 
-  public ArrayList<Monster> friendlyUnitsWithAvatar(Player aiPlayer) {
+  public ArrayList<Monster> friendlyUnitsWithAvatar(Player player) {
     ArrayList<Monster> tiles = new ArrayList<Monster>();
     for (int i = 0; i <gameBoard.length; i++) {
       for (int k =0; k<gameBoard[0].length; k++) {
-        if (gameBoard[i][k].getUnitOnTile() != null && gameBoard[i][k].getUnitOnTile().getOwner()==aiPlayer) {
+        if (gameBoard[i][k].getUnitOnTile() != null && gameBoard[i][k].getUnitOnTile().getOwner()==player) {
           tiles.add(gameBoard[i][k].getUnitOnTile());
         }
       }

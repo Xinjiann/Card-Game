@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import akka.actor.ActorRef;
 import commands.BasicCommands;
+import java.util.ArrayList;
 import structures.GameState;
 import structures.basic.*;
 import structures.basic.abilities.Ability;
@@ -86,9 +87,8 @@ public class CardClicked implements EventProcessor{
 
 					}
 					// highlight area
-					Avatar humanAvatar = gameState.getHumanAvatar();
-					Position pos = humanAvatar.getPosition();
-					gameState.getGameBoard().setSummonArea(pos);
+					ArrayList<Monster> friendlyUnits = gameState.getGameBoard().friendlyUnitsWithAvatar(gameState.getTurnOwner());
+					gameState.getGameBoard().setSummonArea(friendlyUnits);
 					CommonUtils.drawTilesInBatch(out, gameState.gameBoard.getSummonArea(), 1);
 					gameState.setCardPos(handPosition);
 				}

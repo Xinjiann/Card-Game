@@ -1,6 +1,10 @@
 package structures.basic;
 
+import akka.actor.ActorRef;
+import commands.BasicCommands;
 import java.util.ArrayList;
+import structures.GameState;
+
 public class Hand {
 
   ArrayList<Card> handList;
@@ -32,10 +36,16 @@ public class Hand {
 //    deck.delCard(3);
   }
 
-  public void drawCard(Deck deck) {
+  public void drawCard(Deck deck, GameState gameState, ActorRef out) {
 
-    //creates temporary deck and finds top card
+    // creates temporary deck and finds top card
     ArrayList<Card> deck1= deck.getCardList();
+    // if deck is empty then game over
+    if (deck1.isEmpty()) {
+      BasicCommands.addPlayer1Notification(out, "You " + (deck.owner.equals("human") ? "lost" : "win"), 2);
+      gameState.setGameover(true);
+      return;
+    }
     Card card= deck1.get(0);
 
     //checks that hand is not full
