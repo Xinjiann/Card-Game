@@ -26,7 +26,9 @@ public class Monster  extends Unit{
   boolean beenProvoke;
   HashSet<Monster> provokeOwners;
 
-  public Monster() {
+ 
+
+public Monster() {
     super();
     this.attackDistance = 1;
     this.attackCount = 1;
@@ -36,8 +38,8 @@ public class Monster  extends Unit{
     this.abilities = null;
     this.frozen = false;
     this.isAlive = true;
-    this.provokeOwners = null;
     this.beenProvoke=false;
+    this.provokeOwners=new HashSet<Monster>();
   }
 
   public Monster(int id, UnitAnimationSet animations, ImageCorrection correction) {
@@ -59,6 +61,7 @@ public class Monster  extends Unit{
     if (this.attackCount == 0) {
       this.frozen = true;
       this.movesLeft = 0;
+      this.beenProvoke=false;
     }
   }
 
@@ -147,14 +150,6 @@ public class Monster  extends Unit{
   public void addMana(int turnCount) {
   }
   
-  public void addProvokeOwner(Monster provokeOwner) {
-	this.provokeOwners.add(provokeOwner);
-  }
-  
-  public HashSet<Monster> getProvokeOwners() {
-	return provokeOwners;
-  }
-  
   public boolean isBeenProvoke() {
 	return beenProvoke;
   }
@@ -162,7 +157,19 @@ public class Monster  extends Unit{
   public void setBeenProvoke(boolean beenProvoke) {
 	this.beenProvoke = beenProvoke;
   }
+  
+  public HashSet<Monster> getProvokeOwners() {
+		return provokeOwners;
+	}
 
+  public void addProvokeOwners(Monster provokeOwner) {
+		this.provokeOwners.add(provokeOwner);
+  }
+  
+  public void delProvokeOwners(Monster provokeOwner) {
+		this.provokeOwners.remove(provokeOwner);
+}
+ 
   public int getMaxMove() {
     return maxMove;
   }

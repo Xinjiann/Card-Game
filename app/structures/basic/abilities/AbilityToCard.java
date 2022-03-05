@@ -16,10 +16,10 @@ public class AbilityToCard {
 		abilityToCard.put("Truestrike", loadAbilities(new Truestrike()));
 		// deck 2
 		abilityToCard.put("Staff of Y'Kir'", loadAbilities(new StaffOfYkir()));
-
+		
 		// units
 		// deck 1
-
+		abilityToCard.put("Silverguard Knight", loadAbilities(new Provoke()));
 		// deck 2
 		abilityToCard.put("Serpenti", loadAbilities(new AttackTwice()));
 	}

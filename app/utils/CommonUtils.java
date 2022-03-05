@@ -7,7 +7,9 @@ import structures.GameState;
 import structures.basic.Board;
 import structures.basic.Card;
 import structures.basic.Monster;
+import structures.basic.Position;
 import structures.basic.Tile;
+import java.util.HashSet;
 
 public class CommonUtils {
 
@@ -95,4 +97,36 @@ public class CommonUtils {
       sleep();
     }
   }
+  
+	public static HashSet<Monster> getMonsterAround(Monster currentMonster, GameState gameState) {
+		Position position = currentMonster.getPosition();
+		HashSet<Monster> monsterAround=new HashSet<Monster>();
+		int i = -1;
+		int j = -1;
+		int a = 2;
+		int b = 2;
+		if (position.getTilex() == 0)
+			j = 0;
+		if (position.getTilex() == 8)
+			b = 1;
+		if (position.getTiley() == 0)
+			i = 0;
+		if (position.getTiley() == 4)
+			a = 1;
+		for (; i < a; i++)
+			for (; j < b; j++) {
+				if (j == 0 && i == 0)
+					continue;
+				else {
+					if (!(gameState.gameBoard.getTile(position.getTilex() + j, position.getTiley() + i)
+							.getAvailable())) {
+						Monster monsterOnTile = gameState.gameBoard
+								.getTile(position.getTilex() + j, position.getTiley() + i).getUnitOnTile();
+						if (currentMonster.getOwner() != monsterOnTile.getOwner())
+							monsterAround.add(monsterOnTile);
+					}
+				}
+			}
+		return monsterAround;
+	}
 }

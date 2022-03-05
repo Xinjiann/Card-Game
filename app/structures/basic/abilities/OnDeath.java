@@ -26,8 +26,7 @@ public class OnDeath implements Ability {
 
 	@Override
 	public WhenToCall getWhenTOCall() {
-		// TODO Auto-generated method stub
-		return null;
+		return WhenToCall.death;
 	}
 
 }
