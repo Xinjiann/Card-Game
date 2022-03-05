@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -38,27 +37,25 @@ public class AiPlayGame {
     ArrayList<Card> handList = gameState.getTurnOwner().getHand().getHandList();
 
     if (!cardCombo.isEmpty()) {
-      Iterator<Entry<Tile, Card>> iterator = cardCombo.entrySet().iterator();
-      while (iterator.hasNext()) {
+      for (Entry<Tile, Card> tileCardEntry : cardCombo.entrySet()) {
         CommonUtils.sleep();
-        Entry<Tile, Card> entry = iterator.next();
-        if (entry.getKey() == null || entry.getValue() == null) {
+        if (tileCardEntry.getKey() == null || tileCardEntry.getValue() == null) {
           continue;
         }
         // set selected card
         for (Card card : handList) {
-          if (card.getId() == entry.getValue().getId()) {
+          if (card.getId() == tileCardEntry.getValue().getId()) {
             gameState.setCardSelected(card);
             gameState.setCardPos(handList.indexOf(card));
           }
         }
 
-        if (entry.getValue().getType().equals("spell")) {
+        if (tileCardEntry.getValue().getType().equals("spell")) {
           // play spell card
-          tileClicked.playSpell(gameState, out, entry.getKey(), entry.getValue());
-        } else if (entry.getValue().getType().equals("unit")) {
+          tileClicked.playSpell(gameState, out, tileCardEntry.getKey(), tileCardEntry.getValue());
+        } else if (tileCardEntry.getValue().getType().equals("unit")) {
           // summon unit
-          tileClicked.summonUnit(gameState, out, entry.getKey(), entry.getValue());
+          tileClicked.summonUnit(gameState, out, tileCardEntry.getKey(), tileCardEntry.getValue());
         }
       }
     }
@@ -69,49 +66,36 @@ public class AiPlayGame {
     // get all movable only unit
     ArrayList<Monster> allMovableOnlyUnit = this.getAllMovableOnlyUnit(allAvailableUnit);
 
-    ArrayList<Monster> attachableUnitRank;
-    ArrayList<Tile> attachableTargetRank;
-
-    // get all attachable target
-    HashMap<Monster, ArrayList<Tile>> attachableTiles = this.getAllAttachableTiles(allAvailableUnit,
-        allMovableOnlyUnit);
-
-    for (Entry<Monster, ArrayList<Tile>> monsterArrayListEntry : attachableTiles.entrySet()) {
-      // rank the enemy unit (The higher the unit ability, the higher the priority)
-      attachableTargetRank = this.rankAttachableTargetUnit(attachableTiles);
-      // rank attachable unit (The lower the unit ability, the higher the priority)
-      attachableUnitRank = this.rankAttachableUnit(attachableTiles);
-
-      Monster attacker;
-      Tile defenderTile;
-      // match the low priority friendly unit to high priority enemy unit
-      int i = 0;
-      while (true) {
-         attacker = attachableUnitRank.get(0);
-         defenderTile = attachableTargetRank.get(i);
-         if (attachableTiles.get(attacker).contains(defenderTile)) {
-           break;
-         }
-         i++;
+    for (Monster monster : allAvailableUnit) {
+      if (!allMovableOnlyUnit.contains(monster)) {
+        if (!monster.isFrozen()) {
+          int x = monster.getPosition().getTilex();
+          int y = monster.getPosition().getTiley();
+          int movesLeft = monster.getMovesLeft();
+          int attackDistance = monster.getAttackDistance();
+          ArrayList<Tile> tileList = gameState.gameBoard.getAttachableTiles(x, y, movesLeft, gameState,
+              attackDistance);
+          // attachable area is empty, change to move only
+          if (tileList.isEmpty()) {
+            allMovableOnlyUnit.add(monster);
+            continue;
+          }
+          Tile bestTarget = this.getBestAttackTarget(tileList);
+          if (Math.abs(monster.getPosition().getTilex()-bestTarget.getTilex())<2 && Math.abs(monster.getPosition().getTiley()-bestTarget.getTiley())<2) {
+            // attack
+            tileClicked.attack(monster, bestTarget.getUnitOnTile(), gameState, out, gameState.getGameBoard()
+                .getTile(monster.getPosition().getTilex(), monster.getPosition().getTiley()), bestTarget);
+          } else {
+            // move and attack
+            tileClicked.moveAndAttack(monster, bestTarget.getUnitOnTile(), gameState, out,
+                gameState.getGameBoard()
+                    .getTile(monster.getPosition().getTilex(), monster.getPosition().getTiley()),
+                bestTarget);
+          }
+        }
       }
-      if (Math.abs(attacker.getPosition().getTilex()-defenderTile.getTilex())<2 && Math.abs(attacker.getPosition().getTiley()-defenderTile.getTiley())<2) {
-        // attack
-        tileClicked.attack(attacker, defenderTile.getUnitOnTile(), gameState, out, gameState.getGameBoard()
-            .getTile(attacker.getPosition().getTilex(), attacker.getPosition().getTiley()), defenderTile);
-      } else {
-        // move and attack
-        tileClicked.moveAndAttack(attacker, defenderTile.getUnitOnTile(), gameState, out,
-            gameState.getGameBoard()
-                .getTile(attacker.getPosition().getTilex(), attacker.getPosition().getTiley()),
-            defenderTile);
-      }
-      // refresh attachableTiles
-      attachableTiles = this.getAllAttachableTiles(allAvailableUnit, allMovableOnlyUnit);
     }
-
     /* ai move unit **/
-    // add the rest attachable units to movable only list
-    allMovableOnlyUnit.addAll(attachableTiles.keySet());
 
     for (Monster monster : allMovableOnlyUnit) {
       // get best move target
@@ -133,6 +117,28 @@ public class AiPlayGame {
     BasicCommands.addPlayer1Notification(out, "Your turn!", 2);
   }
 
+  private Tile getBestAttackTarget(ArrayList<Tile> tileList) {
+    Tile bestTile = null;
+    int highestScore = -10;
+    for (Tile tile : tileList) {
+      int score = 0;
+      Monster monster = tile.getUnitOnTile();
+      if (monster.getClass() == Avatar.class) {
+        score += 10000;
+      } else if (monster.getAbilities() != null && !monster.getAbilities().isEmpty()) {
+        score += 1000;
+      }
+      score += monster.getAttack();
+      score -= monster.getHealth();
+      // best one so far
+      if (score > highestScore) {
+        bestTile = tile;
+        highestScore = score;
+      }
+    }
+    return bestTile;
+  }
+
   private Tile getBestMoveTarget(ArrayList<Tile> movableTiles) {
     int x = gameState.getHumanAvatar().getPosition().getTilex();
     int y = gameState.getHumanAvatar().getPosition().getTiley();
@@ -152,39 +158,6 @@ public class AiPlayGame {
     monsters.removeIf(m -> (m.getMovesLeft() <= 0 || m.isFrozen()));
     return monsters;
   }
-
-  private boolean hasUnitTarget(ArrayList<Tile> list) {
-    for (Tile tile : list) {
-      Monster monster = tile.getUnitOnTile();
-      if (monster != null && monster.getOwner() != gameState.getTurnOwner()) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private HashMap<Monster, ArrayList<Tile>> getAllAttachableTiles(
-      ArrayList<Monster> allAvailableUnit, ArrayList<Monster> movableOnlyUnit) {
-    HashMap<Monster, ArrayList<Tile>> map = new HashMap<>();
-    for (Monster monster : allAvailableUnit) {
-      // unit not in movable only list
-      if (!movableOnlyUnit.contains(monster)) {
-        // unit not in frozen
-        if (!monster.isFrozen()) {
-          int x = monster.getPosition().getTilex();
-          int y = monster.getPosition().getTiley();
-          int movesLeft = monster.getMovesLeft();
-          int attackDistance = monster.getAttackDistance();
-          ArrayList<Tile> tileList = gameState.gameBoard.getAttachableTiles(x, y, movesLeft, gameState,
-              attackDistance);
-          map.put(monster, tileList);
-        }
-
-      }
-    }
-    return map;
-  }
-
 
   private ArrayList<Monster> getAllMovableOnlyUnit(
       ArrayList<Monster> allAvailableUnit) {
@@ -250,7 +223,7 @@ public class AiPlayGame {
       }
     });
     List<Monster> list1 = list.stream().map(Entry::getKey).collect(Collectors.toList());
-    return new ArrayList<Monster>(list1);
+    return new ArrayList<>(list1);
   }
 
 }

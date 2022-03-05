@@ -223,7 +223,7 @@ public class Board {
     this.spellArea = avatarTiles;
   }
 
-  public void setNoneAvatarUnitArea() {
+  public void setNoneAvatarUnitArea(GameState gameState) {
     ArrayList<Tile> allUnitTiles = new ArrayList<>();
     int x = gameBoard.length;
     int y = gameBoard[0].length;
@@ -235,6 +235,10 @@ public class Board {
           allUnitTiles.add(tile);
         }
       }
+    }
+    if (gameState.getTurnOwner() == gameState.getAiPlayer()) {
+      // avoid the Ai attacking its own unit
+      allUnitTiles.removeIf(i -> i.getUnitOnTile().getOwner() == gameState.getAiPlayer());
     }
     spellArea = allUnitTiles;
   }

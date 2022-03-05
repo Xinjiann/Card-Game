@@ -1,7 +1,6 @@
 package utils;
 
 import akka.actor.ActorRef;
-import commands.BasicCommands;
 import java.io.File;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -129,8 +128,13 @@ public class BasicObjectBuilders {
 			monster.setAttack(card.getBigCard().getAttack());
 			// Set Player owner
 			monster.setOwner(p);
-			// Ability setting
+			// initialize abilities
+			if(monster.getAbilities() == null) {
+				monster.setAbilities(new ArrayList<>());
+			}
+				// Ability setting
 			if (card.getAbilityList() != null) {
+				monster.setAbilities(card.getAbilityList());
 				for (Ability ability : card.getAbilityList()) {
 					if (ability.getWhenTOCall() == WhenToCall.constructor) {
 						ability.execute(monster, gameState, out);

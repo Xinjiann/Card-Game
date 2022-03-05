@@ -19,7 +19,7 @@ public class Flying implements Ability {
 
   @Override
   public WhenToCall getWhenTOCall() {
-    return WhenToCall.summon;
+    return WhenToCall.constructor;
   }
 
   @Override

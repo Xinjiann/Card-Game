@@ -25,6 +25,7 @@ public class growWhenCastSpell implements Ability{
 
   @Override
   public void execute(Monster monsterEntity, GameState gameState, ActorRef out) {
+    // only execute when enemy cast spell
     if (gameState.getTurnOwner() != monsterEntity.getOwner()) {
       monsterEntity.setAttack(monsterEntity.getAttack()+1);
       monsterEntity.setHealth(Math.min(monsterEntity.getHealth()+1, monsterEntity.getMaxHealth()));
@@ -32,6 +33,9 @@ public class growWhenCastSpell implements Ability{
       BasicCommands.setUnitAttack(out, monsterEntity, monsterEntity.getAttack());
       CommonUtils.sleep();
       BasicCommands.setUnitHealth(out, monsterEntity, monsterEntity.getHealth());
+    } else {
+      // do not play animation when enemy cast spell
+      this.effectAnimation = null;
     }
   }
 

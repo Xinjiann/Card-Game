@@ -67,7 +67,7 @@ public class CardClicked implements EventProcessor{
 							gameState.gameBoard.setAvatarArea(gameState);
 							break;
 						case "Entropic Decay" :
-							gameState.gameBoard.setNoneAvatarUnitArea();
+							gameState.gameBoard.setNoneAvatarUnitArea(gameState);
 							break;
 					}
 					CommonUtils.sleep();

@@ -59,7 +59,7 @@ public class AiCards {
           gameBoard.setAvatarArea(gameState);
           break;
         case "Entropic Decay" :
-          gameBoard.setNoneAvatarUnitArea();
+          gameBoard.setNoneAvatarUnitArea(gameState);
           break;
       }
       if (!gameBoard.getSpellArea().isEmpty()) {
