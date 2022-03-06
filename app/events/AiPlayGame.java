@@ -81,16 +81,18 @@ public class AiPlayGame {
             continue;
           }
           Tile bestTarget = this.getBestAttackTarget(tileList);
-          if (Math.abs(monster.getPosition().getTilex()-bestTarget.getTilex())<2 && Math.abs(monster.getPosition().getTiley()-bestTarget.getTiley())<2) {
-            // attack
-            tileClicked.attack(monster, bestTarget.getUnitOnTile(), gameState, out, gameState.getGameBoard()
-                .getTile(monster.getPosition().getTilex(), monster.getPosition().getTiley()), bestTarget);
-          } else {
-            // move and attack
-            tileClicked.moveAndAttack(monster, bestTarget.getUnitOnTile(), gameState, out,
-                gameState.getGameBoard()
-                    .getTile(monster.getPosition().getTilex(), monster.getPosition().getTiley()),
-                bestTarget);
+          while (monster.getAttackCount() > 0) {
+            if (Math.abs(monster.getPosition().getTilex()-bestTarget.getTilex())<2 && Math.abs(monster.getPosition().getTiley()-bestTarget.getTiley())<2) {
+              // attack
+              tileClicked.attack(monster, bestTarget.getUnitOnTile(), gameState, out, gameState.getGameBoard()
+                  .getTile(monster.getPosition().getTilex(), monster.getPosition().getTiley()), bestTarget);
+            } else {
+              // move and attack
+              tileClicked.moveAndAttack(monster, bestTarget.getUnitOnTile(), gameState, out,
+                  gameState.getGameBoard()
+                      .getTile(monster.getPosition().getTilex(), monster.getPosition().getTiley()),
+                  bestTarget);
+            }
           }
         }
       }
