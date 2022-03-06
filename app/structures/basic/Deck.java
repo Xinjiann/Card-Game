@@ -17,7 +17,8 @@ public class Deck {
   public Deck() {
     this.cardList = new ArrayList<Card>();
   }
-
+  
+  //set human deck	
   public void humanDeck() {
     this.owner = "human";
     Card card;
@@ -60,6 +61,7 @@ public class Deck {
 
   }
 
+  //set ai deck
   public void aiDeck() {
     this.owner = "ai";
     Card card;

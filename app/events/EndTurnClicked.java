@@ -6,7 +6,6 @@ import akka.actor.ActorRef;
 import commands.BasicCommands;
 import structures.GameState;
 import structures.basic.Avatar;
-import structures.basic.Card;
 import structures.basic.Monster;
 import utils.CommonUtils;
 

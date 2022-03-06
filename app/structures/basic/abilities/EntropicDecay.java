@@ -18,6 +18,7 @@ public class EntropicDecay implements Ability {
 
 	@Override
 	public void execute(Monster monsterEntity, GameState gameState, ActorRef out) {
+		// Can't be execute if target is Avatar
 		if(!(monsterEntity instanceof Avatar))
 			monsterEntity.setHealth(0);
 	}

@@ -274,9 +274,11 @@ public class TileClicked implements EventProcessor {
           <= previousMonster.getAttackDistance()
           && Math.abs(previousTile.getTiley() - clickedTile.getTiley())
           <= previousMonster.getAttackDistance()) {
+    	  //if in attack range
         attack(previousMonster, clickedMonster, gameState, out, previousTile, clickedTile);
         gameState.setUnitSelected(null);
       } else {
+    	  //if not in range
         moveAndAttack(previousMonster, clickedMonster, gameState, out, previousTile, clickedTile);
       }
     } else {

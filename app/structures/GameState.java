@@ -151,10 +151,12 @@ public class GameState {
 		return cardPos;
 	}
 
+	// method to change turn
 	public void turnChange() {
 		this.turnOwner = (turnOwner == humanPlayer ? aiPlayer : humanPlayer);
 	}
 
+	// method to set default mana for each round
 	public void giveMana() {
 		if (turnOwner == humanPlayer) {
 			this.turnCount +=1;
