@@ -5,51 +5,52 @@ package structures.basic;
  * or idle. One of these animations as a start and end index in the animation
  * frames array, an fps (indicating animation speed) and whether that animation
  * should loop (e.g. move does, attack does not).
- * 
- * @author Dr. Richard McCreadie
  *
+ * @author Dr. Richard McCreadie
  */
 public class UnitAnimation {
-	// variables
-	int[] frameStartEndIndices;
-	int fps;
-	boolean loop;
+    // variables
+    int[] frameStartEndIndices;
+    int fps;
+    boolean loop;
 
-	// Constructor 1
-	public UnitAnimation() {
-	}
+    // Constructor 1
+    public UnitAnimation() {
+    }
 
-	// Constructor 2
-	public UnitAnimation(int[] frameStartEndIndices, int fps, boolean loop) {
-		super();
-		this.frameStartEndIndices = frameStartEndIndices;
-		this.fps = fps;
-		this.loop = loop;
-	}
+    // Constructor 2
+    public UnitAnimation(int[] frameStartEndIndices, int fps, boolean loop) {
+        super();
+        this.frameStartEndIndices = frameStartEndIndices;
+        this.fps = fps;
+        this.loop = loop;
+    }
 
-	// getters and setters
-	public int[] getFrameStartEndIndices() {
-		return frameStartEndIndices;
-	}
+    // getters and setters
+    public int[] getFrameStartEndIndices() {
+        return frameStartEndIndices;
+    }
 
-	public void setFrameStartEndIndices(int[] frameStartEndIndices) {
-		this.frameStartEndIndices = frameStartEndIndices;
-	}
+    public void setFrameStartEndIndices(int[] frameStartEndIndices) {
+        this.frameStartEndIndices = frameStartEndIndices;
+    }
 
-	public int getFps() {
-		return fps;
-	}
+    public int getFps() {
+        return fps;
+    }
 
-	public void setFps(int fps) {
-		this.fps = fps;
-	}
+    public void setFps(int fps) {
+        this.fps = fps;
+    }
 
-	public boolean isLoop() {
-		return loop;
-	}
+    public boolean isLoop() {
+        return loop;
+    }
 
-	public void setLoop(boolean loop) {
-		this.loop = loop;
-	};
+    public void setLoop(boolean loop) {
+        this.loop = loop;
+    }
+
+    ;
 
 }

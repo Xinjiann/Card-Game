@@ -7,62 +7,60 @@ package structures.basic;
  * if the unit/spell animation. fps is the speed at which to play the unit/spell
  * animation. index is the frame index in animationFrames when wanting a 'still'
  * version (non-highlighted).
- * 
- * 
- * @author Dr. Richard McCreadie
  *
+ * @author Dr. Richard McCreadie
  */
 public class MiniCard {
-	// variables
-	String[] cardTextures;
-	String[] animationFrames;
-	int fps;
-	int index;
+    // variables
+    String[] cardTextures;
+    String[] animationFrames;
+    int fps;
+    int index;
 
-	// Constructor 1
-	public MiniCard() {
-	}
+    // Constructor 1
+    public MiniCard() {
+    }
 
-	// Constructor 2
-	public MiniCard(String[] cardTextures, String[] animationFrames, int fps, int index) {
-		super();
-		this.cardTextures = cardTextures;
-		this.animationFrames = animationFrames;
-		this.fps = fps;
-		this.index = index;
-	}
+    // Constructor 2
+    public MiniCard(String[] cardTextures, String[] animationFrames, int fps, int index) {
+        super();
+        this.cardTextures = cardTextures;
+        this.animationFrames = animationFrames;
+        this.fps = fps;
+        this.index = index;
+    }
 
-	// getters and setters
-	public String[] getCardTextures() {
-		return cardTextures;
-	}
+    // getters and setters
+    public String[] getCardTextures() {
+        return cardTextures;
+    }
 
-	public void setCardTextures(String[] cardTextures) {
-		this.cardTextures = cardTextures;
-	}
+    public void setCardTextures(String[] cardTextures) {
+        this.cardTextures = cardTextures;
+    }
 
-	public String[] getAnimationFrames() {
-		return animationFrames;
-	}
+    public String[] getAnimationFrames() {
+        return animationFrames;
+    }
 
-	public void setAnimationFrames(String[] animationFrames) {
-		this.animationFrames = animationFrames;
-	}
+    public void setAnimationFrames(String[] animationFrames) {
+        this.animationFrames = animationFrames;
+    }
 
-	public int getFps() {
-		return fps;
-	}
+    public int getFps() {
+        return fps;
+    }
 
-	public void setFps(int fps) {
-		this.fps = fps;
-	}
+    public void setFps(int fps) {
+        this.fps = fps;
+    }
 
-	public int getIndex() {
-		return index;
-	}
+    public int getIndex() {
+        return index;
+    }
 
-	public void setIndex(int index) {
-		this.index = index;
-	}
+    public void setIndex(int index) {
+        this.index = index;
+    }
 
 }

@@ -11,37 +11,37 @@ import utils.StaticConfFiles;
 
 public class growWhenCastSpell implements Ability {
 
-	private EffectAnimation effectAnimation;
+    private EffectAnimation effectAnimation;
 
-	public growWhenCastSpell() {
+    public growWhenCastSpell() {
 
-		this.effectAnimation = BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff);
-	}
+        this.effectAnimation = BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff);
+    }
 
-	@Override
-	public EffectAnimation getEffectAnimation() {
-		return this.effectAnimation;
-	}
+    @Override
+    public EffectAnimation getEffectAnimation() {
+        return this.effectAnimation;
+    }
 
-	@Override
-	public void execute(Monster monsterEntity, GameState gameState, ActorRef out) {
-		// only execute when enemy cast spell
-		if (gameState.getTurnOwner() != monsterEntity.getOwner()) {
-			monsterEntity.setAttack(monsterEntity.getAttack() + 1);
-			monsterEntity.setHealth(Math.min(monsterEntity.getHealth() + 1, monsterEntity.getMaxHealth()));
-			CommonUtils.tinySleep();
-			BasicCommands.setUnitAttack(out, monsterEntity, monsterEntity.getAttack());
-			CommonUtils.sleep();
-			BasicCommands.setUnitHealth(out, monsterEntity, monsterEntity.getHealth());
-		} else {
-			// do not play animation when enemy cast spell
-			this.effectAnimation = null;
-		}
-	}
+    @Override
+    public void execute(Monster monsterEntity, GameState gameState, ActorRef out) {
+        // only execute when enemy cast spell
+        if (gameState.getTurnOwner() != monsterEntity.getOwner()) {
+            monsterEntity.setAttack(monsterEntity.getAttack() + 1);
+            monsterEntity.setHealth(Math.min(monsterEntity.getHealth() + 1, monsterEntity.getMaxHealth()));
+            CommonUtils.tinySleep();
+            BasicCommands.setUnitAttack(out, monsterEntity, monsterEntity.getAttack());
+            CommonUtils.sleep();
+            BasicCommands.setUnitHealth(out, monsterEntity, monsterEntity.getHealth());
+        } else {
+            // do not play animation when enemy cast spell
+            this.effectAnimation = null;
+        }
+    }
 
-	@Override
-	public WhenToCall getWhenTOCall() {
-		return WhenToCall.castSpell;
-	}
+    @Override
+    public WhenToCall getWhenTOCall() {
+        return WhenToCall.castSpell;
+    }
 
 }

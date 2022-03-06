@@ -7,51 +7,50 @@ import java.util.List;
  * has a list of animation frames (animationTextures), and a correction object
  * that has information about centering the frames on the tile. It has has an
  * fps value that specifies how quickly to play the animation.
- * 
- * @author Dr. Richard McCreadie
  *
+ * @author Dr. Richard McCreadie
  */
 public class EffectAnimation {
-	// variables
-	List<String> animationTextures;
-	ImageCorrection correction;
-	int fps;
+    // variables
+    List<String> animationTextures;
+    ImageCorrection correction;
+    int fps;
 
-	// Constructor 1
-	public EffectAnimation() {
-	}
+    // Constructor 1
+    public EffectAnimation() {
+    }
 
-	// Constructor 2
-	public EffectAnimation(List<String> animationTextures, ImageCorrection correction, int fps) {
-		super();
-		this.animationTextures = animationTextures;
-		this.correction = correction;
-		this.fps = fps;
-	}
+    // Constructor 2
+    public EffectAnimation(List<String> animationTextures, ImageCorrection correction, int fps) {
+        super();
+        this.animationTextures = animationTextures;
+        this.correction = correction;
+        this.fps = fps;
+    }
 
-	// getters and setters
-	public List<String> getAnimationTextures() {
-		return animationTextures;
-	}
+    // getters and setters
+    public List<String> getAnimationTextures() {
+        return animationTextures;
+    }
 
-	public void setAnimationTextures(List<String> animationTextures) {
-		this.animationTextures = animationTextures;
-	}
+    public void setAnimationTextures(List<String> animationTextures) {
+        this.animationTextures = animationTextures;
+    }
 
-	public ImageCorrection getCorrection() {
-		return correction;
-	}
+    public ImageCorrection getCorrection() {
+        return correction;
+    }
 
-	public void setCorrection(ImageCorrection correction) {
-		this.correction = correction;
-	}
+    public void setCorrection(ImageCorrection correction) {
+        this.correction = correction;
+    }
 
-	public int getFps() {
-		return fps;
-	}
+    public int getFps() {
+        return fps;
+    }
 
-	public void setFps(int fps) {
-		this.fps = fps;
-	}
+    public void setFps(int fps) {
+        this.fps = fps;
+    }
 
 }

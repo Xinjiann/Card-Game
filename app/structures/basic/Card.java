@@ -1,6 +1,7 @@
 package structures.basic;
 
 import java.util.ArrayList;
+
 import structures.basic.abilities.Ability;
 
 /**
@@ -9,100 +10,101 @@ import structures.basic.abilities.Ability;
  * large and mini version. The mini version is what is rendered at the bottom of
  * the screen. The big version is what is rendered when the player clicks on a
  * card in their hand.
- * 
- * @author Dr. Richard McCreadie
  *
+ * @author Dr. Richard McCreadie
  */
 public class Card {
-	// variables
-	int id;
+    // variables
+    int id;
 
-	String cardname;
-	int manacost;
-	MiniCard miniCard;
-	BigCard bigCard;
-	String unitConfigFiles;
-	String type;
+    String cardname;
+    int manacost;
+    MiniCard miniCard;
+    BigCard bigCard;
+    String unitConfigFiles;
+    String type;
 
-	private ArrayList<Ability> abilityList;
+    private ArrayList<Ability> abilityList;
 
-	// Constructor 1
-	public Card() {
-	};
+    // Constructor 1
+    public Card() {
+    }
 
-	// Constructor 2
-	public Card(int id, String cardname, int manacost, MiniCard miniCard, BigCard bigCard) {
-		super();
-		this.id = id;
-		this.cardname = cardname;
-		this.manacost = manacost;
-		this.miniCard = miniCard;
-		this.bigCard = bigCard;
-		this.abilityList = new ArrayList<Ability>();
-	}
+    ;
 
-	// getters and setters
-	public int getId() {
-		return id;
-	}
+    // Constructor 2
+    public Card(int id, String cardname, int manacost, MiniCard miniCard, BigCard bigCard) {
+        super();
+        this.id = id;
+        this.cardname = cardname;
+        this.manacost = manacost;
+        this.miniCard = miniCard;
+        this.bigCard = bigCard;
+        this.abilityList = new ArrayList<Ability>();
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    // getters and setters
+    public int getId() {
+        return id;
+    }
 
-	public String getCardname() {
-		return cardname;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setCardname(String cardname) {
-		this.cardname = cardname;
-	}
+    public String getCardname() {
+        return cardname;
+    }
 
-	public int getManacost() {
-		return manacost;
-	}
+    public void setCardname(String cardname) {
+        this.cardname = cardname;
+    }
 
-	public void setManacost(int manacost) {
-		this.manacost = manacost;
-	}
+    public int getManacost() {
+        return manacost;
+    }
 
-	public MiniCard getMiniCard() {
-		return miniCard;
-	}
+    public void setManacost(int manacost) {
+        this.manacost = manacost;
+    }
 
-	public void setMiniCard(MiniCard miniCard) {
-		this.miniCard = miniCard;
-	}
+    public MiniCard getMiniCard() {
+        return miniCard;
+    }
 
-	public BigCard getBigCard() {
-		return bigCard;
-	}
+    public void setMiniCard(MiniCard miniCard) {
+        this.miniCard = miniCard;
+    }
 
-	public void setBigCard(BigCard bigCard) {
-		this.bigCard = bigCard;
-	}
+    public BigCard getBigCard() {
+        return bigCard;
+    }
 
-	public ArrayList<Ability> getAbilityList() {
-		return abilityList;
-	}
+    public void setBigCard(BigCard bigCard) {
+        this.bigCard = bigCard;
+    }
 
-	public void setAbilityList(ArrayList<Ability> abilityList) {
-		this.abilityList = abilityList;
-	}
+    public ArrayList<Ability> getAbilityList() {
+        return abilityList;
+    }
 
-	public String getUnitConfigFiles() {
-		return unitConfigFiles;
-	}
+    public void setAbilityList(ArrayList<Ability> abilityList) {
+        this.abilityList = abilityList;
+    }
 
-	public void setUnitConfigFiles(String unitConfigFiles) {
-		this.unitConfigFiles = unitConfigFiles;
-	}
+    public String getUnitConfigFiles() {
+        return unitConfigFiles;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public void setUnitConfigFiles(String unitConfigFiles) {
+        this.unitConfigFiles = unitConfigFiles;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

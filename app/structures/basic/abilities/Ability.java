@@ -7,12 +7,12 @@ import structures.basic.Monster;
 
 public interface Ability {
 
-	// method when ability is executed
-	public void execute(Monster monsterEntity, GameState gameState, ActorRef out);
+    // method when ability is executed
+    public void execute(Monster monsterEntity, GameState gameState, ActorRef out);
 
-	// gesture for identification of ability kinds
-	public WhenToCall getWhenTOCall();
+    // gesture for identification of ability kinds
+    public WhenToCall getWhenTOCall();
 
-	// store the animation
-	public EffectAnimation getEffectAnimation();
+    // store the animation
+    public EffectAnimation getEffectAnimation();
 }

@@ -7,23 +7,23 @@ import structures.basic.Monster;
 
 public class Provoke implements Ability {
 
-	public Provoke() {
+    public Provoke() {
 
-	}
+    }
 
-	@Override
-	public void execute(Monster monsterEntity, GameState gameState, ActorRef out) {
-		monsterEntity.setProvoke(true);
-	}
+    @Override
+    public void execute(Monster monsterEntity, GameState gameState, ActorRef out) {
+        monsterEntity.setProvoke(true);
+    }
 
-	@Override
-	public EffectAnimation getEffectAnimation() {
-		return null;
-	}
+    @Override
+    public EffectAnimation getEffectAnimation() {
+        return null;
+    }
 
-	@Override
-	public WhenToCall getWhenTOCall() {
-		return WhenToCall.constructor;
-	}
+    @Override
+    public WhenToCall getWhenTOCall() {
+        return WhenToCall.constructor;
+    }
 
 }

@@ -9,25 +9,25 @@ import utils.StaticConfFiles;
 
 public class StaffOfYkir implements Ability {
 
-	private EffectAnimation effectAnimation;
+    private EffectAnimation effectAnimation;
 
-	public StaffOfYkir() {
+    public StaffOfYkir() {
 
-		this.effectAnimation = BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff);
-	}
+        this.effectAnimation = BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff);
+    }
 
-	@Override
-	public void execute(Monster monster, GameState gameState, ActorRef out) {
-		monster.setAttack(monster.getAttack() + 2);
-	}
+    @Override
+    public void execute(Monster monster, GameState gameState, ActorRef out) {
+        monster.setAttack(monster.getAttack() + 2);
+    }
 
-	@Override
-	public WhenToCall getWhenTOCall() {
-		return WhenToCall.spell;
-	}
+    @Override
+    public WhenToCall getWhenTOCall() {
+        return WhenToCall.spell;
+    }
 
-	@Override
-	public EffectAnimation getEffectAnimation() {
-		return this.effectAnimation;
-	}
+    @Override
+    public EffectAnimation getEffectAnimation() {
+        return this.effectAnimation;
+    }
 }

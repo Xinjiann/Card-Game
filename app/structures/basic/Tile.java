@@ -12,148 +12,147 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * position and a grid position. Tiles also have a width and height in pixels
  * and a series of urls that point to the different renderable textures that a
  * tile might have.
- * 
- * @author Dr. Richard McCreadie
  *
+ * @author Dr. Richard McCreadie
  */
 public class Tile {
-	// variables
-	@JsonIgnore
-	private static ObjectMapper mapper = new ObjectMapper(); // Jackson Java Object Serializer, is used to read java
-																// objects from a file
+    // variables
+    @JsonIgnore
+    private static ObjectMapper mapper = new ObjectMapper(); // Jackson Java Object Serializer, is used to read java
+    // objects from a file
 
-	List<String> tileTextures;
-	int xpos;
-	int ypos;
-	int width;
-	int height;
-	int tilex;
-	int tiley;
-	boolean isAvalible;
-	Monster unitOnTile;
+    List<String> tileTextures;
+    int xpos;
+    int ypos;
+    int width;
+    int height;
+    int tilex;
+    int tiley;
+    boolean isAvalible;
+    Monster unitOnTile;
 
-	// Constructor 1
-	public Tile() {
-	}
+    // Constructor 1
+    public Tile() {
+    }
 
-	// Constructor 2
-	public Tile(String tileTexture, int xpos, int ypos, int width, int height, int tilex, int tiley) {
-		super();
-		tileTextures = new ArrayList<String>(1);
-		tileTextures.add(tileTexture);
-		this.xpos = xpos;
-		this.ypos = ypos;
-		this.width = width;
-		this.height = height;
-		this.tilex = tilex;
-		this.tiley = tiley;
-	}
+    // Constructor 2
+    public Tile(String tileTexture, int xpos, int ypos, int width, int height, int tilex, int tiley) {
+        super();
+        tileTextures = new ArrayList<String>(1);
+        tileTextures.add(tileTexture);
+        this.xpos = xpos;
+        this.ypos = ypos;
+        this.width = width;
+        this.height = height;
+        this.tilex = tilex;
+        this.tiley = tiley;
+    }
 
-	// Constructor 3
-	public Tile(List<String> tileTextures, int xpos, int ypos, int width, int height, int tilex, int tiley) {
-		super();
-		this.tileTextures = tileTextures;
-		this.xpos = xpos;
-		this.ypos = ypos;
-		this.width = width;
-		this.height = height;
-		this.tilex = tilex;
-		this.tiley = tiley;
-	}
+    // Constructor 3
+    public Tile(List<String> tileTextures, int xpos, int ypos, int width, int height, int tilex, int tiley) {
+        super();
+        this.tileTextures = tileTextures;
+        this.xpos = xpos;
+        this.ypos = ypos;
+        this.width = width;
+        this.height = height;
+        this.tilex = tilex;
+        this.tiley = tiley;
+    }
 
-	// getters and setters
-	public List<String> getTileTextures() {
-		return tileTextures;
-	}
+    // getters and setters
+    public List<String> getTileTextures() {
+        return tileTextures;
+    }
 
-	public void setTileTextures(List<String> tileTextures) {
-		this.tileTextures = tileTextures;
-	}
+    public void setTileTextures(List<String> tileTextures) {
+        this.tileTextures = tileTextures;
+    }
 
-	public int getXpos() {
-		return xpos;
-	}
+    public int getXpos() {
+        return xpos;
+    }
 
-	public void setXpos(int xpos) {
-		this.xpos = xpos;
-	}
+    public void setXpos(int xpos) {
+        this.xpos = xpos;
+    }
 
-	public int getYpos() {
-		return ypos;
-	}
+    public int getYpos() {
+        return ypos;
+    }
 
-	public void setYpos(int ypos) {
-		this.ypos = ypos;
-	}
+    public void setYpos(int ypos) {
+        this.ypos = ypos;
+    }
 
-	public int getWidth() {
-		return width;
-	}
+    public int getWidth() {
+        return width;
+    }
 
-	public void setWidth(int width) {
-		this.width = width;
-	}
+    public void setWidth(int width) {
+        this.width = width;
+    }
 
-	public int getHeight() {
-		return height;
-	}
+    public int getHeight() {
+        return height;
+    }
 
-	public void setHeight(int height) {
-		this.height = height;
-	}
+    public void setHeight(int height) {
+        this.height = height;
+    }
 
-	public int getTilex() {
-		return tilex;
-	}
+    public int getTilex() {
+        return tilex;
+    }
 
-	public void setTilex(int tilex) {
-		this.tilex = tilex;
-	}
+    public void setTilex(int tilex) {
+        this.tilex = tilex;
+    }
 
-	public int getTiley() {
-		return tiley;
-	}
+    public int getTiley() {
+        return tiley;
+    }
 
-	public void setTiley(int tiley) {
-		this.tiley = tiley;
-	}
+    public void setTiley(int tiley) {
+        this.tiley = tiley;
+    }
 
-	public Monster getUnitOnTile() {
-		return unitOnTile;
-	}
+    public Monster getUnitOnTile() {
+        return unitOnTile;
+    }
 
-	public void setUnitOnTile(Monster unit) {
-		this.isAvalible = false;
-		this.unitOnTile = unit;
-		unit.setPositionByTile(this);
-	}
+    public void setUnitOnTile(Monster unit) {
+        this.isAvalible = false;
+        this.unitOnTile = unit;
+        unit.setPositionByTile(this);
+    }
 
-	public boolean getAvailable() {
-		return isAvalible;
-	}
+    public boolean getAvailable() {
+        return isAvalible;
+    }
 
-	/**
-	 * Loads a tile from a configuration file parameters.
-	 * 
-	 * @param configFile
-	 * @return
-	 */
-	public static Tile constructTile(String configFile) {
+    /**
+     * Loads a tile from a configuration file parameters.
+     *
+     * @param configFile
+     * @return
+     */
+    public static Tile constructTile(String configFile) {
 
-		try {
-			Tile tile = mapper.readValue(new File(configFile), Tile.class);
-			return tile;
-		} catch (Exception e) {
-			e.printStackTrace();
+        try {
+            Tile tile = mapper.readValue(new File(configFile), Tile.class);
+            return tile;
+        } catch (Exception e) {
+            e.printStackTrace();
 
-		}
-		return null;
-	}
+        }
+        return null;
+    }
 
-	// remove unit method
-	public void rmUnitOnTile() {
-		this.isAvalible = true;
-		this.unitOnTile = null;
-	}
+    // remove unit method
+    public void rmUnitOnTile() {
+        this.isAvalible = true;
+        this.unitOnTile = null;
+    }
 
 }

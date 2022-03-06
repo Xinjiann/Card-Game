@@ -9,28 +9,28 @@ import utils.StaticConfFiles;
 
 public class SundropElixir implements Ability {
 
-	private EffectAnimation effectAnimation;
+    private EffectAnimation effectAnimation;
 
-	public SundropElixir() {
-		this.effectAnimation = BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff);
-	}
+    public SundropElixir() {
+        this.effectAnimation = BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff);
+    }
 
-	@Override
-	public void execute(Monster monsterEntity, GameState gameState, ActorRef out) {
-		monsterEntity.setHealth(monsterEntity.getHealth() + 5);
-		// the health wont beyond its limit
-		if (monsterEntity.getHealth() > monsterEntity.getMaxHealth())
-			monsterEntity.setHealth(monsterEntity.getMaxHealth());
-	}
+    @Override
+    public void execute(Monster monsterEntity, GameState gameState, ActorRef out) {
+        monsterEntity.setHealth(monsterEntity.getHealth() + 5);
+        // the health wont beyond its limit
+        if (monsterEntity.getHealth() > monsterEntity.getMaxHealth())
+            monsterEntity.setHealth(monsterEntity.getMaxHealth());
+    }
 
-	@Override
-	public WhenToCall getWhenTOCall() {
-		return WhenToCall.spell;
-	}
+    @Override
+    public WhenToCall getWhenTOCall() {
+        return WhenToCall.spell;
+    }
 
-	@Override
-	public EffectAnimation getEffectAnimation() {
-		return this.effectAnimation;
-	}
+    @Override
+    public EffectAnimation getEffectAnimation() {
+        return this.effectAnimation;
+    }
 
 }
