@@ -48,7 +48,7 @@ public class CommonUtils {
   }
 
   //util to remove highlight animation on tile after monster select
-  public static void rmMonsterSelectedHighlightTiles(Monster monster, GameState gameState, ActorRef out) {
+  public static void rmMonsterSelectedHighlightTiles(GameState gameState, ActorRef out) {
 
     drawTilesInBatch(out, gameState.getGameBoard().getAllAttachableAndMovableTiles(), 0);
   }
@@ -79,13 +79,13 @@ public class CommonUtils {
           for (int j = i*bufferSize; j < area.size(); j++) {
             BasicCommands.drawTile(out, area.get(j), mode);
           }
-          sleep();
         } else {
           for (int j = i*bufferSize; j < (i+1)*bufferSize; j++) {
             BasicCommands.drawTile(out, area.get(j), mode);
           }
-          sleep();
         }
+        // sleep after every batch
+        sleep();
       }
     }
   }
