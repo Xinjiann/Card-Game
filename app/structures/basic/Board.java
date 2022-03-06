@@ -199,6 +199,7 @@ public class Board {
       for (int j = 0; j < y; j++) {
         Tile tile = gameBoard[i][j];
         Monster monster = tile.getUnitOnTile();
+        //check if enemy or not
         if (monster != null && monster.getOwner() != gameState.getTurnOwner()) {
           allEnemyTiles.add(tile);
         }
@@ -215,6 +216,7 @@ public class Board {
       for (int j = 0; j < y; j++) {
         Tile tile = gameBoard[i][j];
         Monster monster = tile.getUnitOnTile();
+        //check if avatar or not
         if (monster != null && monster.getClass() == Avatar.class && monster.getOwner() == gameState.getTurnOwner()) {
           avatarTiles.add(tile);
         }

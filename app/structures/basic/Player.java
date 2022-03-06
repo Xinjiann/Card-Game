@@ -1,7 +1,5 @@
 package structures.basic;
 
-import structures.GameState;
-
 /**
  * A basic representation of of the Player. A player
  * has health and mana.
@@ -54,7 +52,7 @@ public class Player {
 		this.mana = mana;
 	}
 
-
+	// set mana, have a limit of 9
 	public void addMana(int turnCount) {
 		mana += turnCount;
 		mana = Math.min(mana, 9);

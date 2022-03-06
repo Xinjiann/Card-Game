@@ -22,9 +22,12 @@ public class AiCards {
   }
 
   public HashMap<Tile, Card> getCardsToPlay(Board gameBoard, GameState gameState) {
-    ArrayList<Card> cardList = this.allAvalibleCards();
-    ArrayList<Card> bestCombo = this.bestCombo(cardList);
-    HashMap<Tile, Card> cardToTile = this.cardToTile(bestCombo, gameBoard, gameState);
+	// get all cards can be used
+	ArrayList<Card> cardList = this.allAvalibleCards();
+	// get card usage strategy
+	ArrayList<Card> bestCombo = this.bestCombo(cardList);
+	// get specific usage actions
+	HashMap<Tile, Card> cardToTile = this.cardToTile(bestCombo, gameBoard, gameState);
     return cardToTile;
   }
 
@@ -69,7 +72,8 @@ public class AiCards {
     }
     return map;
   }
-
+  
+  //get card usage strategy
   private ArrayList<Card> bestCombo(ArrayList<Card> cardList) {
 
     HashMap<ArrayList<Card>, Integer> comboMap = new HashMap<>();
@@ -101,6 +105,7 @@ public class AiCards {
     return list.get(0).getKey();
   }
 
+  //get list of cards can be used
   private ArrayList<Card> allAvalibleCards() {
     ArrayList<Card> list = new ArrayList<>();
     for (Card card : this.hand.getHandList()) {

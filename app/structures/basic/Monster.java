@@ -3,7 +3,6 @@ package structures.basic;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
-import java.util.HashSet;
 import structures.basic.abilities.Ability;
 
 public class Monster  extends Unit{
@@ -53,6 +52,7 @@ public class Monster  extends Unit{
 
   public void attack() {
     this.attackCount -= 1;
+	// freeze the monster according to the rule
     if (this.attackCount == 0) {
       this.frozen = true;
       this.movesLeft = 0;
@@ -99,6 +99,7 @@ public class Monster  extends Unit{
 
   public void setMovesLeft(int movesLeft) {
     this.movesLeft = movesLeft;
+    // freeze the monster according to the rule
     if (movesLeft == 0 && attackCount == 0) {
       this.frozen = true;
     }

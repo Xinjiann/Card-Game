@@ -124,9 +124,10 @@ public class Tile {
 		this.unitOnTile = unit;
 		unit.setPositionByTile(this);
 	}
-
+	
+	// remove unit
 	public void rmUnitOnTile() {
-		this.isAvalible = true;//seems to be wrong,change it from false to true
+		this.isAvalible = true;
 		this.unitOnTile = null;
 	}
 	

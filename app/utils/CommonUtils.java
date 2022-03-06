@@ -16,6 +16,7 @@ public class CommonUtils {
 
   private static final int bufferSize = 15;
 
+  //util to get tiles with unit
   public static ArrayList<Tile> getAllUnits(GameState gameState) {
     Board board = gameState.getGameBoard();
     ArrayList<Tile> tiles = new ArrayList<>();
@@ -46,11 +47,13 @@ public class CommonUtils {
     return list;
   }
 
+  //util to remove highlight animation on tile after monster select
   public static void rmMonsterSelectedHighlightTiles(Monster monster, GameState gameState, ActorRef out) {
 
     drawTilesInBatch(out, gameState.getGameBoard().getAllAttachableAndMovableTiles(), 0);
   }
 
+  //util to remove highlight animation on all tiles
   public static void rmAllHighlight(GameState gameState, ActorRef out) {
     Board board = gameState.gameBoard;
     int x = board.getGameBoard().length;
@@ -62,6 +65,7 @@ public class CommonUtils {
     drawTilesInBatch(out, list, 0);
   }
 
+  //draw tiles util
   public static void drawTilesInBatch(ActorRef out, ArrayList<Tile> area, int mode){
     if (area.size() < bufferSize) {
       for (Tile tile : area) {
@@ -86,7 +90,7 @@ public class CommonUtils {
     }
   }
 
-
+  //some sleep utils
   public static void tinySleep() {
     try {Thread.sleep(10);} catch (InterruptedException e) {e.printStackTrace();}
   }
@@ -116,7 +120,8 @@ public class CommonUtils {
       i++;
     }
   }
-
+  
+  // util to execute monster ability
   public static void executeMonsterAbility(ActorRef out, GameState gameState, WhenToCall whenToCall,
       Monster monster, Tile tile) {
     if (monster.getAbilities() != null && !monster.getAbilities().isEmpty()) {
