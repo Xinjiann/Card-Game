@@ -13,17 +13,17 @@ import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
 
 /**
- * This class can be used to hold information about the on-going game.
- * Its created with the GameActor.
+ * This class can be used to hold information about the on-going game. Its
+ * created with the GameActor.
  * 
  * @author Dr. Richard McCreadie
  *
  */
 public class GameState {
 
-	
+	// variables
 	public boolean gameInitalised = false;
-	
+
 	public boolean something = false;
 
 	public Board gameBoard;
@@ -39,6 +39,7 @@ public class GameState {
 	private boolean lock;
 	private boolean gameover;
 
+	// constructor
 	public GameState() {
 		gameBoard = new Board();
 
@@ -70,7 +71,8 @@ public class GameState {
 		aiPlayer.setHand(aiHand);
 		aiHand.initialHand(aiDeck);
 
-		humanAvatar =  BasicObjectBuilders.loadAvatar(StaticConfFiles.humanAvatar, 0, humanPlayer, Avatar.class);
+		// Avatar
+		humanAvatar = BasicObjectBuilders.loadAvatar(StaticConfFiles.humanAvatar, 0, humanPlayer, Avatar.class);
 		humanAvatar.setAttack(2);
 		humanAvatar.setHealth(20);
 		aiAvatar = BasicObjectBuilders.loadAvatar(StaticConfFiles.aiAvatar, 1, aiPlayer, Avatar.class);
@@ -79,6 +81,7 @@ public class GameState {
 		turnOwner = humanPlayer;
 	}
 
+	// getters and setters
 	public void setCardPos(int handPosition) {
 		this.cardPos = handPosition;
 	}
@@ -151,19 +154,6 @@ public class GameState {
 		return cardPos;
 	}
 
-	public void turnChange() {
-		this.turnOwner = (turnOwner == humanPlayer ? aiPlayer : humanPlayer);
-	}
-
-	public void giveMana() {
-		if (turnOwner == humanPlayer) {
-			this.turnCount +=1;
-			humanPlayer.addMana(this.turnCount);
-		} else {
-			aiPlayer.addMana(this.turnCount);
-		}
-	}
-
 	public boolean isLock() {
 		return lock;
 	}
@@ -186,6 +176,21 @@ public class GameState {
 
 	public void setTurnCount(int turnCount) {
 		this.turnCount = turnCount;
+	}
+
+	// method to change turn
+	public void turnChange() {
+		this.turnOwner = (turnOwner == humanPlayer ? aiPlayer : humanPlayer);
+	}
+
+	// method to set default mana for each round
+	public void giveMana() {
+		if (turnOwner == humanPlayer) {
+			this.turnCount += 1;
+			humanPlayer.addMana(this.turnCount);
+		} else {
+			aiPlayer.addMana(this.turnCount);
+		}
 	}
 
 }

@@ -8,29 +8,29 @@ import structures.basic.Monster;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
 
-public class addAvatarHealth implements Ability{
+public class addAvatarHealth implements Ability {
 
-  private EffectAnimation effectAnimation;
+	private EffectAnimation effectAnimation;
 
-  public addAvatarHealth() {
+	public addAvatarHealth() {
 
-    this.effectAnimation = BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff);
-  }
+		this.effectAnimation = BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff);
+	}
 
-  @Override
-  public EffectAnimation getEffectAnimation() {
-    return this.effectAnimation;
-  }
+	@Override
+	public EffectAnimation getEffectAnimation() {
+		return this.effectAnimation;
+	}
 
-  @Override
-  public void execute(Monster monsterEntity, GameState gameState, ActorRef out) {
-    gameState.getHumanAvatar().setHealth(Math.min(gameState.getHumanAvatar().getHealth()+3, 20));
-    BasicCommands.setUnitHealth(out, gameState.getHumanAvatar(), gameState.getHumanAvatar().getHealth());
-  }
+	@Override
+	public void execute(Monster monsterEntity, GameState gameState, ActorRef out) {
+		gameState.getHumanAvatar().setHealth(Math.min(gameState.getHumanAvatar().getHealth() + 3, 20));
+		BasicCommands.setUnitHealth(out, gameState.getHumanAvatar(), gameState.getHumanAvatar().getHealth());
+	}
 
-  @Override
-  public WhenToCall getWhenTOCall() {
-    return WhenToCall.summon;
-  }
+	@Override
+	public WhenToCall getWhenTOCall() {
+		return WhenToCall.summon;
+	}
 
 }

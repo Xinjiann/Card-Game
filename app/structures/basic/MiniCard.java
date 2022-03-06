@@ -1,8 +1,8 @@
 package structures.basic;
 
 /**
- * A mini-card is a visualisation of the card in a small square form factor
- * in the player's hand. It has a series of components. cardTextures are the
+ * A mini-card is a visualisation of the card in a small square form factor in
+ * the player's hand. It has a series of components. cardTextures are the
  * 'backing' image behind the sprite animation. animationFrames are the frames
  * if the unit/spell animation. fps is the speed at which to play the unit/spell
  * animation. index is the frame index in animationFrames when wanting a 'still'
@@ -13,14 +13,17 @@ package structures.basic;
  *
  */
 public class MiniCard {
-
+	// variables
 	String[] cardTextures;
 	String[] animationFrames;
 	int fps;
 	int index;
-	
-	public MiniCard() {}
 
+	// Constructor 1
+	public MiniCard() {
+	}
+
+	// Constructor 2
 	public MiniCard(String[] cardTextures, String[] animationFrames, int fps, int index) {
 		super();
 		this.cardTextures = cardTextures;
@@ -29,6 +32,7 @@ public class MiniCard {
 		this.index = index;
 	}
 
+	// getters and setters
 	public String[] getCardTextures() {
 		return cardTextures;
 	}
@@ -60,9 +64,5 @@ public class MiniCard {
 	public void setIndex(int index) {
 		this.index = index;
 	}
-	
-	
-	
-	
-	
+
 }

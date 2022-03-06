@@ -2,18 +2,22 @@ package structures.basic;
 
 /**
  * BigCard represents the expanded card version that that appears on mouse-over
+ * 
  * @author Dr. Richard McCreadie
  *
  */
 public class BigCard {
-
+	// variables
 	int attack;
 	int health;
 	String[] rulesTextRows;
 	String[] cardTextures;
 
-	public BigCard() {}
+	// Constructor 1
+	public BigCard() {
+	}
 
+	// Constructor 2
 	public BigCard(int attack, int health, String[] rulesTextRows, String[] cardTextures) {
 		super();
 		this.attack = attack;
@@ -22,6 +26,7 @@ public class BigCard {
 		this.cardTextures = cardTextures;
 	}
 
+	// getters and setters
 	public int getAttack() {
 		return attack;
 	}
@@ -54,9 +59,4 @@ public class BigCard {
 		this.cardTextures = cardTextures;
 	}
 
-	
-	
-	
-	
-	
 }

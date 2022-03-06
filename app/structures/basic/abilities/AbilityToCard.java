@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+// bind card name and corresponding ability
 public class AbilityToCard {
 
 	public static HashMap<String, ArrayList<Ability>> abilityToCard = new HashMap<String, ArrayList<Ability>>();
-
 
 	public static void init() {
 
@@ -36,7 +36,7 @@ public class AbilityToCard {
 		abilityToCard.put("Rock Pulveriser", loadAbilities(new Provoke()));
 	}
 
-	private  static ArrayList<Ability> loadAbilities(Ability ... abilities) {
+	private static ArrayList<Ability> loadAbilities(Ability... abilities) {
 		return new ArrayList<>(Arrays.asList(abilities));
 	}
 

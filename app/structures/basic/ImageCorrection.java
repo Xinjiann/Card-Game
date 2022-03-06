@@ -3,15 +3,15 @@ package structures.basic;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
- * Sprites when extracted are not full size (there is white space around the sprite). 
- * We need to correct for this as well as centre the sprite on the tile. This class
- * contains information to do this.
+ * Sprites when extracted are not full size (there is white space around the
+ * sprite). We need to correct for this as well as centre the sprite on the
+ * tile. This class contains information to do this.
  * 
  * @author Dr. Richard McCreadie
  *
  */
 public class ImageCorrection {
-
+	// variables
 	double imgWidth;
 	double imgHeight;
 	double spriteTopLeftX;
@@ -20,9 +20,12 @@ public class ImageCorrection {
 	double offsetY;
 	double scale;
 	boolean reflected;
-	
-	public ImageCorrection() {}
-	
+
+	// Constructor 1
+	public ImageCorrection() {
+	}
+
+	// Constructor 2
 	public ImageCorrection(double imgWidth, double imgHeight, double spriteTopLeftX, double spriteTopLeftY,
 			double offsetX, double offsetY, double scale, boolean reflected) {
 		super();
@@ -36,6 +39,7 @@ public class ImageCorrection {
 		this.reflected = reflected;
 	}
 
+	// getters and setters
 	public double getImgWidth() {
 		return imgWidth;
 	}
@@ -102,14 +106,12 @@ public class ImageCorrection {
 
 	@JsonIgnore
 	public double getCorrectedImgWidth() {
-		return imgWidth*(1+(spriteTopLeftX/imgWidth));
+		return imgWidth * (1 + (spriteTopLeftX / imgWidth));
 	}
-	
+
 	@JsonIgnore
 	public double getCorrectedImgHeight() {
-		return imgHeight*(1+(spriteTopLeftY/imgHeight));
+		return imgHeight * (1 + (spriteTopLeftY / imgHeight));
 	}
-	
-	
-	
+
 }

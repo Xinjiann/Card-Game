@@ -5,23 +5,18 @@ import com.fasterxml.jackson.databind.JsonNode;
 import akka.actor.ActorRef;
 import commands.BasicCommands;
 import structures.GameState;
-import structures.basic.Card;
-import structures.basic.Monster;
 import utils.CommonUtils;
 
-
 /**
- * Indicates that the user has clicked an object on the game canvas, in this case
- * somewhere that is not on a card tile or the end-turn button.
+ * Indicates that the user has clicked an object on the game canvas, in this
+ * case somewhere that is not on a card tile or the end-turn button.
  * 
- * { 
- *   messageType = “otherClicked”
- * }
+ * { messageType = “otherClicked” }
  * 
  * @author Dr. Richard McCreadie
  *
  */
-public class OtherClicked implements EventProcessor{
+public class OtherClicked implements EventProcessor {
 
 	@Override
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
@@ -34,5 +29,3 @@ public class OtherClicked implements EventProcessor{
 		CommonUtils.rmAllHighlight(gameState, out);
 	}
 }
-
-

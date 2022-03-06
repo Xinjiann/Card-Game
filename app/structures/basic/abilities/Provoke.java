@@ -6,8 +6,7 @@ import structures.basic.EffectAnimation;
 import structures.basic.Monster;
 
 public class Provoke implements Ability {
-	
-	
+
 	public Provoke() {
 
 	}

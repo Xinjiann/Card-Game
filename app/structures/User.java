@@ -2,6 +2,7 @@ package structures;
 
 /**
  * Unused
+ * 
  * @author Dr. Richard McCreadie
  *
  */
@@ -10,7 +11,8 @@ public class User {
 	protected String username;
 	protected String password;
 
-	public User() {}
+	public User() {
+	}
 
 	public User(String username, String password) {
 		super();
@@ -33,7 +35,5 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-
 
 }

@@ -1,6 +1,5 @@
 package events;
 
-
 import com.fasterxml.jackson.databind.JsonNode;
 
 import akka.actor.ActorRef;
@@ -13,19 +12,16 @@ import structures.basic.abilities.WhenToCall;
 import utils.CommonUtils;
 
 /**
- * Indicates that the user has clicked an object on the game canvas, in this case a card.
- * The event returns the position in the player's hand the card resides within.
+ * Indicates that the user has clicked an object on the game canvas, in this
+ * case a card. The event returns the position in the player's hand the card
+ * resides within.
  * 
- * { 
- *   messageType = “cardClicked”
- *   position = <hand index position [1-6]>
- * }
+ * { messageType = “cardClicked” position = <hand index position [1-6]> }
  * 
  * @author Dr. Richard McCreadie
  *
  */
-public class CardClicked implements EventProcessor{
-
+public class CardClicked implements EventProcessor {
 
 	@Override
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
@@ -41,39 +37,40 @@ public class CardClicked implements EventProcessor{
 		Card preClickedCard = gameState.getCardSelected();
 		// unselect unit
 		gameState.setUnitSelected(null);
-		//firstly remove the highlight on the board
-		if(preClickedCard == clickedCard){
+		// firstly remove the highlight on the board
+		if (preClickedCard == clickedCard) {
 			CommonUtils.rmAllHighlight(gameState, out);
 			gameState.setCardSelected(null);
 		}
-		//first justify the card type(attack or assist), then determine the highlight area
+		// first justify the card type(attack or assist), then determine the highlight
+		// area
 		else {
 			// check mana
 			if (clickedCard.getManacost() <= gameState.getTurnOwner().getMana()) {
 				// set selected card
 				gameState.setCardSelected(clickedCard);
-				if(clickedCard.getType().equals("spell")){
+				if (clickedCard.getType().equals("spell")) {
 					// remove all highlights
 					CommonUtils.rmAllHighlight(gameState, out);
-					//spell card type
+					// spell card type
 					switch (clickedCard.getCardname()) {
-						case "Sundrop Elixir" :
-							gameState.gameBoard.setAllUnitTiles();
-							break;
-						case "Truestrike" :
-							gameState.gameBoard.setAllEnemyTiles(gameState);
-							break;
-						case "Staff of Y'Kir'" :
-							gameState.gameBoard.setAvatarArea(gameState);
-							break;
-						case "Entropic Decay" :
-							gameState.gameBoard.setNoneAvatarUnitArea(gameState);
-							break;
+					case "Sundrop Elixir":
+						gameState.gameBoard.setAllUnitTiles();
+						break;
+					case "Truestrike":
+						gameState.gameBoard.setAllEnemyTiles(gameState);
+						break;
+					case "Staff of Y'Kir'":
+						gameState.gameBoard.setAvatarArea(gameState);
+						break;
+					case "Entropic Decay":
+						gameState.gameBoard.setNoneAvatarUnitArea(gameState);
+						break;
 					}
 					CommonUtils.sleep();
 					CommonUtils.drawTilesInBatch(out, gameState.gameBoard.getSpellArea(), 1);
-				}else{
-					//unit type card
+				} else {
+					// unit type card
 					// remove all highlights
 					CommonUtils.rmAllHighlight(gameState, out);
 					CommonUtils.sleep();
@@ -87,7 +84,8 @@ public class CardClicked implements EventProcessor{
 
 					}
 					// highlight area
-					ArrayList<Monster> friendlyUnits = gameState.getGameBoard().friendlyUnitsWithAvatar(gameState.getTurnOwner());
+					ArrayList<Monster> friendlyUnits = gameState.getGameBoard()
+							.friendlyUnitsWithAvatar(gameState.getTurnOwner());
 					gameState.getGameBoard().setSummonArea(friendlyUnits);
 					CommonUtils.drawTilesInBatch(out, gameState.gameBoard.getSummonArea(), 1);
 					gameState.setCardPos(handPosition);
@@ -96,8 +94,7 @@ public class CardClicked implements EventProcessor{
 				BasicCommands.addPlayer1Notification(out, "Mana not sufficient", 2);
 			}
 		}
-		
-	}
 
+	}
 
 }

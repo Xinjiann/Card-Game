@@ -6,22 +6,19 @@ import akka.actor.ActorRef;
 import commands.BasicCommands;
 import structures.GameState;
 import structures.basic.Avatar;
-import structures.basic.Card;
 import structures.basic.Monster;
 import utils.CommonUtils;
 
 /**
- * Indicates that the user has clicked an object on the game canvas, in this case
- * the end-turn button.
+ * Indicates that the user has clicked an object on the game canvas, in this
+ * case the end-turn button.
  * 
- * { 
- *   messageType = “endTurnClicked”
- * }
+ * { messageType = “endTurnClicked” }
  * 
  * @author Dr. Richard McCreadie
  *
  */
-public class EndTurnClicked implements EventProcessor{
+public class EndTurnClicked implements EventProcessor {
 
 	@Override
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
@@ -45,12 +42,12 @@ public class EndTurnClicked implements EventProcessor{
 		gameState.getTurnOwner().setMana(0);
 		BasicCommands.setPlayer1Mana(out, gameState.getHumanPlayer());
 		BasicCommands.setPlayer2Mana(out, gameState.getAiPlayer());
-		
+
 		// refresh all units on board
-		for(int i=0;i<5;i++)
-			for(int j=0;j<9;j++) {
-				if(!gameState.gameBoard.getGameBoard()[i][j].getAvailable()) {
-					Monster monster=gameState.gameBoard.getGameBoard()[i][j].getUnitOnTile();
+		for (int i = 0; i < 5; i++)
+			for (int j = 0; j < 9; j++) {
+				if (!gameState.gameBoard.getGameBoard()[i][j].getAvailable()) {
+					Monster monster = gameState.gameBoard.getGameBoard()[i][j].getUnitOnTile();
 					monster.setFrozen(false);
 					monster.setAttackCount(monster.getMaxAttackCount());
 					monster.setMovesLeft(monster.getMaxMove());
@@ -64,7 +61,7 @@ public class EndTurnClicked implements EventProcessor{
 		gameState.getTurnOwner().getHand().drawCard(gameState.getTurnOwner().getDeck(), gameState, out);
 
 		// when human player getting a new card, re-display all card in hand
-		if(gameState.getTurnOwner() == gameState.getHumanPlayer()) {
+		if (gameState.getTurnOwner() == gameState.getHumanPlayer()) {
 			CommonUtils.drawCardsInHand(out, gameState.getTurnOwner().getHand().getHandList());
 		}
 
@@ -75,6 +72,5 @@ public class EndTurnClicked implements EventProcessor{
 		CommonUtils.sleep();
 		BasicCommands.setPlayer2Mana(out, gameState.getAiPlayer());
 	}
-
 
 }

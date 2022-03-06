@@ -7,16 +7,20 @@ import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
 
 public class BetterUnit extends Unit {
-
+	// variables
 	Set<String> keywords;
 
-	public BetterUnit() {}
-	
+	// Constructor 1
+	public BetterUnit() {
+	}
+
+	// Constructor 2
 	public BetterUnit(Set<String> keywords) {
 		super();
 		this.keywords = keywords;
 	}
 
+	// getters and setters
 	public Set<String> getKeywords() {
 		return keywords;
 	}
@@ -24,16 +28,15 @@ public class BetterUnit extends Unit {
 	public void setKeywords(Set<String> keywords) {
 		this.keywords = keywords;
 	};
-	
-	
+
 	public static void main(String[] args) {
-		
-		BetterUnit unit = (BetterUnit)BasicObjectBuilders.loadUnit(StaticConfFiles.humanAvatar, 0, BetterUnit.class);
+
+		BetterUnit unit = (BetterUnit) BasicObjectBuilders.loadUnit(StaticConfFiles.humanAvatar, 0, BetterUnit.class);
 		Set<String> keywords = new HashSet<String>();
 		keywords.add("MyKeyword");
 		unit.setKeywords(keywords);
-		
+
 		System.err.println(unit.getClass());
-		
+
 	}
 }

@@ -9,16 +9,17 @@ import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
 
 public class EntropicDecay implements Ability {
-	
+
 	private EffectAnimation effectAnimation;
-	
+
 	public EntropicDecay() {
 		this.effectAnimation = BasicObjectBuilders.loadEffect(StaticConfFiles.f1_martyrdom);
 	}
 
 	@Override
 	public void execute(Monster monsterEntity, GameState gameState, ActorRef out) {
-		if(!(monsterEntity instanceof Avatar))
+		// Can't be execute if target is Avatar
+		if (!(monsterEntity instanceof Avatar))
 			monsterEntity.setHealth(0);
 	}
 
