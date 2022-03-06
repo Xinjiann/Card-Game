@@ -4,23 +4,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import akka.actor.ActorRef;
 import commands.BasicCommands;
-import demo.CheckMoveLogic;
-import demo.CommandDemo;
 import java.util.ArrayList;
-import play.api.Play;
 import structures.GameState;
 import structures.basic.Avatar;
 import structures.basic.Board;
-import structures.basic.Card;
-import structures.basic.Deck;
-import structures.basic.Hand;
-import structures.basic.Monster;
 import structures.basic.Player;
 import structures.basic.Tile;
-import structures.basic.Unit;
-import utils.BasicObjectBuilders;
 import utils.CommonUtils;
-import utils.StaticConfFiles;
 
 /**
  * Indicates that both the core game loop in the browser is starting, meaning that it is ready to

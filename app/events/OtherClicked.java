@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import akka.actor.ActorRef;
 import commands.BasicCommands;
 import structures.GameState;
-import structures.basic.Card;
-import structures.basic.Monster;
 import utils.CommonUtils;
 
 
@@ -32,6 +30,14 @@ public class OtherClicked implements EventProcessor{
 		}
 
 		CommonUtils.rmAllHighlight(gameState, out);
+		// unselect unit
+		gameState.setUnitSelected(null);
+		if (gameState.getCardSelected() != null) {
+			// unselect card
+			BasicCommands.drawCard(out, gameState.getCardSelected(), gameState.getCardPos(), 0);
+			gameState.setCardSelected(null);
+		}
+
 	}
 }
 

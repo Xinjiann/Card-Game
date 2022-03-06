@@ -45,6 +45,8 @@ public class CardClicked implements EventProcessor{
 		if(preClickedCard == clickedCard){
 			CommonUtils.rmAllHighlight(gameState, out);
 			gameState.setCardSelected(null);
+			// remove front end card highlight
+			BasicCommands.drawCard(out, clickedCard, handPosition, 0);
 		}
 		//first justify the card type(attack or assist), then determine the highlight area
 		else {
@@ -52,6 +54,9 @@ public class CardClicked implements EventProcessor{
 			if (clickedCard.getManacost() <= gameState.getTurnOwner().getMana()) {
 				// set selected card
 				gameState.setCardSelected(clickedCard);
+				gameState.setCardPos(handPosition);
+				// front end card highlight
+				BasicCommands.drawCard(out, clickedCard, handPosition, 1);
 				if(clickedCard.getType().equals("spell")){
 					// remove all highlights
 					CommonUtils.rmAllHighlight(gameState, out);
@@ -90,7 +95,7 @@ public class CardClicked implements EventProcessor{
 					ArrayList<Monster> friendlyUnits = gameState.getGameBoard().friendlyUnitsWithAvatar(gameState.getTurnOwner());
 					gameState.getGameBoard().setSummonArea(friendlyUnits);
 					CommonUtils.drawTilesInBatch(out, gameState.gameBoard.getSummonArea(), 1);
-					gameState.setCardPos(handPosition);
+
 				}
 			} else {
 				BasicCommands.addPlayer1Notification(out, "Mana not sufficient", 2);
