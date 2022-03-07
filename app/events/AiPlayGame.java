@@ -81,7 +81,7 @@ public class AiPlayGame {
             continue;
           }
           Tile bestTarget = this.getBestAttackTarget(tileList);
-          while (monster.getAttackCount() > 0) {
+          while (monster.getAttackCount() > 0 && bestTarget.getUnitOnTile() != null) {
             if (Math.abs(monster.getPosition().getTilex()-bestTarget.getTilex())<2 && Math.abs(monster.getPosition().getTiley()-bestTarget.getTiley())<2) {
               // attack
               tileClicked.attack(monster, bestTarget.getUnitOnTile(), gameState, out, gameState.getGameBoard()

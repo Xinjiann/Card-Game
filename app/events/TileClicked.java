@@ -378,6 +378,7 @@ public class TileClicked implements EventProcessor {
 
         previousTile.rmUnitOnTile();
         gameState.setUnitSelected(null);
+        attacker.setAttackCount(0);
 
         // execute death ability
         CommonUtils.executeMonsterAbility(out, gameState, WhenToCall.death, attacker, previousTile);
